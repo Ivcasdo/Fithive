@@ -14,24 +14,13 @@ import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
 const PantallaIniciarSesion = () => {
   return (
     <View style={styles.pantallaIniciarSesion}>
-      <View
-        style={[styles.pantallaIniciarSesionChild, styles.lgo21IconPosition]}
-      />
-      <View
-        style={[styles.pantallaIniciarSesionChild, styles.lgo21IconPosition]}
-      />
+      
       <View style={styles.register2}>
         <View style={[styles.focused, styles.focusedPosition]}>
-          <LinearGradient
-            style={styles.dark}
-            locations={[0, 1]}
-            colors={["#1a73e9", "#6c92f4"]}
-          />
           <RNPTextInput
             style={styles.spSubheadingRegular}
-            placeholder="ejemplo1234@gmail.com"
-            label="Label"
-            mode="outlined"
+            placeholder="Email"
+            mode="flat"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             theme={{ colors: { text: "rgba(0, 0, 0, 0.87)" } }}
           />
@@ -39,7 +28,7 @@ const PantallaIniciarSesion = () => {
             <View style={styles.iconsPosition}>
               <View style={[styles.iconsButton, styles.strokePosition]} />
             </View>
-            <View style={[styles.iconsColorizer, styles.iconsPosition]} />
+            
           </View>
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={[styles.caption1, styles.caption1Position]}>
@@ -52,41 +41,18 @@ const PantallaIniciarSesion = () => {
           <RNPTextInput
             style={[styles.spSubheadingRegular1, styles.subheadingPosition]}
             placeholder="Password"
-            label="Label"
             mode="flat"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             theme={{ colors: { text: "rgba(0, 0, 0, 0.87)" } }}
           />
-          <View style={[styles.caption2, styles.captionPosition]}>
-            <Text style={[styles.caption1, styles.caption1Position]}>
-              Default name
-            </Text>
-          </View>
+         
           <Image
             style={[styles.lockIcon, styles.searchPosition]}
             resizeMode="cover"
             source={require("../assets/lock.png")}
           />
         </View>
-        <View style={[styles.default1, styles.focusedPosition]}>
-          <View style={[styles.stroke, styles.strokePosition]} />
-          <View style={styles.subheadingPosition}>
-            <Text style={[styles.subheading, styles.caption1Position]}>
-              Six inputs is too much, trust me...
-            </Text>
-          </View>
-          <View style={[styles.caption2, styles.captionPosition]}>
-            <Text style={[styles.caption1, styles.caption1Position]}>
-              Default name
-            </Text>
-          </View>
-          <View style={[styles.search, styles.searchPosition]}>
-            <View style={styles.iconsPosition}>
-              <View style={[styles.iconsButton, styles.strokePosition]} />
-            </View>
-            <View style={[styles.iconsColorizer1, styles.iconsPosition]} />
-          </View>
-        </View>
+        
       </View>
       <Pressable style={[styles.accent, styles.accentPosition]}>
         <LinearGradient
@@ -153,6 +119,7 @@ const styles = StyleSheet.create({
   strokePosition: {
     bottom: 0,
     position: "absolute",
+    
   },
   iconsPosition: {
     left: "0%",
@@ -197,14 +164,16 @@ const styles = StyleSheet.create({
   accentPosition: {
     height: 40,
     marginTop: -58,
-    top: "50%",
+    top: "65%",
     position: "absolute",
   },
   flatdefaultPosition: {
     height: 24,
     marginTop: -12,
-    top: "50%",
+    top: "45%",
     position: "absolute",
+    
+    
   },
   body2Typo: {
     justifyContent: "center",
@@ -221,13 +190,14 @@ const styles = StyleSheet.create({
   lineIconPosition: {
     opacity: 0.24,
     height: 1,
-    bottom: 474,
+    bottom: 307,
     left: "50%",
     position: "absolute",
   },
   flatdefaultPosition1: {
     left: 8,
     right: 8,
+    top: "20%",
   },
   pantallaIniciarSesionChild: {
     backgroundColor: Color.gainsboro,
@@ -324,7 +294,7 @@ const styles = StyleSheet.create({
     right: 16,
     left: 16,
     height: 134,
-    top: "50%",
+    top: "60%",
     position: "absolute",
     overflow: "hidden",
   },
@@ -349,6 +319,7 @@ const styles = StyleSheet.create({
     top: 4,
     fontSize: FontSize.spBUTTON_size,
     width: 119,
+    textAlign: "center"
   },
   spBody2Medium: {
     right: 0,
@@ -357,10 +328,12 @@ const styles = StyleSheet.create({
   flatdefault: {
     left: 8,
     right: 8,
+    
   },
   accent: {
     right: 21,
     left: 204,
+    
   },
   accent2: {
     right: 206,
@@ -395,19 +368,22 @@ const styles = StyleSheet.create({
     width: 93,
     height: 16,
     top: 0,
+    textAlign: "center",
   },
   spCapsXsMedium: {
     bottom: 0,
     position: "absolute",
     top: 0,
+    
   },
   outlined: {
     marginLeft: -55,
-    bottom: 466,
+    bottom: 300,
     width: 109,
     left: "50%",
     height: 16,
     position: "absolute",
+    
   },
   pantallaIniciarSesion: {
     flex: 1,
