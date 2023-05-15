@@ -3,6 +3,7 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaRegistrarse from "./screens/PantallaRegistrarse";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
@@ -29,6 +30,11 @@ const App = () => {
             <Stack.Screen
               name="PantallaIniciarSesion"
               component={PantallaIniciarSesion}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaRegistrarse"
+              component={PantallaRegistrarse}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>
