@@ -18,7 +18,7 @@ const PantallaPerfilDeUsuario = () => {
           styles.firstLevelDefaultParentPosition,
         ]}
         resizeMode="cover"
-        source={require("../assets/ellipse2.png")}
+        source={require("../assets/ellipse21.png")}
       />
       <Pressable style={[styles.ellipseParent, styles.darkFlexBox]}>
         <Image

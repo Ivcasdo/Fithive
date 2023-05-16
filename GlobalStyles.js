@@ -20,6 +20,7 @@ export const Color = {
   lightColor: "#fff",
   textColor: "rgba(0, 0, 0, 0.87)",
   gainsboro: "#d9d9d9",
+  grayColor: "#5f5f5f",
   black: "#000",
   whitesmoke: "#ebebf0",
 };
