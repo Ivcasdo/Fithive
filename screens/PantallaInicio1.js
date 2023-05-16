@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   bgAccent: {
     borderRadius: Border.br_80xl,
-    backgroundColor: Color.accentColor,
+    backgroundColor: Color.primaryColor,
     bottom: 0,
     top: 0,
     position: "absolute",

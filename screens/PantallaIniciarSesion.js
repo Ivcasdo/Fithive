@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   accentShadowBox: {
-    backgroundColor: Color.accentColor,
+    backgroundColor: Color.primaryColor,
     shadowOpacity: 1,
     elevation: 8,
     shadowRadius: 8,

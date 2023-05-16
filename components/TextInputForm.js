@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   dark: {
     top: 54,
     bottom: 0,
-    backgroundColor: Color.accentColor,
+    backgroundColor: Color.primaryColor,
     left: 0,
     right: 0,
     position: "absolute",
