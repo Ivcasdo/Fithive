@@ -4,6 +4,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
 import PantallaMenu from "./screens/PantallaMenu";
+import PantallaCambioCorreoElectro from "./screens/PantallaCambioCorreoElectro";
+import PantallaCambioNombreUsuairo from "./screens/PantallaCambioNombreUsuairo";
+import PantallaCambioContrasea from "./screens/PantallaCambioContrasea";
+import PantallaPerfilDeUsuario from "./screens/PantallaPerfilDeUsuario";
 import PantallaInicio1 from "./screens/PantallaInicio1";
 import PantallaRegistrarse from "./screens/PantallaRegistrarse";
 
@@ -34,6 +38,26 @@ const App = () => {
             <Stack.Screen
               name="PantallaIniciarSesion"
               component={PantallaIniciarSesion}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCambioCorreoElectronico"
+              component={PantallaCambioCorreoElectro}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCambioNombreUsuairo"
+              component={PantallaCambioNombreUsuairo}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCambioContrasea"
+              component={PantallaCambioContrasea}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaPerfilDeUsuario"
+              component={PantallaPerfilDeUsuario}
               options={{ headerShown: false }}
             />
             <Stack.Screen

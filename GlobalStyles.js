@@ -1,13 +1,13 @@
 /* fonts */
 export const FontFamily = {
-  spBUTTON: "Roboto_medium",
-  spCaptionRegular: "Roboto_regular",
+  spBody2Medium: "Roboto_medium",
+  spBody1Regular: "Roboto_regular",
   interRegular: "Inter_regular",
   interBold: "Inter_bold",
 };
 /* font sizes */
 export const FontSize = {
-  spBUTTON_size: 14,
+  spBody2Medium_size: 14,
   size_5xs: 8,
   size_base: 16,
   spCaptionRegular_size: 12,
@@ -25,8 +25,8 @@ export const Color = {
 };
 /* border radiuses */
 export const Border = {
-  br_7xs: 6,
   br_80xl: 99,
+  br_7xs: 6,
   br_10xs: 3,
   br_81xl: 100,
 };

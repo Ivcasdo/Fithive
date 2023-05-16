@@ -32,7 +32,7 @@ const PantallaInicio1 = () => {
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
-              source={require("../assets/vector.png")}
+              source={require("../assets/vector1.png")}
             />
           </View>
           <Text style={[styles.february2021, styles.february2021FlexBox]}>
@@ -42,7 +42,7 @@ const PantallaInicio1 = () => {
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
-              source={require("../assets/vector1.png")}
+              source={require("../assets/vector11.png")}
             />
           </View>
         </View>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     width: 103,
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.spBody2Medium,
     fontWeight: "500",
     textTransform: "uppercase",
     left: -4,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     left: 26,
     textAlign: "center",
     color: Color.black,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.spBody1Regular,
     fontSize: FontSize.size_xl,
     position: "absolute",
   },
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: FontFamily.interBold,
     textAlign: "left",
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.spBody2Medium_size,
   },
   arrow1: {
     transform: [
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   },
   text19: {
     lineHeight: 21,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.spBody2Medium_size,
   },
   dates: {
     marginTop: 20,
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
     height: 26,
     textAlign: "left",
     top: 0,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.spBody1Regular,
     fontSize: FontSize.size_xl,
     color: Color.black,
     position: "absolute",
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "stretch",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.spBody1Regular,
   },
   spSubheadingRegular: {
     marginTop: -8,
