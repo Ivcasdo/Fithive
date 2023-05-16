@@ -2,57 +2,40 @@ import * as React from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  Image,
   Pressable,
+  Text,
   ImageBackground,
 } from "react-native";
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { TextInput as RNPTextInput } from "react-native-paper";
-import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
+import TextInputForm from "../components/TextInputForm";
+import PasswordForm from "../components/PasswordForm";
+import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 
 const PantallaIniciarSesion = () => {
   return (
     <View style={styles.pantallaIniciarSesion}>
-      
       <View style={styles.register2}>
-        <View style={[styles.focused, styles.focusedPosition]}>
-          <RNPTextInput
-            style={styles.spSubheadingRegular}
-            placeholder="Email"
-            mode="flat"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-            theme={{ colors: { text: "rgba(0, 0, 0, 0.87)" } }}
-          />
-          <View style={styles.email}>
-            <View style={styles.iconsPosition}>
-              <View style={[styles.iconsButton, styles.strokePosition]} />
-            </View>
-            
+        <TextInputForm />
+        <PasswordForm />
+      </View>
+      <View style={styles.lineDottedParent}>
+        <Image
+          style={[styles.lineDottedIcon, styles.lineIconPosition]}
+          contentFit="cover"
+          source={require("../assets/line-dotted.png")}
+        />
+        <Image
+          style={[styles.lineDottedIcon1, styles.lineIconPosition]}
+          contentFit="cover"
+          source={require("../assets/line-dotted1.png")}
+        />
+        <Pressable style={[styles.outlined, styles.outlinedLayout]}>
+          <View style={[styles.colorsStrokeprimary, styles.outlinedLayout]} />
+          <View style={[styles.spCapsXsMedium, styles.flatdefaultFlexBox]}>
+            <Text style={styles.minicaps}>Olvidé la contraseña</Text>
           </View>
-          <View style={[styles.caption, styles.captionPosition]}>
-            <Text style={[styles.caption1, styles.caption1Position]}>
-              E-mail address
-            </Text>
-          </View>
-        </View>
-        <View style={styles.default}>
-          <View style={[styles.stroke, styles.strokePosition]} />
-          <RNPTextInput
-            style={[styles.spSubheadingRegular1, styles.subheadingPosition]}
-            placeholder="Password"
-            mode="flat"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-            theme={{ colors: { text: "rgba(0, 0, 0, 0.87)" } }}
-          />
-         
-          <Image
-            style={[styles.lockIcon, styles.searchPosition]}
-            resizeMode="cover"
-            source={require("../assets/lock.png")}
-          />
-        </View>
-        
+        </Pressable>
       </View>
       <Pressable style={[styles.accent, styles.accentPosition]}>
         <LinearGradient
@@ -61,8 +44,8 @@ const PantallaIniciarSesion = () => {
           colors={["#1dde7d", "#72dfc5"]}
         />
         <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-            <Text style={[styles.body2, styles.body2Typo]}>Registrarse</Text>
+          <View style={styles.spBody2Medium}>
+            <Text style={styles.bodyTypo}>Registrarse</Text>
           </View>
         </View>
       </Pressable>
@@ -72,277 +55,76 @@ const PantallaIniciarSesion = () => {
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-            <Text style={[styles.body2, styles.body2Typo]}>iniciar sesión</Text>
+        <View style={[styles.flatdefault1, styles.flatdefaultPosition]}>
+          <View style={styles.spBody2Medium1}>
+            <Text style={[styles.body21, styles.bodyTypo]}>iniciar sesión</Text>
           </View>
         </View>
       </Pressable>
       <ImageBackground
-        style={[styles.lgo21Icon, styles.lgo21IconPosition]}
+        style={[styles.lgo21Icon, styles.body21Position]}
         resizeMode="cover"
         source={require("../assets/lgo21.png")}
       />
-      <Image
-        style={[styles.lineDottedIcon, styles.lineIconPosition]}
-        resizeMode="cover"
-        source={require("../assets/line-dotted.png")}
-      />
-      <Image
-        style={[styles.lineDottedIcon1, styles.lineIconPosition]}
-        resizeMode="cover"
-        source={require("../assets/line-dotted1.png")}
-      />
-      <Pressable style={styles.outlined}>
-        <View style={[styles.colorsStrokeprimary, styles.strokePosition]} />
-        <View style={[styles.spCapsXsMedium, styles.flatdefaultPosition1]}>
-          <Text style={[styles.minicaps, styles.body2Typo]}>
-            Olvidé la contraseña
-          </Text>
-        </View>
-      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  lgo21IconPosition: {
-    left: 0,
+  lineIconPosition: {
+    opacity: 0.24,
+    height: 1,
+    left: "50%",
+    bottom: 8,
     position: "absolute",
   },
-  focusedPosition: {
-    height: 56,
-    right: 0,
-    left: 0,
-    position: "absolute",
-  },
-  strokePosition: {
-    bottom: 0,
-    position: "absolute",
-    
-  },
-  iconsPosition: {
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
-  },
-  captionPosition: {
-    bottom: 32,
+  outlinedLayout: {
+    width: 109,
     height: 16,
-    right: 0,
-    left: 0,
-    position: "absolute",
   },
-  caption1Position: {
-    width: 328,
-    textAlign: "left",
-    color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
-    left: 0,
-    top: 0,
-    position: "absolute",
-  },
-  subheadingPosition: {
-    opacity: 0.54,
-    height: 20,
-    bottom: 6,
-    right: 0,
-    left: 0,
-    position: "absolute",
-  },
-  searchPosition: {
-    bottom: 1,
-    height: 32,
-    width: 32,
-    right: 0,
-    position: "absolute",
+  flatdefaultFlexBox: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   accentPosition: {
     height: 40,
     marginTop: -58,
-    top: "65%",
+    top: "50%",
     position: "absolute",
   },
   flatdefaultPosition: {
-    height: 24,
+    left: 8,
+    right: 8,
     marginTop: -12,
-    top: "45%",
+    top: "50%",
     position: "absolute",
-    
-    
   },
-  body2Typo: {
-    justifyContent: "center",
-    alignItems: "center",
+  bodyTypo: {
+    fontSize: FontSize.spBUTTON_size,
+    width: 119,
     display: "flex",
     textAlign: "center",
+    color: Color.textColor,
     fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
-    color: Color.textColor,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  body21Position: {
     left: 0,
     position: "absolute",
-  },
-  lineIconPosition: {
-    opacity: 0.24,
-    height: 1,
-    bottom: 307,
-    left: "50%",
-    position: "absolute",
-  },
-  flatdefaultPosition1: {
-    left: 8,
-    right: 8,
-    top: "20%",
-  },
-  pantallaIniciarSesionChild: {
-    backgroundColor: Color.gainsboro,
-    width: 360,
-    height: 13,
-    top: 0,
-  },
-  dark: {
-    backgroundColor: "transparent",
-    bottom: 0,
-    top: 54,
-    right: 0,
-    left: 0,
-    position: "absolute",
-  },
-  spSubheadingRegular: {
-    opacity: 0.87,
-    height: 20,
-    bottom: 6,
-    right: 0,
-    left: 0,
-    position: "absolute",
-  },
-  iconsButton: {
-    borderRadius: Border.br_11xs,
-    display: "none",
-    right: 0,
-    left: 0,
-    top: 0,
-    backgroundColor: Color.white,
-  },
-  iconsColorizer: {
-    backgroundColor: "#828282",
-  },
-  email: {
-    bottom: 2,
-    height: 32,
-    width: 32,
-    right: 0,
-    position: "absolute",
-    overflow: "hidden",
-  },
-  caption1: {
-    fontSize: FontSize.spCaptionRegular_size,
-    lineHeight: 15,
-    height: 16,
-  },
-  caption: {
-    height: 16,
-  },
-  focused: {
-    top: 0,
-  },
-  stroke: {
-    top: 55,
-    backgroundColor: Color.textColor,
-    opacity: 0.4,
-    right: 0,
-    left: 0,
-  },
-  spSubheadingRegular1: {
-    backgroundColor: Color.white,
-  },
-  caption2: {
-    height: 16,
-    display: "none",
-  },
-  lockIcon: {
-    opacity: 0.4,
-  },
-  default: {
-    top: 54,
-    height: 56,
-    right: 0,
-    left: 0,
-    position: "absolute",
-  },
-  subheading: {
-    fontSize: FontSize.spSubheadingRegular_size,
-    lineHeight: 21,
-    height: 20,
-  },
-  iconsColorizer1: {
-    backgroundColor: "#5f5f5f",
-  },
-  search: {
-    display: "none",
-  },
-  default1: {
-    top: 319,
   },
   register2: {
     marginTop: -208,
     right: 16,
     left: 16,
-    height: 134,
-    top: "60%",
+    height: 119,
+    paddingBottom: 24,
+    alignItems: "center",
+    top: "50%",
     position: "absolute",
     overflow: "hidden",
-  },
-  accentShadowBox: {
-    shadowOpacity: 1,
-    elevation: 8,
-    shadowRadius: 8,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowColor: "rgba(27, 225, 175, 0.16)",
-    borderRadius: Border.br_7xs,
-    backgroundColor: "transparent",
-    bottom: 0,
-    right: 0,
-    left: 0,
-    top: 0,
-    position: "absolute",
-  },
-  body2: {
-    top: 4,
-    fontSize: FontSize.spBUTTON_size,
-    width: 119,
-    textAlign: "center"
-  },
-  spBody2Medium: {
-    right: 0,
-    left: 0,
-  },
-  flatdefault: {
-    left: 8,
-    right: 8,
-    
-  },
-  accent: {
-    right: 21,
-    left: 204,
-    
-  },
-  accent2: {
-    right: 206,
-    left: 19,
-  },
-  lgo21Icon: {
-    top: 45,
-    width: 356,
-    height: 101,
   },
   lineDottedIcon: {
     marginLeft: 54,
@@ -353,44 +135,109 @@ const styles = StyleSheet.create({
     width: 49,
   },
   colorsStrokeprimary: {
-    borderRadius: 99,
+    borderRadius: Border.br_80xl,
     borderStyle: "solid",
     borderColor: "#304ffe",
     borderWidth: 1,
     opacity: 0.48,
-    right: 0,
-    left: 0,
-    top: 0,
   },
   minicaps: {
-    fontSize: 8,
+    fontSize: FontSize.size_5xs,
     lineHeight: 10,
+    display: "flex",
+    textAlign: "center",
+    color: Color.textColor,
+    fontFamily: FontFamily.spBUTTON,
+    fontWeight: "500",
+    textTransform: "uppercase",
+    justifyContent: "center",
     width: 93,
     height: 16,
-    top: 0,
-    textAlign: "center",
+    alignItems: "center",
   },
   spCapsXsMedium: {
-    bottom: 0,
-    position: "absolute",
-    top: 0,
-    
+    marginTop: -16,
+    width: 93,
+    justifyContent: "center",
   },
   outlined: {
     marginLeft: -55,
-    bottom: 300,
+    justifyContent: "flex-end",
+    bottom: 0,
     width: 109,
     left: "50%",
+    alignItems: "center",
+    position: "absolute",
+  },
+  lineDottedParent: {
+    top: 311,
+    left: 76,
+    width: 208,
     height: 16,
     position: "absolute",
-    
+  },
+  accentShadowBox: {
+    backgroundColor: "transparent",
+    shadowOpacity: 1,
+    elevation: 8,
+    shadowRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowColor: "rgba(27, 225, 175, 0.16)",
+    borderRadius: Border.br_7xs,
+    right: 0,
+    top: 0,
+    left: 0,
+    bottom: 0,
+    position: "absolute",
+  },
+  spBody2Medium: {
+    height: 24,
+    width: 119,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  flatdefault: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  accent: {
+    right: 21,
+    left: 204,
+  },
+  body21: {
+    top: 4,
+    left: 0,
+    position: "absolute",
+  },
+  spBody2Medium1: {
+    height: 24,
+    marginTop: -12,
+    left: 0,
+    right: 0,
+    top: "50%",
+    position: "absolute",
+  },
+  flatdefault1: {
+    height: 24,
+  },
+  accent2: {
+    right: 206,
+    left: 19,
+  },
+  lgo21Icon: {
+    top: 45,
+    width: 356,
+    height: 101,
   },
   pantallaIniciarSesion: {
+    backgroundColor: Color.lightColor,
     flex: 1,
+    width: "100%",
     height: 800,
     overflow: "hidden",
-    width: "100%",
-    backgroundColor: Color.white,
   },
 });
 

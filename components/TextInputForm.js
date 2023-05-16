@@ -1,85 +1,59 @@
 import * as React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { TextInput as RNPTextInput } from "react-native-paper";
-import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
+import { Image } from "expo-image";
+import { FontSize, FontFamily, Color } from "../GlobalStyles";
 
 const TextInputForm = () => {
   return (
-    <View style={[styles.focused, styles.focusedPosition]}>
+    <View style={styles.focused}>
       <LinearGradient
-        style={[styles.dark, styles.darkPosition]}
+        style={styles.dark}
         locations={[0, 1]}
         colors={["#1a73e9", "#6c92f4"]}
       />
-      <RNPTextInput
-        style={[styles.spSubheadingRegular, styles.focusedPosition]}
+      <TextInput
+        style={[styles.spSubheadingRegular, styles.captionPosition]}
         placeholder="ejemplo1234@gmail.com"
-        label="Label"
-        mode="outlined"
+        keyboardType="default"
         placeholderTextColor="rgba(0, 0, 0, 0.87)"
-        theme={{ colors: { text: "rgba(0, 0, 0, 0.87)" } }}
       />
-      <View style={styles.email}>
-        <View style={styles.iconsPosition}>
-          <View style={[styles.iconsButton, styles.darkPosition]} />
-        </View>
-        <View style={[styles.iconsColorizer, styles.iconsPosition]} />
-      </View>
+      <Image
+        style={styles.emailIcon}
+        contentFit="cover"
+        source={require("../assets/email.png")}
+      />
       <View style={[styles.caption, styles.captionPosition]}>
-        <Text style={[styles.caption1, styles.captionPosition]}>
-          E-mail address
-        </Text>
+        <Text style={styles.caption1}>E-mail address</Text>
       </View>
+      <View style={styles.focusedChild} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  focusedPosition: {
-    left: 0,
-    right: 0,
-    position: "absolute",
-  },
-  darkPosition: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    position: "absolute",
-  },
-  iconsPosition: {
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-  },
   captionPosition: {
-    height: 16,
+    justifyContent: "center",
+    alignItems: "center",
     left: 0,
+    right: 0,
     position: "absolute",
   },
   dark: {
     top: 54,
+    bottom: 0,
     backgroundColor: "transparent",
+    left: 0,
+    right: 0,
+    position: "absolute",
   },
   spSubheadingRegular: {
     bottom: 6,
-    height: 20,
     opacity: 0.87,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
   },
-  iconsButton: {
-    borderRadius: Border.br_11xs,
-    backgroundColor: Color.lightColor,
-    display: "none",
-    top: 0,
-  },
-  iconsColorizer: {
-    backgroundColor: Color.color,
-  },
-  email: {
+  emailIcon: {
     bottom: 2,
     width: 32,
     height: 32,
@@ -90,19 +64,26 @@ const styles = StyleSheet.create({
   caption1: {
     fontSize: FontSize.spCaptionRegular_size,
     lineHeight: 15,
-    fontFamily: FontFamily.spCaptionRegular,
     color: Color.textColor,
     textAlign: "left",
+    height: 16,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
-    top: 0,
   },
   caption: {
     bottom: 32,
-    right: 0,
+  },
+  focusedChild: {
+    top: -192,
+    left: -16,
+    backgroundColor: Color.gainsboro,
+    width: 360,
+    height: 13,
+    position: "absolute",
   },
   focused: {
     height: 56,
-    top: 0,
+    width: 328,
   },
 });
 
