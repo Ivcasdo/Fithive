@@ -2,7 +2,7 @@ import * as React from "react";
 import { View, StyleSheet, TextInput, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
-import { FontSize, FontFamily, Color } from "../GlobalStyles";
+import { Color, FontSize, FontFamily } from "../GlobalStyles";
 
 const TextInputForm = () => {
   return (
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   dark: {
     top: 54,
     bottom: 0,
-    backgroundColor: "transparent",
+    backgroundColor: Color.accentColor,
     left: 0,
     right: 0,
     position: "absolute",

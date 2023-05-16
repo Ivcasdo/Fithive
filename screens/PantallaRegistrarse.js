@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
-import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
 const PantallaRegistrarse = () => {
   return (
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   darkPosition: {
-    backgroundColor: "transparent",
+    backgroundColor: Color.accentColor,
     left: 0,
     bottom: 0,
     right: 0,
