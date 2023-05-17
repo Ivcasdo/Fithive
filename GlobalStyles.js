@@ -1,28 +1,34 @@
 /* fonts */
 export const FontFamily = {
   spBody2Medium: "Roboto_medium",
-  spBody1Regular: "Roboto_regular",
+  spSubheadingRegular: "Roboto_regular",
   interRegular: "Inter_regular",
   interBold: "Inter_bold",
 };
 /* font sizes */
 export const FontSize = {
+  size_4xs: 9,
+  size_3xs: 10,
+  spSubheadingRegular_size: 16,
+  spTitleMedium_size: 20,
   spBody2Medium_size: 14,
   size_5xs: 8,
-  size_base: 16,
   spCaptionRegular_size: 12,
+  size_2xs: 11,
   size_smi: 13,
-  size_xl: 20,
   size_mini: 15,
 };
 /* Colors */
 export const Color = {
   lightColor: "#fff",
   textColor: "rgba(0, 0, 0, 0.87)",
-  gainsboro: "#d9d9d9",
-  grayColor: "#5f5f5f",
-  black: "#000",
+  whitesmoke_100: "#f2f2f2",
   whitesmoke: "#ebebf0",
+  black: "#000",
+  gainsboro: "#d9d9d9",
+  silver: "#c2bbbb",
+  grayColor: "#5f5f5f",
+  darkslategray: "#333",
 };
 /* border radiuses */
 export const Border = {

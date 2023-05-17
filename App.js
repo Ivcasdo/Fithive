@@ -2,8 +2,12 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaInicioEntrenamiento from "./screens/PantallaInicioEntrenamiento";
 import PantallaMenu from "./screens/PantallaMenu";
+import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaMedidasCorporales2 from "./screens/PantallaMedidasCorporales2";
+import PantallaMedidasCorporales from "./screens/PantallaMedidasCorporales";
+import PantallaEstadisticas from "./screens/PantallaEstadisticas";
 import PantallaNotificaciones from "./screens/PantallaNotificaciones";
 import PantallaPersonalizacion from "./screens/PantallaPersonalizacion";
 import PantallaCambiarFotoPerfil from "./screens/PantallaCambiarFotoPerfil";
@@ -34,13 +38,35 @@ const App = () => {
     <>
       <NavigationContainer>
         {hideSplashScreen ? (
-          <Stack.Navigator
-            initialRouteName="PantallaIniciarSesion"
-            screenOptions={{ headerShown: false }}
-          >
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="PantallaInicioEntrenamiento"
+              component={PantallaInicioEntrenamiento}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaMenu"
+              component={PantallaMenu}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PantallaIniciarSesion"
               component={PantallaIniciarSesion}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaMedidasCorporales2"
+              component={PantallaMedidasCorporales2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaMedidasCorporales"
+              component={PantallaMedidasCorporales}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaEstadisticas"
+              component={PantallaEstadisticas}
               options={{ headerShown: false }}
             />
             <Stack.Screen

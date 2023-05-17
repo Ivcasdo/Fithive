@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import {
   StyleSheet,
   View,
@@ -10,11 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
-const PantallaMenu = ({ state, navigation }) => {
-  const [drawerItemsNormal] = useState([]);
-  const [drawerItemsActive] = useState([]);
-  const stateIndex = !state ? 0 : state.index;
-
+const PantallaMenu = () => {
   return (
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
@@ -249,7 +245,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   body1: {
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     alignItems: "center",
     display: "flex",
     textAlign: "left",

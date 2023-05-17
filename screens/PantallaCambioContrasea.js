@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
   spSubheadingRegular: {
     bottom: 6,
     opacity: 0.54,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spBody1Regular,
+    fontSize: FontSize.spSubheadingRegular_size,
+    fontFamily: FontFamily.spSubheadingRegular,
     left: 0,
     right: 0,
     position: "absolute",
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     height: 16,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     width: 328,
   },
   caption: {

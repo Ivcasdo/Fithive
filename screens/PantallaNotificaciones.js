@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   caption1Typo: {
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     top: 0,
     width: 200,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    fontSize: FontSize.size_base,
+    fontSize: FontSize.spSubheadingRegular_size,
     lineHeight: 21,
     height: 20,
     left: 0,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     top: 0,
     width: 200,
   },

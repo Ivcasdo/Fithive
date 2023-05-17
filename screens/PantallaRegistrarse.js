@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheadingPosition: {
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spBody1Regular,
+    fontSize: FontSize.spSubheadingRegular_size,
+    fontFamily: FontFamily.spSubheadingRegular,
     bottom: 6,
     justifyContent: "center",
     left: 0,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     height: 16,
     color: Color.textColor,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     width: 328,
   },
   caption: {

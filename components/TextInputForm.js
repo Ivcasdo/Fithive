@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
   spSubheadingRegular: {
     bottom: 6,
     opacity: 0.87,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spBody1Regular,
+    fontSize: FontSize.spSubheadingRegular_size,
+    fontFamily: FontFamily.spSubheadingRegular,
   },
   emailIcon: {
     bottom: 2,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     height: 16,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     width: 328,
   },
   caption: {

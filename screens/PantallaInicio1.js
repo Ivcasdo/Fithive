@@ -245,8 +245,8 @@ const styles = StyleSheet.create({
     left: 26,
     textAlign: "center",
     color: Color.black,
-    fontFamily: FontFamily.spBody1Regular,
-    fontSize: FontSize.size_xl,
+    fontFamily: FontFamily.spSubheadingRegular,
+    fontSize: FontSize.spTitleMedium_size,
     position: "absolute",
   },
   bgAccent: {
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     left: 8,
   },
   body2: {
-    fontSize: 10,
+    fontSize: FontSize.size_3xs,
   },
   accent: {
     top: 327,
@@ -352,8 +352,8 @@ const styles = StyleSheet.create({
     height: 26,
     textAlign: "left",
     top: 0,
-    fontFamily: FontFamily.spBody1Regular,
-    fontSize: FontSize.size_xl,
+    fontFamily: FontFamily.spSubheadingRegular,
+    fontSize: FontSize.spTitleMedium_size,
     color: Color.black,
     position: "absolute",
   },
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "stretch",
     color: Color.textColor,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
   },
   spSubheadingRegular: {
     marginTop: -8,

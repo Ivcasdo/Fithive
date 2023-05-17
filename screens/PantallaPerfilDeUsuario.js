@@ -256,9 +256,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    fontSize: FontSize.size_base,
+    fontSize: FontSize.spSubheadingRegular_size,
     lineHeight: 21,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spSubheadingRegular,
     width: 272,
   },
   spSubheadingRegular: {
