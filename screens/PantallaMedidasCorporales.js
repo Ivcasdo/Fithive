@@ -413,7 +413,7 @@ const styles = StyleSheet.create({
   },
   spSubheadingRegularParent: {
     left: -1,
-    backgroundColor: "#e4e4e4",
+    backgroundColor: Color.gainsboro_100,
     width: 300,
     height: 23,
     top: 0,

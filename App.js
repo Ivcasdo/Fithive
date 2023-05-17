@@ -2,6 +2,9 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import PantallaCreacionDePlanes from "./screens/PantallaCreacionDePlanes";
+import PantallaPlanesDeEntrenamien from "./screens/PantallaPlanesDeEntrenamien";
+import PantallaRealizarEntrenamient from "./screens/PantallaRealizarEntrenamient";
 import PantallaInicioEntrenamiento from "./screens/PantallaInicioEntrenamiento";
 import PantallaMenu from "./screens/PantallaMenu";
 import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
@@ -39,6 +42,21 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="PantallaCreacionDePlanes"
+              component={PantallaCreacionDePlanes}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaPlanesDeEntrenamiento"
+              component={PantallaPlanesDeEntrenamien}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaRealizarEntrenamiento"
+              component={PantallaRealizarEntrenamient}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PantallaInicioEntrenamiento"
               component={PantallaInicioEntrenamiento}
