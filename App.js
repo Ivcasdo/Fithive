@@ -2,6 +2,13 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import PantallaEditarIngredientes2 from "./screens/PantallaEditarIngredientes2";
+import PantallaEditarIngredientes from "./screens/PantallaEditarIngredientes";
+import PantallaEditarAlimentos from "./screens/PantallaEditarAlimentos";
+import PantallaBibliotecaDeAliment from "./screens/PantallaBibliotecaDeAliment";
+import PantallaAadirComida from "./screens/PantallaAadirComida";
+import PantallaAjusteObjetivos from "./screens/PantallaAjusteObjetivos";
+import PantallaInicioNutricion from "./screens/PantallaInicioNutricion";
 import PantallaCreacionDeEntrenami from "./screens/PantallaCreacionDeEntrenami";
 import PantallaCreacionDeEntrenami1 from "./screens/PantallaCreacionDeEntrenami1";
 import PantallaCreacionDeEntrenami2 from "./screens/PantallaCreacionDeEntrenami2";
@@ -54,6 +61,41 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              name="PantallaEditarIngredientes2"
+              component={PantallaEditarIngredientes2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaEditarIngredientes"
+              component={PantallaEditarIngredientes}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaEditarAlimentos"
+              component={PantallaEditarAlimentos}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaBibliotecaDeAlimentos"
+              component={PantallaBibliotecaDeAliment}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaAadirComida"
+              component={PantallaAadirComida}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaAjusteObjetivos"
+              component={PantallaAjusteObjetivos}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaInicioNutricion"
+              component={PantallaInicioNutricion}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PantallaCreacionDeEntrenamientos5"
               component={PantallaCreacionDeEntrenami}
