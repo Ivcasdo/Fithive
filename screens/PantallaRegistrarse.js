@@ -134,8 +134,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheadingPosition: {
-    fontSize: FontSize.spSubheadingRegular_size,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
     bottom: 6,
     justifyContent: "center",
     left: 0,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   body2Typo: {
     display: "flex",
     textAlign: "center",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     color: Color.textColor,
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     height: 16,
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
   },
   caption: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     width: 306,
     justifyContent: "center",
     alignItems: "center",
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     lineHeight: 10,
     display: "flex",
     textAlign: "center",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     color: Color.textColor,

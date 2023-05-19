@@ -78,7 +78,7 @@ const PantallaCambioContrasea = () => {
         <Image
           style={[styles.darkIcon, styles.darkPosition]}
           contentFit="cover"
-          source={require("../assets/-dark.png")}
+          source={require("../assets/-dark2.png")}
         />
       </Pressable>
       <Pressable style={[styles.dark1, styles.darkPosition1]}>
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
   spSubheadingRegular: {
     bottom: 6,
     opacity: 0.54,
-    fontSize: FontSize.spSubheadingRegular_size,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
     left: 0,
     right: 0,
     position: "absolute",
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     height: 16,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
   },
   caption: {
@@ -222,10 +222,10 @@ const styles = StyleSheet.create({
     backgroundColor: Color.primaryColor,
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",

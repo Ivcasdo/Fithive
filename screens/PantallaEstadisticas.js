@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
   },
   textTypo2: {
     textAlign: "right",
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     color: Color.darkslategray,
     fontSize: FontSize.spCaptionRegular_size,
     position: "absolute",
@@ -116,13 +116,13 @@ const styles = StyleSheet.create({
     left: 7,
     textAlign: "right",
     color: Color.darkslategray,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.spCaptionRegular_size,
     position: "absolute",
   },
   textTypo: {
     textAlign: "center",
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     position: "absolute",
   },
   dropdownLayout: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: Color.textColor,
     width: 199,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
   },
   captionPosition: {
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   subheading: {
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     lineHeight: 21,
     height: 20,
     left: 0,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: Color.textColor,
     width: 199,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     fontSize: FontSize.spCaptionRegular_size,
     height: 16,

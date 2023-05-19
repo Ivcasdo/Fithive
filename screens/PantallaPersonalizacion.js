@@ -54,7 +54,7 @@ const PantallaPersonalizacion = () => {
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
-          source={require("../assets/-dark.png")}
+          source={require("../assets/-dark2.png")}
         />
       </Pressable>
       <Pressable style={[styles.dark1, styles.darkPosition]}>
@@ -99,9 +99,9 @@ const styles = StyleSheet.create({
   subheadingTypo: {
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     lineHeight: 21,
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     top: 0,
   },
   dropdownIconLayout: {
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     height: 16,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     left: 0,
   },
@@ -191,9 +191,9 @@ const styles = StyleSheet.create({
     width: 281,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     lineHeight: 21,
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     top: 0,
   },
   spSubheadingRegular1: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     height: 16,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     left: 0,
   },
@@ -256,10 +256,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",

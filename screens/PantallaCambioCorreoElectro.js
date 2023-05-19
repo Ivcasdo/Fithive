@@ -61,7 +61,7 @@ const PantallaCambioCorreoElectro = () => {
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
-          source={require("../assets/-dark.png")}
+          source={require("../assets/-dark2.png")}
         />
       </Pressable>
       <Pressable style={[styles.dark1, styles.darkPosition]}>
@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     bottom: 6,
     height: 20,
     opacity: 0.54,
-    fontSize: FontSize.spSubheadingRegular_size,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
     left: 0,
     position: "absolute",
   },
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     width: 328,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
   },
   caption: {
@@ -198,10 +198,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",

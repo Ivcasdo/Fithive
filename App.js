@@ -3,6 +3,13 @@ import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import PantallaCreacionDePlanes from "./screens/PantallaCreacionDePlanes";
+import PlantillaBibliotecaDeEjerci from "./screens/PlantillaBibliotecaDeEjerci";
+import PlantillaBibliotecaDeEjerci1 from "./screens/PlantillaBibliotecaDeEjerci1";
+import PlantillaBibliotecaDeEjerci2 from "./screens/PlantillaBibliotecaDeEjerci2";
+import PantallaBibliotecaDeEntrena from "./screens/PantallaBibliotecaDeEntrena";
+import PantallaBibliotecaDeEntrena1 from "./screens/PantallaBibliotecaDeEntrena1";
+import PantallaCreacionDePlanes3 from "./screens/PantallaCreacionDePlanes3";
+import PantallaCreacionDePlanes2 from "./screens/PantallaCreacionDePlanes2";
 import PantallaPlanesDeEntrenamien from "./screens/PantallaPlanesDeEntrenamien";
 import PantallaRealizarEntrenamient from "./screens/PantallaRealizarEntrenamient";
 import PantallaInicioEntrenamiento from "./screens/PantallaInicioEntrenamiento";
@@ -45,6 +52,41 @@ const App = () => {
             <Stack.Screen
               name="PantallaCreacionDePlanes"
               component={PantallaCreacionDePlanes}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PlantillaBibliotecaDeEjercicios3"
+              component={PlantillaBibliotecaDeEjerci}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PlantillaBibliotecaDeEjercicios2"
+              component={PlantillaBibliotecaDeEjerci1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PlantillaBibliotecaDeEjercicios"
+              component={PlantillaBibliotecaDeEjerci2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaBibliotecaDeEntrenamientos2"
+              component={PantallaBibliotecaDeEntrena}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaBibliotecaDeEntrenamientos"
+              component={PantallaBibliotecaDeEntrena1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDePlanes3"
+              component={PantallaCreacionDePlanes3}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDePlanes2"
+              component={PantallaCreacionDePlanes2}
               options={{ headerShown: false }}
             />
             <Stack.Screen

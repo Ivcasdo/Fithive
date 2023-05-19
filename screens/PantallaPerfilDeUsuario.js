@@ -142,7 +142,7 @@ const PantallaPerfilDeUsuario = () => {
           <Image
             style={[styles.darkIcon, styles.darkLayout]}
             contentFit="cover"
-            source={require("../assets/-dark1.png")}
+            source={require("../assets/-dark11.png")}
           />
         </Pressable>
       </View>
@@ -222,10 +222,10 @@ const styles = StyleSheet.create({
   body2: {
     top: 0,
     left: 0,
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     lineHeight: 18,
     fontWeight: "500",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     width: 111,
     position: "absolute",
   },
@@ -256,9 +256,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     lineHeight: 21,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 272,
   },
   spSubheadingRegular: {

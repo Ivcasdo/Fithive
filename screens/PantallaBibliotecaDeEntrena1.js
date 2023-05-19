@@ -2,62 +2,45 @@ import * as React from "react";
 import { Pressable, StyleSheet, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 
-const PantallaPlanesDeEntrenamien = () => {
+const PantallaBibliotecaDeEntrena1 = () => {
   return (
-    <View style={styles.pantallaPlanesDeEntrenamien}>
+    <View style={styles.pantallaBibliotecaDeEntrena}>
       <Image
-        style={styles.pantallaPlanesDeEntrenamienChild}
+        style={styles.pantallaBibliotecaDeEntrenaChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
-        <View style={[styles.frameChild, styles.body21Position]} />
+        <View style={[styles.frameChild, styles.frameChildShadowBox]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
         <View style={[styles.frameInner, styles.frameLayout]} />
         <View style={[styles.lineView, styles.frameLayout]} />
         <View style={[styles.frameChild1, styles.frameLayout]} />
-        <View style={styles.frameChild2} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition4]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 5</Text>
+        <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
+          <Text style={[styles.subheading, styles.subheadingPosition]}>
+            {" "}
+            Entrenamiento 3
+          </Text>
         </View>
-        <View style={[styles.spSubheadingRegular1, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading1, styles.subheadingLayout]}> 3</Text>
+        <View style={[styles.spSubheadingRegular1, styles.bgAccentPosition]}>
+          <Text style={[styles.subheading1, styles.subheadingPosition]}>
+            {" "}
+            Entrenamiento 2
+          </Text>
         </View>
         <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 4</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular3, styles.subheadingPosition5]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
+          <Text style={[styles.subheading, styles.subheadingPosition]}>
             {" "}
-            Plan 3
+            Entrenamiento 1
           </Text>
         </View>
-        <View style={[styles.spSubheadingRegular4, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Plan 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Plan 1
-          </Text>
-        </View>
-        <View style={styles.spSubheadingRegularParent}>
+        <View style={styles.spSubheadingRegularWrapper}>
           <View
-            style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
+            style={[styles.spSubheadingRegular3, styles.subheadingPosition1]}
           >
-            <Text style={[styles.subheading6, styles.subheadingPosition3]}>
-              Nº de dias
-            </Text>
-          </View>
-          <View
-            style={[styles.spSubheadingRegular7, styles.subheadingPosition]}
-          >
-            <Text style={[styles.subheading6, styles.subheadingPosition3]}>
+            <Text style={[styles.subheading3, styles.subheadingPosition]}>
               Nombre
             </Text>
           </View>
@@ -66,21 +49,23 @@ const PantallaPlanesDeEntrenamien = () => {
       <Pressable style={styles.accent}>
         <View style={styles.accent1}>
           <LinearGradient
-            style={[styles.bgAccent, styles.body21Position]}
+            style={[styles.bgAccent, styles.bgAccentPosition]}
             locations={[0, 1]}
             colors={["#1dde7d", "#72dfc5"]}
           />
         </View>
         <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
           <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-            <Text style={[styles.body2, styles.bodyTypo]}>crear plan</Text>
+            <Text style={[styles.body2, styles.bodyTypo]}>
+              crear entrenamiento
+            </Text>
           </View>
         </View>
       </Pressable>
       <Pressable style={styles.dark}>
         <View style={styles.accent1}>
           <LinearGradient
-            style={[styles.bgAccent, styles.body21Position]}
+            style={[styles.bgAccent, styles.bgAccentPosition]}
             locations={[0, 1]}
             colors={["#1a73e9", "#6c92f4"]}
           />
@@ -98,7 +83,6 @@ const PantallaPlanesDeEntrenamien = () => {
 const styles = StyleSheet.create({
   frameChildShadowBox: {
     height: 276,
-    width: 299,
     shadowOpacity: 1,
     elevation: 4,
     shadowRadius: 4,
@@ -106,58 +90,25 @@ const styles = StyleSheet.create({
       width: 0,
       height: 4,
     },
+    width: 299,
     position: "absolute",
-  },
-  body21Position: {
-    top: 0,
-    left: 0,
   },
   frameLayout: {
     height: 1,
     borderTopWidth: 1,
-    width: 300,
     borderColor: "rgba(95, 95, 95, 0.19)",
     borderStyle: "solid",
+    width: 300,
     left: 0,
-    position: "absolute",
-  },
-  subheadingPosition4: {
-    left: 154,
-    right: 0,
-  },
-  subheadingLayout: {
-    width: 150,
-    alignItems: "center",
-    display: "flex",
-    textAlign: "left",
-    color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
-    height: 24,
-    top: 0,
-    position: "absolute",
-  },
-  subheadingPosition2: {
-    backgroundColor: Color.lightgray,
-    marginTop: -94,
-    height: 24,
-    top: "50%",
     position: "absolute",
   },
   subheadingPosition1: {
-    marginTop: -114,
+    right: 150,
     height: 24,
     top: "50%",
     position: "absolute",
   },
-  subheadingPosition5: {
-    top: "50%",
-    marginTop: -70,
-    height: 24,
-    position: "absolute",
-  },
-  subheadingPosition3: {
+  subheadingPosition: {
     alignItems: "center",
     display: "flex",
     textAlign: "left",
@@ -168,11 +119,9 @@ const styles = StyleSheet.create({
     top: 0,
     position: "absolute",
   },
-  subheadingPosition: {
-    marginTop: -11.5,
-    height: 24,
-    top: "50%",
-    position: "absolute",
+  bgAccentPosition: {
+    right: 0,
+    left: 0,
   },
   flatdefaultPosition: {
     marginTop: -12,
@@ -190,7 +139,7 @@ const styles = StyleSheet.create({
     display: "flex",
     position: "absolute",
   },
-  pantallaPlanesDeEntrenamienChild: {
+  pantallaBibliotecaDeEntrenaChild: {
     top: 18,
     left: 13,
     width: 32,
@@ -201,16 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.whitesmoke_100,
     shadowColor: "rgba(0, 0, 0, 0.17)",
     left: 0,
-    height: 276,
-    width: 299,
-    shadowOpacity: 1,
-    elevation: 4,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    position: "absolute",
+    top: 0,
   },
   frameItem: {
     top: 23,
@@ -224,37 +164,7 @@ const styles = StyleSheet.create({
   frameChild1: {
     top: 90,
   },
-  frameChild2: {
-    borderRightWidth: 1,
-    width: 1,
-    height: 277,
-    left: 149,
-    borderColor: "rgba(95, 95, 95, 0.19)",
-    borderStyle: "solid",
-    top: 0,
-    position: "absolute",
-  },
   subheading: {
-    left: -5,
-  },
-  spSubheadingRegular: {
-    height: 24,
-    top: "50%",
-    marginTop: -70,
-    position: "absolute",
-  },
-  subheading1: {
-    left: 0,
-  },
-  spSubheadingRegular1: {
-    right: 0,
-    left: 149,
-  },
-  spSubheadingRegular2: {
-    left: 154,
-    right: 0,
-  },
-  subheading3: {
     width: 149,
     lineHeight: 18,
     fontSize: FontSize.spBUTTON_size,
@@ -263,33 +173,44 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: FontFamily.spCaptionRegular,
   },
-  spSubheadingRegular3: {
-    right: 150,
+  spSubheadingRegular: {
+    marginTop: -70,
     height: 24,
     left: 0,
   },
-  spSubheadingRegular4: {
-    right: 150,
+  subheading1: {
+    lineHeight: 18,
+    fontSize: FontSize.spBUTTON_size,
+    alignItems: "center",
+    display: "flex",
+    textAlign: "left",
+    fontFamily: FontFamily.spCaptionRegular,
+    width: 299,
+  },
+  spSubheadingRegular1: {
+    marginTop: -94,
+    backgroundColor: Color.lightgray,
+    height: 24,
+    top: "50%",
+    right: 0,
+    position: "absolute",
+  },
+  spSubheadingRegular2: {
+    marginTop: -114,
+    height: 24,
     left: 0,
   },
-  spSubheadingRegular5: {
-    right: 150,
-    left: 0,
-  },
-  subheading6: {
+  subheading3: {
     fontSize: FontSize.size_base,
     lineHeight: 21,
     width: 145,
   },
-  spSubheadingRegular6: {
-    left: 155,
-    right: 0,
-  },
-  spSubheadingRegular7: {
+  spSubheadingRegular3: {
+    marginTop: -11.5,
     left: 5,
-    right: 150,
+    height: 24,
   },
-  spSubheadingRegularParent: {
+  spSubheadingRegularWrapper: {
     left: -1,
     backgroundColor: Color.gainsboro_100,
     height: 23,
@@ -300,7 +221,7 @@ const styles = StyleSheet.create({
   },
   rectangleParent: {
     top: 71,
-    shadowColor: "rgba(0, 0, 0, 0.13)",
+    shadowColor: "rgba(0, 0, 0, 0.25)",
     left: 29,
     overflow: "hidden",
   },
@@ -308,8 +229,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: Border.br_80xl,
     backgroundColor: Color.primaryColor,
-    right: 0,
-    left: 0,
+    top: 0,
     position: "absolute",
   },
   accent1: {
@@ -324,7 +244,7 @@ const styles = StyleSheet.create({
   body2: {
     top: 1,
     left: 3,
-    fontSize: FontSize.size_3xs,
+    fontSize: FontSize.size_4xs,
     width: 74,
     height: 22,
     color: Color.textColor,
@@ -364,7 +284,7 @@ const styles = StyleSheet.create({
     height: 32,
     position: "absolute",
   },
-  pantallaPlanesDeEntrenamien: {
+  pantallaBibliotecaDeEntrena: {
     backgroundColor: Color.lightColor,
     flex: 1,
     height: 800,
@@ -373,4 +293,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PantallaPlanesDeEntrenamien;
+export default PantallaBibliotecaDeEntrena1;

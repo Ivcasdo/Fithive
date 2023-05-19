@@ -42,7 +42,7 @@ const PantallaCambiarFotoPerfil = () => {
         <Image
           style={[styles.darkIcon, styles.lightPosition]}
           contentFit="cover"
-          source={require("../assets/-dark.png")}
+          source={require("../assets/-dark2.png")}
         />
       </Pressable>
       <Pressable style={[styles.dark1, styles.darkPosition]}>
@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     lineHeight: 21,
     width: 312,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     height: 20,
     position: "absolute",
   },
@@ -196,10 +196,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     color: Color.lightColor,
     textAlign: "center",
     justifyContent: "center",
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
   },
   caption: {

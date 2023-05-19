@@ -33,7 +33,7 @@ const PantallaNotificaciones = () => {
         <Image
           style={[styles.darkIcon, styles.darkIconPosition]}
           contentFit="cover"
-          source={require("../assets/-dark.png")}
+          source={require("../assets/-dark2.png")}
         />
       </Pressable>
     </View>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   caption1Typo: {
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     width: 200,
   },
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    fontSize: FontSize.spSubheadingRegular_size,
+    fontSize: FontSize.size_base,
     lineHeight: 21,
     height: 20,
     left: 0,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spSubheadingRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     width: 200,
   },

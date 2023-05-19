@@ -1,7 +1,7 @@
 /* fonts */
 export const FontFamily = {
-  spBody2Medium: "Roboto_medium",
-  spSubheadingRegular: "Roboto_regular",
+  spBUTTON: "Roboto_medium",
+  spCaptionRegular: "Roboto_regular",
   interRegular: "Inter_regular",
   interBold: "Inter_bold",
 };
@@ -9,12 +9,12 @@ export const FontFamily = {
 export const FontSize = {
   size_2xs: 11,
   size_3xs: 10,
-  spSubheadingRegular_size: 16,
+  size_base: 16,
   size_5xs: 8,
   spCaptionRegular_size: 12,
-  spBody2Medium_size: 14,
-  size_4xs: 9,
+  spBUTTON_size: 14,
   spTitleMedium_size: 20,
+  size_4xs: 9,
   size_smi: 13,
   size_mini: 15,
 };
@@ -26,16 +26,17 @@ export const Color = {
   gainsboro: "#d9d9d9",
   whitesmoke_100: "#f2f2f2",
   whitesmoke: "#ebebf0",
+  grayColor: "#5f5f5f",
   lightgray: "#c1ced3",
   black: "#000",
   silver: "#c2bbbb",
-  grayColor: "#5f5f5f",
   darkslategray: "#333",
 };
 /* border radiuses */
 export const Border = {
   br_80xl: 99,
   br_7xs: 6,
+  br_11xs: 2,
   br_10xs: 3,
   br_81xl: 100,
 };
