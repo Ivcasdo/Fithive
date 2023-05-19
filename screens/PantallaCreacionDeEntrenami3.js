@@ -4,9 +4,9 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
-const PantallaCreacionDePlanes2 = () => {
+const PantallaCreacionDeEntrenami3 = () => {
   return (
-    <View style={styles.pantallaCreacionDePlanes2}>
+    <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.firstLevel, styles.coverPosition]}>
         <View style={[styles.dialog, styles.dialogShadowBox]}>
           <View style={styles.dialogPosition}>
@@ -18,7 +18,7 @@ const PantallaCreacionDePlanes2 = () => {
             <View style={[styles.bgLight, styles.bgLightPosition]} />
           </View>
           <View style={[styles.spTitleMedium, styles.firstLevelPosition]}>
-            <Text style={styles.title}>Entrenamiento espalda</Text>
+            <Text style={styles.title}>Press de hombro</Text>
           </View>
           <Image
             style={[styles.closeIcon, styles.searchLayout]}
@@ -67,7 +67,7 @@ const PantallaCreacionDePlanes2 = () => {
             <Image
               style={[styles.darkIcon, styles.bgLightPosition]}
               contentFit="cover"
-              source={require("../assets/-dark11.png")}
+              source={require("../assets/-dark.png")}
             />
             <View style={[styles.flatdefault1, styles.darkPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   darkIcon: {
     maxWidth: "100%",
     maxHeight: "100%",
-    opacity: 0.5,
+    opacity: 0.32,
     overflow: "hidden",
   },
   body21: {
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: Color.lightColor,
   },
-  pantallaCreacionDePlanes2: {
+  pantallaCreacionDeEntrenami: {
     flex: 1,
     height: 800,
     overflow: "hidden",
@@ -285,4 +285,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PantallaCreacionDePlanes2;
+export default PantallaCreacionDeEntrenami3;

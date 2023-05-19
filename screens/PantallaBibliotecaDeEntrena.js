@@ -67,7 +67,7 @@ const PantallaBibliotecaDeEntrena = () => {
             <Image
               style={[styles.darkIcon, styles.bgLightPosition]}
               contentFit="cover"
-              source={require("../assets/-dark.png")}
+              source={require("../assets/-dark1.png")}
             />
             <View style={[styles.flatdefault1, styles.darkPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
@@ -79,7 +79,7 @@ const PantallaBibliotecaDeEntrena = () => {
             <Image
               style={[styles.darkIcon, styles.bgLightPosition]}
               contentFit="cover"
-              source={require("../assets/-dark.png")}
+              source={require("../assets/-dark1.png")}
             />
             <View style={[styles.flatdefault1, styles.darkPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>

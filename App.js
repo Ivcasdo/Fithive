@@ -2,7 +2,11 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import PantallaCreacionDePlanes from "./screens/PantallaCreacionDePlanes";
+import PantallaCreacionDeEntrenami from "./screens/PantallaCreacionDeEntrenami";
+import PantallaCreacionDeEntrenami1 from "./screens/PantallaCreacionDeEntrenami1";
+import PantallaCreacionDeEntrenami2 from "./screens/PantallaCreacionDeEntrenami2";
+import PantallaCreacionDeEntrenami3 from "./screens/PantallaCreacionDeEntrenami3";
+import PantallaCreacionDeEntrenami4 from "./screens/PantallaCreacionDeEntrenami4";
 import PlantillaBibliotecaDeEjerci from "./screens/PlantillaBibliotecaDeEjerci";
 import PlantillaBibliotecaDeEjerci1 from "./screens/PlantillaBibliotecaDeEjerci1";
 import PlantillaBibliotecaDeEjerci2 from "./screens/PlantillaBibliotecaDeEjerci2";
@@ -10,6 +14,7 @@ import PantallaBibliotecaDeEntrena from "./screens/PantallaBibliotecaDeEntrena";
 import PantallaBibliotecaDeEntrena1 from "./screens/PantallaBibliotecaDeEntrena1";
 import PantallaCreacionDePlanes3 from "./screens/PantallaCreacionDePlanes3";
 import PantallaCreacionDePlanes2 from "./screens/PantallaCreacionDePlanes2";
+import PantallaCreacionDePlanes from "./screens/PantallaCreacionDePlanes";
 import PantallaPlanesDeEntrenamien from "./screens/PantallaPlanesDeEntrenamien";
 import PantallaRealizarEntrenamient from "./screens/PantallaRealizarEntrenamient";
 import PantallaInicioEntrenamiento from "./screens/PantallaInicioEntrenamiento";
@@ -50,8 +55,28 @@ const App = () => {
         {hideSplashScreen ? (
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen
-              name="PantallaCreacionDePlanes"
-              component={PantallaCreacionDePlanes}
+              name="PantallaCreacionDeEntrenamientos5"
+              component={PantallaCreacionDeEntrenami}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDeEntrenamientos4"
+              component={PantallaCreacionDeEntrenami1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDeEntrenamientos3"
+              component={PantallaCreacionDeEntrenami2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDeEntrenamientos2"
+              component={PantallaCreacionDeEntrenami3}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDeEntrenamientos"
+              component={PantallaCreacionDeEntrenami4}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -87,6 +112,11 @@ const App = () => {
             <Stack.Screen
               name="PantallaCreacionDePlanes2"
               component={PantallaCreacionDePlanes2}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaCreacionDePlanes"
+              component={PantallaCreacionDePlanes}
               options={{ headerShown: false }}
             />
             <Stack.Screen

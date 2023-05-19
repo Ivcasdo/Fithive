@@ -71,7 +71,7 @@ const PlantillaBibliotecaDeEjerci = () => {
             <Image
               style={[styles.darkIcon, styles.strokePosition]}
               contentFit="cover"
-              source={require("../assets/-dark.png")}
+              source={require("../assets/-dark1.png")}
             />
             <View style={[styles.flatdefault1, styles.darkPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
@@ -83,7 +83,7 @@ const PlantillaBibliotecaDeEjerci = () => {
             <Image
               style={[styles.darkIcon, styles.strokePosition]}
               contentFit="cover"
-              source={require("../assets/-dark.png")}
+              source={require("../assets/-dark1.png")}
             />
             <View style={[styles.flatdefault1, styles.darkPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>

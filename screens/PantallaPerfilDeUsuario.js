@@ -142,7 +142,7 @@ const PantallaPerfilDeUsuario = () => {
           <Image
             style={[styles.darkIcon, styles.darkLayout]}
             contentFit="cover"
-            source={require("../assets/-dark11.png")}
+            source={require("../assets/-dark111.png")}
           />
         </Pressable>
       </View>

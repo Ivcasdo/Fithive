@@ -1,24 +1,26 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 
-const PantallaCreacionDePlanes2 = () => {
+const PantallaCreacionDeEntrenami = () => {
   return (
-    <View style={styles.pantallaCreacionDePlanes2}>
+    <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.firstLevel, styles.coverPosition]}>
         <View style={[styles.dialog, styles.dialogShadowBox]}>
           <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.bgLightPosition]} />
+            <View style={[styles.bgLight, styles.primaryPosition]} />
           </View>
         </View>
-        <View style={styles.lightHamburger}>
+        <View style={[styles.lightHamburger, styles.coverPosition]}>
           <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.bgLightPosition]} />
+            <View style={[styles.bgLight, styles.primaryPosition]} />
           </View>
           <View style={[styles.spTitleMedium, styles.firstLevelPosition]}>
-            <Text style={styles.title}>Entrenamiento espalda</Text>
+            <Text style={[styles.title, styles.titlePosition]}>
+              Añadir de biblioteca
+            </Text>
           </View>
           <Image
             style={[styles.closeIcon, styles.searchLayout]}
@@ -27,7 +29,7 @@ const PantallaCreacionDePlanes2 = () => {
           />
           <View style={[styles.search, styles.searchLayout]}>
             <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.bgLightPosition]} />
+              <View style={[styles.iconsButton, styles.primaryPosition]} />
             </View>
             <View style={styles.dialogPosition}>
               <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
@@ -35,7 +37,7 @@ const PantallaCreacionDePlanes2 = () => {
           </View>
           <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
             <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.bgLightPosition]} />
+              <View style={[styles.iconsButton, styles.primaryPosition]} />
             </View>
             <View style={styles.dialogPosition}>
               <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
@@ -48,33 +50,70 @@ const PantallaCreacionDePlanes2 = () => {
           />
         </View>
         <View style={[styles.cover, styles.coverPosition]}>
-          <View style={[styles.bgLight, styles.bgLightPosition]} />
           <Pressable style={[styles.dark, styles.darkPosition]}>
             <View style={styles.dialogPosition}>
               <LinearGradient
-                style={[styles.bgPrimary, styles.bgLightPosition]}
+                style={[styles.bgPrimary, styles.primaryPosition]}
                 locations={[0, 1]}
                 colors={["#1a73e9", "#6c92f4"]}
               />
             </View>
             <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
               <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body2, styles.bodyTypo]}>editar</Text>
+                <Text style={[styles.body2, styles.titlePosition]}>
+                  guardar
+                </Text>
               </View>
             </View>
           </Pressable>
-          <Pressable style={[styles.dark2, styles.darkPosition]}>
-            <Image
-              style={[styles.darkIcon, styles.bgLightPosition]}
-              contentFit="cover"
-              source={require("../assets/-dark11.png")}
-            />
-            <View style={[styles.flatdefault1, styles.darkPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body21, styles.bodyTypo]}>borrar</Text>
-              </View>
-            </View>
-          </Pressable>
+        </View>
+        <View style={[styles.default, styles.darkPosition]}>
+          <View style={[styles.stroke, styles.primaryPosition]}>
+            <View style={[styles.bgPrimary1, styles.primaryPosition]} />
+          </View>
+          <TextInput
+            style={[styles.spSubheadingRegular, styles.coverPosition]}
+            placeholder="Ejercicio 2"
+            keyboardType="default"
+            placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          />
+          <View style={[styles.caption, styles.captionPosition]}>
+            <Text
+              style={[styles.caption1, styles.captionPosition]}
+            >{`Buscar `}</Text>
+          </View>
+        </View>
+        <View style={[styles.default1, styles.defaultPosition]}>
+          <View style={[styles.stroke, styles.primaryPosition]}>
+            <View style={[styles.bgPrimary1, styles.primaryPosition]} />
+          </View>
+          <TextInput
+            style={[styles.spSubheadingRegular, styles.coverPosition]}
+            placeholder="3 "
+            keyboardType="default"
+            placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          />
+          <View style={[styles.caption, styles.captionPosition]}>
+            <Text style={[styles.caption1, styles.captionPosition]}>
+              Nº de series
+            </Text>
+          </View>
+        </View>
+        <View style={[styles.default2, styles.defaultPosition]}>
+          <View style={[styles.stroke, styles.primaryPosition]}>
+            <View style={[styles.bgPrimary1, styles.primaryPosition]} />
+          </View>
+          <TextInput
+            style={[styles.spSubheadingRegular, styles.coverPosition]}
+            placeholder=" 2"
+            keyboardType="default"
+            placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          />
+          <View style={[styles.caption, styles.captionPosition]}>
+            <Text style={[styles.caption1, styles.captionPosition]}>
+              Nº de repeticiones
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -94,9 +133,8 @@ const styles = StyleSheet.create({
     },
     shadowColor: "rgba(38, 50, 56, 0.08)",
   },
-  bgLightPosition: {
+  primaryPosition: {
     bottom: 0,
-    top: 0,
     left: 0,
     right: 0,
     position: "absolute",
@@ -105,10 +143,19 @@ const styles = StyleSheet.create({
     bottom: 16,
     position: "absolute",
   },
+  titlePosition: {
+    width: 216,
+    fontFamily: FontFamily.spBUTTON,
+    fontWeight: "500",
+    height: 24,
+    top: 0,
+    left: 0,
+    position: "absolute",
+  },
   searchLayout: {
     width: 40,
-    height: 40,
     top: 8,
+    height: 40,
     position: "absolute",
   },
   dialogPosition: {
@@ -126,24 +173,22 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   darkPosition: {
-    bottom: 8,
+    left: 28,
     position: "absolute",
   },
-  bodyTypo: {
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
-    height: 24,
-    fontFamily: FontFamily.spBUTTON,
-    fontWeight: "500",
-    top: 0,
+  captionPosition: {
+    height: 16,
     left: 0,
     position: "absolute",
   },
+  defaultPosition: {
+    left: 180,
+    right: 71,
+    height: 56,
+    position: "absolute",
+  },
   bgLight: {
+    top: 0,
     backgroundColor: Color.lightColor,
   },
   dialog: {
@@ -161,15 +206,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FontSize.spTitleMedium_size,
     lineHeight: 26,
-    textAlign: "left",
     height: 24,
-    width: 216,
+    textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
-    fontWeight: "500",
-    top: 0,
-    left: 0,
-    position: "absolute",
   },
   spTitleMedium: {
     top: 16,
@@ -182,6 +221,7 @@ const styles = StyleSheet.create({
   },
   iconsButton: {
     borderRadius: Border.br_11xs,
+    top: 0,
     display: "none",
     backgroundColor: Color.lightColor,
   },
@@ -208,15 +248,15 @@ const styles = StyleSheet.create({
   lightHamburger: {
     height: 56,
     top: 0,
-    left: 0,
-    right: 0,
     position: "absolute",
+    left: 0,
   },
   bgPrimary: {
     borderRadius: Border.br_7xs,
     shadowRadius: 4,
     elevation: 4,
     backgroundColor: Color.primaryColor,
+    top: 0,
     shadowOpacity: 1,
     shadowOffset: {
       width: 0,
@@ -225,8 +265,14 @@ const styles = StyleSheet.create({
     shadowColor: "rgba(38, 50, 56, 0.08)",
   },
   body2: {
+    fontSize: FontSize.spBUTTON_size,
+    textTransform: "uppercase",
     color: Color.lightColor,
-    width: 216,
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 24,
   },
   spBody2Medium: {
     height: 24,
@@ -239,36 +285,57 @@ const styles = StyleSheet.create({
     height: 24,
   },
   dark: {
-    right: 116,
-    left: 12,
-    height: 40,
-  },
-  darkIcon: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    opacity: 0.5,
-    overflow: "hidden",
-  },
-  body21: {
-    width: 64,
-    color: Color.textColor,
-  },
-  flatdefault1: {
-    right: 8,
-    left: 8,
-    top: 8,
+    right: 100,
     bottom: 8,
-  },
-  dark2: {
-    left: 253,
-    width: 80,
     height: 40,
   },
   cover: {
-    bottom: 314,
+    bottom: 176,
     height: 72,
     position: "absolute",
+    left: 0,
+  },
+  bgPrimary1: {
+    backgroundColor: Color.textColor,
+    top: 0,
+  },
+  stroke: {
+    height: 1,
+    opacity: 0.4,
+  },
+  spSubheadingRegular: {
+    bottom: 6,
+    height: 20,
+    opacity: 0.54,
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
+    position: "absolute",
+    left: 0,
+  },
+  caption1: {
+    fontSize: FontSize.spCaptionRegular_size,
+    lineHeight: 15,
+    width: 109,
+    fontFamily: FontFamily.spCaptionRegular,
+    textAlign: "left",
+    color: Color.textColor,
+    top: 0,
+  },
+  caption: {
+    bottom: 32,
     right: 0,
+    height: 16,
+  },
+  default: {
+    top: 48,
+    right: 223,
+    height: 56,
+  },
+  default1: {
+    top: 50,
+  },
+  default2: {
+    top: 116,
   },
   firstLevel: {
     height: 449,
@@ -276,7 +343,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: Color.lightColor,
   },
-  pantallaCreacionDePlanes2: {
+  pantallaCreacionDeEntrenami: {
     flex: 1,
     height: 800,
     overflow: "hidden",
@@ -285,4 +352,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PantallaCreacionDePlanes2;
+export default PantallaCreacionDeEntrenami;
