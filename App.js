@@ -2,8 +2,10 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaInicio1 from "./screens/PantallaInicio1";
 import PantallaMenu from "./screens/PantallaMenu";
+import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaRegistrarse from "./screens/PantallaRegistrarse";
 import PantallaEditarIngredientes2 from "./screens/PantallaEditarIngredientes2";
 import PantallaEditarIngredientes from "./screens/PantallaEditarIngredientes";
 import PantallaEditarAlimentos from "./screens/PantallaEditarAlimentos";
@@ -37,8 +39,6 @@ import PantallaCambioCorreoElectro from "./screens/PantallaCambioCorreoElectro";
 import PantallaCambioNombreUsuairo from "./screens/PantallaCambioNombreUsuairo";
 import PantallaCambioContrasea from "./screens/PantallaCambioContrasea";
 import PantallaPerfilDeUsuario from "./screens/PantallaPerfilDeUsuario";
-import PantallaInicio1 from "./screens/PantallaInicio1";
-import PantallaRegistrarse from "./screens/PantallaRegistrarse";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
@@ -65,8 +65,18 @@ const App = () => {
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen
+              name="PantallaInicio1"
+              component={PantallaInicio1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
               name="PantallaIniciarSesion"
               component={PantallaIniciarSesion}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaRegistrarse"
+              component={PantallaRegistrarse}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -232,16 +242,6 @@ const App = () => {
             <Stack.Screen
               name="PantallaPerfilDeUsuario"
               component={PantallaPerfilDeUsuario}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PantallaInicio1"
-              component={PantallaInicio1}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PantallaRegistrarse"
-              component={PantallaRegistrarse}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

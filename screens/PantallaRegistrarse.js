@@ -9,9 +9,12 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
 const PantallaRegistrarse = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.pantallaRegistrarse}>
       <View style={[styles.register2, styles.accentPosition]}>
@@ -91,7 +94,10 @@ const PantallaRegistrarse = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.lineDottedParent}>
+      <Pressable
+        style={styles.lineDottedParent}
+        onPress={() => navigation.navigate("PantallaIniciarSesion")}
+      >
         <Image
           style={[styles.lineDottedIcon, styles.lineIconLayout]}
           contentFit="cover"
