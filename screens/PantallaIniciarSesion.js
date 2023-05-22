@@ -30,9 +30,9 @@ const PantallaIniciarSesion = () => {
           contentFit="cover"
           source={require("../assets/line-dotted1.png")}
         />
-        <Pressable style={[styles.outlined, styles.outlinedLayout]}>
-          <View style={[styles.colorsStrokeprimary, styles.outlinedLayout]} />
-          <View style={[styles.spCapsXsMedium, styles.flatdefaultFlexBox]}>
+        <Pressable style={styles.outlined}>
+          <View style={styles.colorsStrokeprimary} />
+          <View style={[styles.spCapsXsMedium, styles.mediumFlexBox]}>
             <Text style={styles.minicaps}>Olvidé la contraseña</Text>
           </View>
         </Pressable>
@@ -43,8 +43,8 @@ const PantallaIniciarSesion = () => {
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={styles.spBody2Medium}>
+        <View style={[styles.flatdefault, styles.mediumFlexBox]}>
+          <View style={[styles.spBody2Medium, styles.body2Layout]}>
             <Text style={styles.bodyTypo}>Registrarse</Text>
           </View>
         </View>
@@ -55,8 +55,8 @@ const PantallaIniciarSesion = () => {
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
-        <View style={[styles.flatdefault1, styles.flatdefaultPosition]}>
-          <View style={styles.spBody2Medium1}>
+        <View style={[styles.flatdefault, styles.mediumFlexBox]}>
+          <View style={styles.body2Layout}>
             <Text style={[styles.body21, styles.bodyTypo]}>iniciar sesión</Text>
           </View>
         </View>
@@ -78,11 +78,7 @@ const styles = StyleSheet.create({
     bottom: 8,
     position: "absolute",
   },
-  outlinedLayout: {
-    width: 109,
-    height: 16,
-  },
-  flatdefaultFlexBox: {
+  mediumFlexBox: {
     justifyContent: "center",
     alignItems: "center",
   },
@@ -91,12 +87,9 @@ const styles = StyleSheet.create({
     top: 342,
     position: "absolute",
   },
-  flatdefaultPosition: {
-    left: 8,
-    right: 8,
-    top: "50%",
-    marginTop: -12,
-    position: "absolute",
+  body2Layout: {
+    height: 24,
+    width: 119,
   },
   bodyTypo: {
     fontSize: FontSize.spBody2Medium_size,
@@ -137,7 +130,9 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#304ffe",
     borderWidth: 1,
+    width: 109,
     opacity: 0.48,
+    height: 16,
   },
   minicaps: {
     fontSize: FontSize.size_5xs,
@@ -159,11 +154,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   outlined: {
-    marginLeft: -55,
+    right: 50,
+    left: 49,
     justifyContent: "flex-end",
-    bottom: 0,
-    width: 109,
-    left: "50%",
+    top: 0,
+    height: 16,
     alignItems: "center",
     position: "absolute",
   },
@@ -185,21 +180,22 @@ const styles = StyleSheet.create({
     },
     shadowColor: "rgba(27, 225, 175, 0.16)",
     borderRadius: Border.br_7xs,
-    right: 0,
-    top: 0,
-    left: 0,
     bottom: 0,
+    right: 0,
+    left: 0,
+    top: 0,
     position: "absolute",
   },
   spBody2Medium: {
-    height: 24,
-    width: 119,
     justifyContent: "center",
     alignItems: "center",
   },
   flatdefault: {
-    justifyContent: "center",
-    alignItems: "center",
+    marginTop: -12,
+    top: "50%",
+    right: 8,
+    left: 8,
+    position: "absolute",
   },
   accent: {
     right: 21,
@@ -209,17 +205,6 @@ const styles = StyleSheet.create({
     top: 4,
     left: 0,
     position: "absolute",
-  },
-  spBody2Medium1: {
-    height: 24,
-    top: "50%",
-    marginTop: -12,
-    left: 0,
-    right: 0,
-    position: "absolute",
-  },
-  flatdefault1: {
-    height: 24,
   },
   accent2: {
     right: 206,
