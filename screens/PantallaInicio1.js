@@ -3,23 +3,38 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
 
 const PantallaInicio1 = () => {
+
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
   return (
     <View style={[styles.pantallaInicio1, styles.calendarBg]}>
-      <Image
+      <Pressable onPress={handleOpenSubmenu}>
+        <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
-      <Pressable style={[styles.accent, styles.accentLayout]}>
+      <Pressable style={[styles.accent, styles.accentLayout]} onPress={handleOpenSubmenu}>
         <LinearGradient
           style={[styles.accent1, styles.accent1Position]}
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
         <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
+        
       </Pressable>
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
@@ -150,6 +165,7 @@ const PantallaInicio1 = () => {
           </View>
         </View>
       </View>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
   );
 };

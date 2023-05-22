@@ -5,13 +5,19 @@ import {
   ImageBackground,
   Pressable,
   Text,
+  TouchableWithoutFeedback, 
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
-const PantallaMenu = () => {
+const PantallaMenu = ({ onClose }) => {
+  const handleOutsidePress = () => {
+    onClose();
+  };
   return (
+    
+  <TouchableWithoutFeedback onPress={handleOutsidePress}>
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
         <View style={[styles.colorsbgCard, styles.shadowPosition]}>
@@ -157,6 +163,7 @@ const PantallaMenu = () => {
         </Pressable>
       </View>
     </View>
+  </TouchableWithoutFeedback>
   );
 };
 
@@ -369,9 +376,15 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pantallaMenu: {
+    position: "absolute",
     flex: 1,
     height: 800,
-    width: "100%",
+    width: "70%",
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
