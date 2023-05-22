@@ -222,10 +222,10 @@ const styles = StyleSheet.create({
   body2: {
     top: 0,
     left: 0,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.spBody2Medium_size,
     lineHeight: 18,
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.spBody2Medium,
     width: 111,
     position: "absolute",
   },
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: FontSize.size_base,
     lineHeight: 21,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.spBody1Regular,
     width: 272,
   },
   spSubheadingRegular: {

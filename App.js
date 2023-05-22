@@ -2,6 +2,8 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
+import PantallaMenu from "./screens/PantallaMenu";
 import PantallaEditarIngredientes2 from "./screens/PantallaEditarIngredientes2";
 import PantallaEditarIngredientes from "./screens/PantallaEditarIngredientes";
 import PantallaEditarAlimentos from "./screens/PantallaEditarAlimentos";
@@ -25,8 +27,6 @@ import PantallaCreacionDePlanes from "./screens/PantallaCreacionDePlanes";
 import PantallaPlanesDeEntrenamien from "./screens/PantallaPlanesDeEntrenamien";
 import PantallaRealizarEntrenamient from "./screens/PantallaRealizarEntrenamient";
 import PantallaInicioEntrenamiento from "./screens/PantallaInicioEntrenamiento";
-import PantallaMenu from "./screens/PantallaMenu";
-import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
 import PantallaMedidasCorporales2 from "./screens/PantallaMedidasCorporales2";
 import PantallaMedidasCorporales from "./screens/PantallaMedidasCorporales";
 import PantallaEstadisticas from "./screens/PantallaEstadisticas";
@@ -60,7 +60,15 @@ const App = () => {
     <>
       <NavigationContainer>
         {hideSplashScreen ? (
-          <Stack.Navigator initialRouteName="PantallaIniciarSesion" screenOptions={{ headerShown: false }}>
+          <Stack.Navigator
+            initialRouteName="PantallaIniciarSesion"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen
+              name="PantallaIniciarSesion"
+              component={PantallaIniciarSesion}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PantallaEditarIngredientes2"
               component={PantallaEditarIngredientes2}
@@ -174,16 +182,6 @@ const App = () => {
             <Stack.Screen
               name="PantallaInicioEntrenamiento"
               component={PantallaInicioEntrenamiento}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PantallaMenu"
-              component={PantallaMenu}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="PantallaIniciarSesion"
-              component={PantallaIniciarSesion}
               options={{ headerShown: false }}
             />
             <Stack.Screen

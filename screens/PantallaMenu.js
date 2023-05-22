@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -10,7 +10,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
-const PantallaMenu = () => {
+const PantallaMenu = ({ state, navigation }) => {
+  const [drawerItemsNormal] = useState([]);
+  const [drawerItemsActive] = useState([]);
+  const stateIndex = !state ? 0 : state.index;
+
   return (
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
@@ -181,13 +185,13 @@ const styles = StyleSheet.create({
     color: Color.lightColor,
   },
   bodyTypo: {
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.spBody2Medium,
     fontWeight: "500",
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.spBody2Medium_size,
     height: 20,
     left: 0,
     top: 0,
@@ -245,12 +249,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   body1: {
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.spBody1Regular,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.spBody2Medium_size,
     width: 293,
     color: Color.lightColor,
     height: 20,
@@ -273,7 +277,7 @@ const styles = StyleSheet.create({
   body2: {
     width: 293,
     color: Color.lightColor,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.spBody2Medium,
     fontWeight: "500",
   },
   spBody2Medium: {
