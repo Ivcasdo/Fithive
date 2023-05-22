@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   dark: {
     top: 54,
     bottom: 0,
-    backgroundColor: Color.primaryColor,
+    backgroundColor: Color.accentColor,
     left: 0,
     right: 0,
     position: "absolute",
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     bottom: 6,
     opacity: 0.87,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
   },
   emailIcon: {
     bottom: 2,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     height: 16,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
   },
   caption: {

@@ -1,12 +1,12 @@
 import * as React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
-import { StyleSheet, Text, Pressable, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
 
 const PantallaInicio1 = () => {
   return (
-    <View style={styles.pantallaInicio1}>
+    <View style={[styles.pantallaInicio1, styles.calendarBg]}>
       <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
@@ -14,21 +14,16 @@ const PantallaInicio1 = () => {
       />
       <Text style={styles.calendario}>Calendario</Text>
       <Pressable style={[styles.accent, styles.accentLayout]}>
-        <View style={styles.lightPosition}>
-          <LinearGradient
-            style={[styles.bgAccent, styles.bgAccentPosition]}
-            locations={[0, 1]}
-            colors={["#1dde7d", "#72dfc5"]}
-          />
-        </View>
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]} />
-        </View>
+        <LinearGradient
+          style={[styles.accent1, styles.accent1Position]}
+          locations={[0, 1]}
+          colors={["#1dde7d", "#72dfc5"]}
+        />
         <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
       </Pressable>
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
-          <View style={styles.arrowLayout}>
+          <View style={[styles.arrow, styles.arrowLayout]}>
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
@@ -108,15 +103,13 @@ const PantallaInicio1 = () => {
         </View>
       </View>
       <Pressable style={[styles.accent2, styles.accentLayout]}>
-        <View style={styles.lightPosition}>
-          <LinearGradient
-            style={[styles.bgAccent, styles.bgAccentPosition]}
-            locations={[0, 1]}
-            colors={["#1dde7d", "#72dfc5"]}
-          />
-        </View>
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]} />
+        <LinearGradient
+          style={[styles.accent1, styles.accent1Position]}
+          locations={[0, 1]}
+          colors={["#1dde7d", "#72dfc5"]}
+        />
+        <View style={styles.flatdefault}>
+          <View style={[styles.spBody2Medium, styles.accent1Position]} />
         </View>
         <Text style={[styles.body21, styles.bodyTypo]}>
           IR A Entrenamientos
@@ -162,6 +155,10 @@ const PantallaInicio1 = () => {
 };
 
 const styles = StyleSheet.create({
+  calendarBg: {
+    backgroundColor: Color.lightColor,
+    overflow: "hidden",
+  },
   calendarPosition: {
     left: 13,
     position: "absolute",
@@ -171,13 +168,9 @@ const styles = StyleSheet.create({
     width: 94,
     position: "absolute",
   },
-  bgAccentPosition: {
+  accent1Position: {
     left: 0,
     right: 0,
-  },
-  flatdefaultPosition: {
-    height: 24,
-    top: "50%",
     position: "absolute",
   },
   bodyTypo: {
@@ -185,7 +178,7 @@ const styles = StyleSheet.create({
     width: 103,
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     left: -4,
@@ -201,19 +194,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
   },
-  february2021FlexBox: {
-    textAlign: "left",
-    color: Color.black,
-  },
   arrowLayout: {
     width: 24,
     backgroundColor: Color.whitesmoke,
     borderRadius: Border.br_81xl,
+    height: 24,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 24,
     overflow: "hidden",
+  },
+  february2021FlexBox: {
+    textAlign: "left",
+    color: Color.black,
   },
   monTypo: {
     opacity: 0.5,
@@ -241,56 +234,39 @@ const styles = StyleSheet.create({
     height: 31,
   },
   calendario: {
-    top: 100,
+    top: 69,
     left: 26,
     textAlign: "center",
     color: Color.black,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.spTitleMedium_size,
     position: "absolute",
   },
-  bgAccent: {
+  accent1: {
     borderRadius: Border.br_80xl,
-    backgroundColor: Color.primaryColor,
+    backgroundColor: Color.accentColor,
     bottom: 0,
     top: 0,
-    position: "absolute",
-  },
-  lightPosition: {
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
-  },
-  spBody2Medium: {
-    marginTop: -12,
-    left: 0,
-    right: 0,
-  },
-  flatdefault: {
-    marginTop: -11.5,
-    right: 8,
-    left: 8,
   },
   body2: {
     fontSize: FontSize.size_3xs,
   },
   accent: {
-    top: 327,
+    top: 299,
     left: 21,
   },
   vectorIcon: {
     width: 8,
     height: 10,
   },
+  arrow: {
+    height: 24,
+  },
   february2021: {
     fontWeight: "700",
     fontFamily: FontFamily.interBold,
     textAlign: "left",
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
   },
   arrow1: {
     transform: [
@@ -298,6 +274,7 @@ const styles = StyleSheet.create({
         rotate: "-180deg",
       },
     ],
+    height: 24,
   },
   month: {
     flexDirection: "row",
@@ -321,7 +298,7 @@ const styles = StyleSheet.create({
   },
   text19: {
     lineHeight: 21,
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
   },
   dates: {
     marginTop: 20,
@@ -330,20 +307,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   calendar: {
-    top: 125,
+    top: 101,
     borderRadius: 5,
     width: 323,
     height: 195,
     padding: 16,
     overflow: "hidden",
     backgroundColor: Color.lightColor,
-    left: 13,
+  },
+  spBody2Medium: {
+    marginTop: -12,
+    top: "50%",
+    height: 24,
+  },
+  flatdefault: {
+    marginTop: -11.5,
+    right: 8,
+    left: 8,
+    top: "50%",
+    height: 24,
+    position: "absolute",
   },
   body21: {
     fontSize: FontSize.size_5xs,
   },
   accent2: {
-    top: 550,
+    top: 513,
     left: 24,
   },
   entrenamiento1: {
@@ -352,7 +341,7 @@ const styles = StyleSheet.create({
     height: 26,
     textAlign: "left",
     top: 0,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.spTitleMedium_size,
     color: Color.black,
     position: "absolute",
@@ -380,12 +369,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.lightColor,
   },
   light: {
-    display: "none",
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
     height: "100%",
+    top: "0%",
+    right: "0%",
+    bottom: "0%",
+    left: "0%",
+    display: "none",
     position: "absolute",
     width: "100%",
   },
@@ -395,15 +384,15 @@ const styles = StyleSheet.create({
     textAlign: "left",
     alignSelf: "stretch",
     color: Color.textColor,
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
   },
   spSubheadingRegular: {
     marginTop: -8,
+    top: "50%",
     justifyContent: "center",
     alignItems: "center",
-    top: "50%",
-    left: 16,
     right: 0,
+    left: 16,
   },
   entrenamiento11: {
     top: 0,
@@ -420,7 +409,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   entrenamiento: {
-    top: 376,
+    top: 349,
     width: 299,
     height: 160,
     left: 21,
@@ -432,7 +421,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
     flex: 1,
-    backgroundColor: Color.lightColor,
   },
 });
 

@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     textAlign: "left",
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     color: Color.textColor,
     height: 24,
     left: 0,
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   bodyTypo: {
     justifyContent: "center",
     textAlign: "center",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     alignItems: "center",
@@ -167,11 +167,11 @@ const styles = StyleSheet.create({
   subheading: {
     width: 149,
     lineHeight: 18,
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
   },
   spSubheadingRegular: {
     marginTop: -70,
@@ -180,11 +180,11 @@ const styles = StyleSheet.create({
   },
   subheading1: {
     lineHeight: 18,
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 299,
   },
   spSubheadingRegular1: {
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   bgAccent: {
     bottom: 0,
     borderRadius: Border.br_80xl,
-    backgroundColor: Color.primaryColor,
+    backgroundColor: Color.accentColor,
     top: 0,
     position: "absolute",
   },
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     justifyContent: "center",
     textAlign: "center",
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
   },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import {
   StyleSheet,
   View,
@@ -10,11 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
-const PantallaMenu = ({ state, navigation }) => {
-  const [drawerItemsNormal] = useState([]);
-  const [drawerItemsActive] = useState([]);
-  const stateIndex = !state ? 0 : state.index;
-
+const PantallaMenu = () => {
   return (
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
@@ -22,17 +18,17 @@ const PantallaMenu = ({ state, navigation }) => {
           <View style={[styles.bgLight, styles.lightPosition]} />
         </View>
       </View>
-      <View style={[styles.header1, styles.shadowPosition]}>
-        <View style={styles.lightPosition}>
+      <View style={[styles.header1, styles.blurPosition]}>
+        <View style={[styles.dark, styles.darkPosition]}>
           <LinearGradient
-            style={[styles.bgPrimary, styles.lightPosition]}
+            style={[styles.bgPrimary, styles.darkPosition]}
             locations={[0, 1]}
             colors={["#1a73e9", "#6c92f4"]}
           />
         </View>
-        <View style={[styles.blur, styles.lightPosition]}>
+        <View style={[styles.blur, styles.blurPosition]}>
           <ImageBackground
-            style={styles.lightPosition}
+            style={[styles.dark, styles.darkPosition]}
             resizeMode="cover"
             source={require("../assets/image.png")}
           />
@@ -52,19 +48,19 @@ const PantallaMenu = ({ state, navigation }) => {
         </View>
         <View style={[styles.avatar, styles.avatarPosition]}>
           <Image
-            style={[styles.avatar40x40Icon, styles.lightPosition]}
+            style={[styles.avatar40x40Icon, styles.blurPosition]}
             contentFit="cover"
             source={require("../assets/avatar-40x40.png")}
           />
         </View>
       </View>
-      <View style={[styles.menuModule, styles.shadowPosition]}>
-        <View style={styles.lightPosition}>
-          <View style={[styles.bgLight1, styles.lightPosition]} />
+      <View style={[styles.menuModule, styles.blurPosition]}>
+        <View style={[styles.dark, styles.darkPosition]}>
+          <View style={styles.lightPosition} />
         </View>
         <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -79,7 +75,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -92,7 +88,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -105,7 +101,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -120,7 +116,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -133,7 +129,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon5, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -148,7 +144,7 @@ const PantallaMenu = ({ state, navigation }) => {
         </Pressable>
         <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={[styles.bgLight1, styles.lightPosition]} />
+            <View style={styles.lightPosition} />
           </View>
           <Image
             style={[styles.accountIcon, styles.accountIconPosition]}
@@ -167,31 +163,43 @@ const PantallaMenu = ({ state, navigation }) => {
 const styles = StyleSheet.create({
   shadowPosition: {
     left: "0%",
-    position: "absolute",
+    right: "0%",
+    width: "100%",
   },
   lightPosition: {
+    backgroundColor: Color.lightColor,
     left: 0,
     right: 0,
     bottom: 0,
     top: 0,
     position: "absolute",
   },
+  blurPosition: {
+    overflow: "hidden",
+    position: "absolute",
+  },
+  darkPosition: {
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
+  },
   body2Layout: {
     height: 20,
     right: 0,
   },
   bodyLayout: {
-    width: 293,
+    width: 289,
     color: Color.lightColor,
   },
   bodyTypo: {
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     height: 20,
     left: 0,
     top: 0,
@@ -203,26 +211,26 @@ const styles = StyleSheet.create({
   },
   defaultIconPosition: {
     height: 48,
+    overflow: "hidden",
+    backgroundColor: Color.lightColor,
     left: 0,
     right: 0,
     position: "absolute",
-    overflow: "hidden",
-    backgroundColor: Color.lightColor,
   },
   accountIconPosition: {
     top: "50%",
     position: "absolute",
   },
   bgLight: {
-    borderRadius: 16,
-    backgroundColor: Color.lightColor,
+    borderRadius: Border.br_base,
   },
   colorsbgCard: {
     height: "100%",
-    width: "100%",
     top: "0%",
-    right: "0%",
     bottom: "0%",
+    right: "0%",
+    left: "0%",
+    position: "absolute",
   },
   shadow: {
     shadowColor: "rgba(38, 50, 56, 0.08)",
@@ -235,27 +243,34 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     bottom: 0,
     left: "0%",
-    right: "14.17%",
+    right: "0%",
     top: 0,
-    width: "85.83%",
+    position: "absolute",
   },
   bgPrimary: {
-    backgroundColor: Color.primaryColor,
+    backgroundColor: Color.accentColor,
+    position: "absolute",
+  },
+  dark: {
+    position: "absolute",
   },
   blur: {
     borderStyle: "solid",
     borderColor: "#000",
     borderWidth: 1,
-    overflow: "hidden",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
   },
   body1: {
-    fontFamily: FontFamily.spBody1Regular,
+    fontFamily: FontFamily.spCaptionRegular,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.spBody2Medium_size,
-    width: 293,
+    fontSize: FontSize.spBUTTON_size,
+    width: 289,
     color: Color.lightColor,
     height: 20,
     left: 0,
@@ -275,9 +290,9 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   body2: {
-    width: 293,
+    width: 289,
     color: Color.lightColor,
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
   },
   spBody2Medium: {
@@ -289,7 +304,10 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_80xl,
     maxWidth: "100%",
     maxHeight: "100%",
-    overflow: "hidden",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: 0,
   },
   avatar: {
     bottom: 72,
@@ -298,14 +316,11 @@ const styles = StyleSheet.create({
   },
   header1: {
     height: 191,
-    right: "14.17%",
-    width: "85.83%",
     left: "0%",
-    overflow: "hidden",
+    right: "0%",
+    width: "100%",
     top: 0,
-  },
-  bgLight1: {
-    backgroundColor: Color.lightColor,
+    overflow: "hidden",
   },
   accountIcon: {
     marginTop: -20,
@@ -316,7 +331,7 @@ const styles = StyleSheet.create({
   },
   body21: {
     color: Color.textColor,
-    width: 237,
+    width: 233,
   },
   spBody2Medium1: {
     marginTop: -10,
@@ -349,16 +364,14 @@ const styles = StyleSheet.create({
   menuModule: {
     top: 191,
     bottom: 2,
-    right: "14.17%",
-    width: "85.83%",
     left: "0%",
-    overflow: "hidden",
+    right: "0%",
+    width: "100%",
   },
   pantallaMenu: {
-    width: 360,
+    flex: 1,
     height: 800,
-    overflow: "hidden",
-    backgroundColor: Color.lightColor,
+    width: "100%",
   },
 });
 

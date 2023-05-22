@@ -2,10 +2,11 @@ const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import PantallaRegistrarse from "./screens/PantallaRegistrarse";
+import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
 import PantallaInicio1 from "./screens/PantallaInicio1";
 import PantallaMenu from "./screens/PantallaMenu";
-import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
-import PantallaRegistrarse from "./screens/PantallaRegistrarse";
+import PantallaMenu1 from "./screens/PantallaMenu1";
 import PantallaEditarIngredientes2 from "./screens/PantallaEditarIngredientes2";
 import PantallaEditarIngredientes from "./screens/PantallaEditarIngredientes";
 import PantallaEditarAlimentos from "./screens/PantallaEditarAlimentos";
@@ -65,8 +66,8 @@ const App = () => {
             screenOptions={{ headerShown: false }}
           >
             <Stack.Screen
-              name="PantallaInicio1"
-              component={PantallaInicio1}
+              name="PantallaRegistrarse"
+              component={PantallaRegistrarse}
               options={{ headerShown: false }}
             />
             <Stack.Screen
@@ -75,8 +76,18 @@ const App = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="PantallaRegistrarse"
-              component={PantallaRegistrarse}
+              name="PantallaInicio1"
+              component={PantallaInicio1}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaMenu"
+              component={PantallaMenu}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaMenu1"
+              component={PantallaMenu1}
               options={{ headerShown: false }}
             />
             <Stack.Screen

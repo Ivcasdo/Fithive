@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   titlePosition: {
     width: 216,
-    fontFamily: FontFamily.spBody2Medium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     height: 24,
     top: 0,
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   primaryShadowBox: {
-    backgroundColor: Color.primaryColor,
+    backgroundColor: Color.accentColor,
     elevation: 4,
     shadowRadius: 4,
     borderRadius: Border.br_7xs,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   body2: {
-    fontSize: FontSize.spBody2Medium_size,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     color: Color.lightColor,
     textAlign: "center",
