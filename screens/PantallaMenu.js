@@ -10,14 +10,14 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
-const PantallaMenu = ({ onClose }) => {
-  const handleOutsidePress = () => {
-    onClose();
-  };
+const PantallaMenu = () => {
+
+  const navigation = useNavigation();
   return (
     
-  <TouchableWithoutFeedback onPress={handleOutsidePress}>
+ 
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
         <View style={[styles.colorsbgCard, styles.shadowPosition]}>
@@ -64,7 +64,7 @@ const PantallaMenu = ({ onClose }) => {
         <View style={[styles.dark, styles.darkPosition]}>
           <View style={styles.lightPosition} />
         </View>
-        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -79,7 +79,7 @@ const PantallaMenu = ({ onClose }) => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicio1")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -92,7 +92,7 @@ const PantallaMenu = ({ onClose }) => {
             <Text style={[styles.body21, styles.bodyTypo]}>Home</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -105,7 +105,7 @@ const PantallaMenu = ({ onClose }) => {
             <Text style={[styles.body21, styles.bodyTypo]}>Entrenamientos</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaMedidasCorporales")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -120,7 +120,7 @@ const PantallaMenu = ({ onClose }) => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaEstadisticas")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -133,22 +133,8 @@ const PantallaMenu = ({ onClose }) => {
             <Text style={[styles.body21, styles.bodyTypo]}>Estadisticas</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon5, styles.defaultIconPosition]}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={styles.lightPosition} />
-          </View>
-          <Image
-            style={[styles.accountIcon, styles.accountIconPosition]}
-            contentFit="cover"
-            source={require("../assets/bank1.png")}
-          />
-          <View style={[styles.spBody2Medium1, styles.accountIconPosition]}>
-            <Text style={[styles.body21, styles.bodyTypo]}>
-              Bank account details
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]}>
+        
+        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioNutricion")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -163,7 +149,6 @@ const PantallaMenu = ({ onClose }) => {
         </Pressable>
       </View>
     </View>
-  </TouchableWithoutFeedback>
   );
 };
 
@@ -380,11 +365,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 800,
     width: "70%",
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
 

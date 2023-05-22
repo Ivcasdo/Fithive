@@ -3,8 +3,10 @@ import { Pressable, StyleSheet, View, Text, TextInput } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambioNombreUsuairo = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambioNombreUsuairo}>
       <Image
@@ -12,14 +14,14 @@ const PantallaCambioNombreUsuairo = () => {
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
-      <Pressable style={[styles.dark, styles.darkLayout]}>
+      <Pressable style={[styles.dark, styles.darkLayout]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.dark1Position]}>
+      <Pressable style={[styles.dark1, styles.dark1Position]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary, styles.primaryPosition]}

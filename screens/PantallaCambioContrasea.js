@@ -3,8 +3,10 @@ import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambioContrasea = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambioContrasea}>
       <Image
@@ -74,14 +76,14 @@ const PantallaCambioContrasea = () => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition1]}>
+      <Pressable style={[styles.dark, styles.darkPosition1]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.darkPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition1]}>
+      <Pressable style={[styles.dark1, styles.darkPosition1]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <LinearGradient
           style={[styles.dark2, styles.darkPosition]}
           locations={[0, 1]}

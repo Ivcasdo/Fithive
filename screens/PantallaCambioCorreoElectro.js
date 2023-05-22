@@ -3,8 +3,10 @@ import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambioCorreoElectro = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambioCorreoElectro}>
       <Image
@@ -57,14 +59,14 @@ const PantallaCambioCorreoElectro = () => {
           source={require("../assets/email1.png")}
         />
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]}>
+      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary2, styles.primaryPosition]}

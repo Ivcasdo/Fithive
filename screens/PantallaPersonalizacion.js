@@ -3,8 +3,10 @@ import { Pressable, StyleSheet, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaPersonalizacion = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaPersonalizacion}>
       <Image
@@ -30,7 +32,7 @@ const PantallaPersonalizacion = () => {
           <Text style={[styles.caption1, styles.captionTypo]}>Modo oscuro</Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dropdown1, styles.caption3Layout]}>
+      <Pressable style={[styles.dropdown1, styles.caption3Layout]} >
         <View style={[styles.stroke1, styles.strokePosition]}>
           <View style={[styles.bgPrimary, styles.primaryPosition]} />
         </View>
@@ -50,14 +52,14 @@ const PantallaPersonalizacion = () => {
           </Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]}>
+      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary2, styles.primaryPosition]}

@@ -9,8 +9,10 @@ import {
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambiarFotoPerfil = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambiarFotoPerfil}>
       <Image
@@ -38,14 +40,14 @@ const PantallaCambiarFotoPerfil = () => {
           </Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.lightPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]}>
+      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary, styles.bgLightPosition]}

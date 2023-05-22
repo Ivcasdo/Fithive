@@ -1,23 +1,29 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback} from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
 import Submenu from "./PantallaMenu";
 import { useState } from "react";
 
-const PantallaInicio1 = () => {
+
+const PantallaInicio1 = ({ visible, onClose}) => {
 
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
-
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
   };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={[styles.pantallaInicio1, styles.calendarBg]}>
       <Pressable onPress={handleOpenSubmenu}>
         <Image
@@ -27,7 +33,7 @@ const PantallaInicio1 = () => {
       />
       </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
-      <Pressable style={[styles.accent, styles.accentLayout]} onPress={handleOpenSubmenu}>
+      <Pressable style={[styles.accent, styles.accentLayout]}>
         <LinearGradient
           style={[styles.accent1, styles.accent1Position]}
           locations={[0, 1]}
@@ -167,6 +173,7 @@ const PantallaInicio1 = () => {
       </View>
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
