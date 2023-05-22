@@ -60,7 +60,7 @@ const App = () => {
     <>
       <NavigationContainer>
         {hideSplashScreen ? (
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Navigator initialRouteName="PantallaIniciarSesion" screenOptions={{ headerShown: false }}>
             <Stack.Screen
               name="PantallaEditarIngredientes2"
               component={PantallaEditarIngredientes2}
