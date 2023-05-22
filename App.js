@@ -6,7 +6,7 @@ import PantallaRegistrarse from "./screens/PantallaRegistrarse";
 import PantallaIniciarSesion from "./screens/PantallaIniciarSesion";
 import PantallaInicio1 from "./screens/PantallaInicio1";
 import PantallaMenu from "./screens/PantallaMenu";
-import PantallaMenu1 from "./screens/PantallaMenu1";
+
 import PantallaEditarIngredientes2 from "./screens/PantallaEditarIngredientes2";
 import PantallaEditarIngredientes from "./screens/PantallaEditarIngredientes";
 import PantallaEditarAlimentos from "./screens/PantallaEditarAlimentos";
@@ -85,11 +85,7 @@ const App = () => {
               component={PantallaMenu}
               options={{ headerShown: false }}
             />
-            <Stack.Screen
-              name="PantallaMenu1"
-              component={PantallaMenu1}
-              options={{ headerShown: false }}
-            />
+         
             <Stack.Screen
               name="PantallaEditarIngredientes2"
               component={PantallaEditarIngredientes2}
