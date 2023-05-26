@@ -1,17 +1,37 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
 
-const PantallaInicio1 = () => {
+const PantallaInicio1 = ({ visible, onClose}) => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicio1}>
+      <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
@@ -137,13 +157,13 @@ const PantallaInicio1 = () => {
             colors={["#1dde7d", "#72dfc5"]}
           />
         </View>
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+        <View style={[styles.flatdefault, styles.flatdefaultPositionvista]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPositionvista]}>
             <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent2, styles.accentLayout]}>
+      <Pressable style={[styles.accent2, styles.accentLayout]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -159,7 +179,9 @@ const PantallaInicio1 = () => {
           </View>
         </View>
       </Pressable>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -216,6 +238,12 @@ const styles = StyleSheet.create({
   flatdefaultPosition: {
     marginTop: -12,
     top: "50%",
+    height: 24,
+    position: "absolute",
+  },
+  flatdefaultPositionvista: {
+    marginTop: -12,
+    top: "55%",
     height: 24,
     position: "absolute",
   },

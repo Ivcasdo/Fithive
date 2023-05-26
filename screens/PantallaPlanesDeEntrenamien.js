@@ -1,17 +1,36 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
+const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
-const PantallaPlanesDeEntrenamien = () => {
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaPlanesDeEntrenamien}>
+    <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.pantallaPlanesDeEntrenamienChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.body21Position]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
@@ -63,7 +82,7 @@ const PantallaPlanesDeEntrenamien = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.accent}>
+      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.body21Position]}
@@ -77,7 +96,7 @@ const PantallaPlanesDeEntrenamien = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.dark}>
+      <Pressable style={styles.dark} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.body21Position]}
@@ -91,7 +110,9 @@ const PantallaPlanesDeEntrenamien = () => {
           </View>
         </View>
       </Pressable>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -177,7 +198,7 @@ const styles = StyleSheet.create({
   flatdefaultPosition: {
     marginTop: -12,
     height: 24,
-    top: "50%",
+    top: "55%",
     position: "absolute",
   },
   bodyTypo: {

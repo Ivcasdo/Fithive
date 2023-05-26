@@ -1,17 +1,37 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TextInput } from "react-native";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
 
-const PantallaRealizarEntrenamient = () => {
+const PantallaRealizarEntrenamient = ({ visible, onClose}) => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaRealizarEntrenamient}>
+    <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.pantallaRealizarEntrenamientChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+       </Pressable>
       <View style={[styles.frameParent, styles.frameParentPosition]}>
         <View style={[styles.captionParent, styles.captionLayout]}>
           <Text style={[styles.caption, styles.captionTypo]}>Ejercicio 3</Text>
@@ -78,7 +98,7 @@ const PantallaRealizarEntrenamient = () => {
           <Text style={[styles.title, styles.titleTypo]}>00:00</Text>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.accentPosition]}>
+      <Pressable style={[styles.accent, styles.accentPosition]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
         <View style={styles.dark}>
           <LinearGradient
             style={styles.bgPrimary}
@@ -92,7 +112,9 @@ const PantallaRealizarEntrenamient = () => {
           </View>
         </View>
       </Pressable>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
