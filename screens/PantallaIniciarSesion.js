@@ -28,7 +28,7 @@ const PantallaIniciarSesion = () => {
           contentFit="cover"
           source={require("../assets/line-dotted1.png")}
         />
-        <Pressable style={[styles.outlined, styles.outlinedLayout]}>
+        <Pressable style={[styles.outlined, styles.outlinedLayout]} onPress={() => navigation.navigate("PantallaOlvidarContrasea")}>
           <View style={[styles.colorsStrokeprimary, styles.outlinedLayout]} />
           <View style={[styles.spCapsXsMedium, styles.minicapsFlexBox]}>
             <Text style={[styles.minicaps, styles.body2Typo]}>

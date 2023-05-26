@@ -10,8 +10,10 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Padding, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaOlvidarContrasea = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaOlvidarContrasea}>
       <View style={styles.register2}>
@@ -43,7 +45,7 @@ const PantallaOlvidarContrasea = () => {
         resizeMode="cover"
         source={require("../assets/lgo21.png")}
       />
-      <Pressable style={styles.accent}>
+      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaIniciarSesion")}>
         <LinearGradient
           style={[styles.accent1, styles.darkPosition]}
           locations={[0, 1]}
