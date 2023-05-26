@@ -11,7 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import TextInputForm from "../components/TextInputForm";
 import PasswordForm from "../components/PasswordForm";
 import { useNavigation } from "@react-navigation/native";
-import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
+import { Color, FontFamily, Padding, Border, FontSize } from "../GlobalStyles";
 
 const PantallaIniciarSesion = () => {
   const navigation = useNavigation();
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     right: 16,
     left: 16,
     height: 119,
-    paddingBottom: 24,
+    paddingBottom: Padding.p_5xl,
     alignItems: "center",
     position: "absolute",
     overflow: "hidden",

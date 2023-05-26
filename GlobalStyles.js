@@ -7,10 +7,10 @@ export const FontFamily = {
 };
 /* font sizes */
 export const FontSize = {
-  size_5xs: 8,
   spBUTTON_size: 14,
-  size_base: 16,
   spCaptionRegular_size: 12,
+  size_base: 16,
+  size_5xs: 8,
   size_smi: 13,
   spTitleMedium_size: 20,
   size_mini: 15,
@@ -33,10 +33,14 @@ export const Color = {
   silver: "#c2bbbb",
   darkslategray: "#333",
 };
+/* Paddings */
+export const Padding = {
+  p_5xl: 24,
+};
 /* border radiuses */
 export const Border = {
-  br_80xl: 99,
   br_7xs: 6,
+  br_80xl: 99,
   br_10xs: 3,
   br_81xl: 100,
   br_base: 16,
