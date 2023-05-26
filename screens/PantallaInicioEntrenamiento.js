@@ -1,17 +1,37 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
 
-const PantallaInicioEntrenamiento = () => {
+const PantallaInicioEntrenamiento = ({ visible, onClose}) => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicioEntrenamiento}>
+      <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.pantallaInicioEntrenamientoChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <Text style={styles.planDeEntrenamiento}>{`Plan 
 de entrenamiento  `}</Text>
       <Text style={styles.semanaX}>Semana x</Text>
@@ -32,7 +52,7 @@ de entrenamiento  `}</Text>
           <Text style={styles.subheading}>Entrenamiento espalda</Text>
         </Pressable>
       </View>
-      <Pressable style={[styles.accent, styles.accentLayout]}>
+      <Pressable style={[styles.accent, styles.accentLayout]} onPress={() => navigation.navigate("PantallaBibliotecaDeEntrenamientos")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -46,7 +66,7 @@ de entrenamiento  `}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent2, styles.darkPosition]}>
+      <Pressable style={[styles.accent2, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPlanesDeEntrenamiento")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -61,7 +81,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent4, styles.accentLayout]}>
+      <Pressable style={[styles.accent4, styles.accentLayout]} onPress={() => navigation.navigate("PlantillaBibliotecaDeEjercicios")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -75,7 +95,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaRealizarEntrenamiento")}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -91,7 +111,9 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
