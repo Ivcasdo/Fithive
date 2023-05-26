@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
   },
   flatdefaultPosition: {
     height: 24,
-    marginTop: -12,
     top: "50%",
+    marginTop: -12,
     position: "absolute",
   },
   dark: {
@@ -176,10 +176,9 @@ const styles = StyleSheet.create({
     left: 8,
   },
   accent: {
-    marginTop: -101,
+    top: 299,
     right: 185,
     height: 40,
-    top: "50%",
     left: 16,
     position: "absolute",
   },
