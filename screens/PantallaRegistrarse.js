@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   subheadingPosition: {
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     bottom: 6,
     justifyContent: "center",
     left: 0,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   body2Typo: {
     display: "flex",
     textAlign: "center",
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     color: Color.textColor,
@@ -202,12 +202,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   caption1: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.spCaptionRegular_size,
     lineHeight: 15,
     textAlign: "left",
     height: 16,
     color: Color.textColor,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
   },
   caption: {
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   body2: {
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     width: 306,
     justifyContent: "center",
     alignItems: "center",
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     lineHeight: 10,
     display: "flex",
     textAlign: "center",
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
     color: Color.textColor,

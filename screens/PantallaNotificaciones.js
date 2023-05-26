@@ -2,8 +2,10 @@ import * as React from "react";
 import { Pressable, StyleSheet, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaNotificaciones = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaNotificaciones}>
       <Image
@@ -29,7 +31,7 @@ const PantallaNotificaciones = () => {
           </Text>
         </View>
       </Pressable>
-      <Pressable style={styles.dark}>
+      <Pressable style={styles.dark} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.darkIconPosition]}
           contentFit="cover"
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
   caption1Typo: {
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     width: 200,
   },
@@ -103,11 +105,11 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   caption1: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.spCaptionRegular_size,
     lineHeight: 15,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     top: 0,
     width: 200,
   },

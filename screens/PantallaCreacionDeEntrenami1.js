@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   titlePosition: {
     width: 216,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     height: 24,
     top: 0,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
-    fontSize: FontSize.size_xl,
+    fontSize: FontSize.spTitleMedium_size,
     lineHeight: 26,
     color: Color.textColor,
     textAlign: "left",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   body2: {
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     color: Color.lightColor,
     textAlign: "center",

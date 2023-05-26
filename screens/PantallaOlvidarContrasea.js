@@ -10,8 +10,10 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Padding, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaOlvidarContrasea = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.pantallaOlvidarContrasea}>
       <View style={styles.register2}>
@@ -43,7 +45,7 @@ const PantallaOlvidarContrasea = () => {
         resizeMode="cover"
         source={require("../assets/lgo21.png")}
       />
-      <Pressable style={styles.accent}>
+      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaIniciarSesion")}>
         <LinearGradient
           style={[styles.accent1, styles.darkPosition]}
           locations={[0, 1]}
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
     bottom: 6,
     opacity: 0.87,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     left: 0,
     right: 0,
     position: "absolute",
@@ -100,12 +102,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   caption1: {
-    fontSize: FontSize.size_xs,
+    fontSize: FontSize.spCaptionRegular_size,
     lineHeight: 15,
     textAlign: "left",
     height: 16,
     color: Color.textColor,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     width: 328,
   },
   caption: {
@@ -156,10 +158,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   body2: {
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     textAlign: "center",
     display: "flex",
     width: 306,

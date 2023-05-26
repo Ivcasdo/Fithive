@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     opacity: 0.54,
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.size_base,
     left: 0,
     right: 0,

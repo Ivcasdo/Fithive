@@ -28,7 +28,7 @@ const PantallaIniciarSesion = () => {
           contentFit="cover"
           source={require("../assets/line-dotted1.png")}
         />
-        <Pressable style={[styles.outlined, styles.outlinedLayout]}>
+        <Pressable style={[styles.outlined, styles.outlinedLayout]} onPress={() => navigation.navigate("PantallaOlvidarContrasea")}>
           <View style={[styles.colorsStrokeprimary, styles.outlinedLayout]} />
           <View style={[styles.spCapsXsMedium, styles.minicapsFlexBox]}>
             <Text style={[styles.minicaps, styles.body2Typo]}>
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     color: Color.textColor,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
   },
@@ -181,11 +181,11 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   body2: {
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     display: "flex",
     textAlign: "center",
     color: Color.textColor,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     textTransform: "uppercase",
   },

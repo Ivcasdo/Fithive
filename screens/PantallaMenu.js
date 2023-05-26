@@ -5,13 +5,19 @@ import {
   ImageBackground,
   Pressable,
   Text,
+  TouchableWithoutFeedback, 
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const PantallaMenu = () => {
+
+  const navigation = useNavigation();
   return (
+    
+ 
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
         <View style={[styles.colorsbgCard, styles.shadowPosition]}>
@@ -58,7 +64,7 @@ const PantallaMenu = () => {
         <View style={[styles.dark, styles.darkPosition]}>
           <View style={styles.lightPosition} />
         </View>
-        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -73,7 +79,7 @@ const PantallaMenu = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicio1")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -86,7 +92,7 @@ const PantallaMenu = () => {
             <Text style={[styles.body21, styles.bodyTypo]}>Home</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -99,7 +105,7 @@ const PantallaMenu = () => {
             <Text style={[styles.body21, styles.bodyTypo]}>Entrenamientos</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaMedidasCorporales")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -114,7 +120,7 @@ const PantallaMenu = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]}>
+        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaEstadisticas")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -127,22 +133,8 @@ const PantallaMenu = () => {
             <Text style={[styles.body21, styles.bodyTypo]}>Estadisticas</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon5, styles.defaultIconPosition]}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
-            <View style={styles.lightPosition} />
-          </View>
-          <Image
-            style={[styles.accountIcon, styles.accountIconPosition]}
-            contentFit="cover"
-            source={require("../assets/bank1.png")}
-          />
-          <View style={[styles.spBody2Medium1, styles.accountIconPosition]}>
-            <Text style={[styles.body21, styles.bodyTypo]}>
-              Bank account details
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]}>
+        
+        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioNutricion")}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -193,13 +185,13 @@ const styles = StyleSheet.create({
     color: Color.lightColor,
   },
   bodyTypo: {
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     height: 20,
     left: 0,
     top: 0,
@@ -264,12 +256,12 @@ const styles = StyleSheet.create({
     top: 0,
   },
   body1: {
-    fontFamily: FontFamily.robotoRegular,
+    fontFamily: FontFamily.spCaptionRegular,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     lineHeight: 18,
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     width: 289,
     color: Color.lightColor,
     height: 20,
@@ -292,7 +284,7 @@ const styles = StyleSheet.create({
   body2: {
     width: 289,
     color: Color.lightColor,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
   },
   spBody2Medium: {
@@ -369,9 +361,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   pantallaMenu: {
+    position: "absolute",
     flex: 1,
     height: 800,
-    width: "100%",
+    width: "70%",
   },
 });
 
