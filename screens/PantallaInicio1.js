@@ -1,50 +1,29 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback} from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
-import Submenu from "./PantallaMenu";
-import { useState } from "react";
 
-
-const PantallaInicio1 = ({ visible, onClose}) => {
-
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
-  const handleOpenSubmenu = () => {
-    setIsSubmenuOpen(true);
-  };
-  const handleCloseSubmenu = () => {
-    setIsSubmenuOpen(false);
-  };
-  const handleScreenPress = () => {
-    if (isSubmenuOpen) {
-      handleCloseSubmenu();
-    }
-  };
+const PantallaInicio1 = () => {
   return (
-    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={[styles.pantallaInicio1, styles.calendarBg]}>
-      <Pressable onPress={handleOpenSubmenu}>
-        <Image
+      <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
-      </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
       <Pressable style={[styles.accent, styles.accentLayout]}>
         <LinearGradient
-          style={[styles.accent1, styles.accent1Position]}
+          style={styles.accent1}
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
         <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
-        
       </Pressable>
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
-          <View style={[styles.arrow, styles.arrowLayout]}>
+          <View style={styles.arrowLayout}>
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
@@ -125,13 +104,10 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       </View>
       <Pressable style={[styles.accent2, styles.accentLayout]}>
         <LinearGradient
-          style={[styles.accent1, styles.accent1Position]}
+          style={styles.accent1}
           locations={[0, 1]}
           colors={["#1dde7d", "#72dfc5"]}
         />
-        <View style={styles.flatdefault}>
-          <View style={[styles.spBody2Medium, styles.accent1Position]} />
-        </View>
         <Text style={[styles.body21, styles.bodyTypo]}>
           IR A Entrenamientos
         </Text>
@@ -171,9 +147,7 @@ const PantallaInicio1 = ({ visible, onClose}) => {
           </View>
         </View>
       </View>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
-    </TouchableWithoutFeedback>
   );
 };
 
@@ -189,11 +163,6 @@ const styles = StyleSheet.create({
   accentLayout: {
     height: 35,
     width: 94,
-    position: "absolute",
-  },
-  accent1Position: {
-    left: 0,
-    right: 0,
     position: "absolute",
   },
   bodyTypo: {
@@ -217,19 +186,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
   },
+  february2021FlexBox: {
+    textAlign: "left",
+    color: Color.black,
+  },
   arrowLayout: {
+    height: 24,
     width: 24,
     backgroundColor: Color.whitesmoke,
     borderRadius: Border.br_81xl,
-    height: 24,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
-  },
-  february2021FlexBox: {
-    textAlign: "left",
-    color: Color.black,
   },
   monTypo: {
     opacity: 0.5,
@@ -266,10 +235,13 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   accent1: {
+    left: 0,
     borderRadius: Border.br_80xl,
     backgroundColor: Color.accentColor,
     bottom: 0,
+    right: 0,
     top: 0,
+    position: "absolute",
   },
   body2: {
     fontSize: FontSize.size_3xs,
@@ -281,9 +253,6 @@ const styles = StyleSheet.create({
   vectorIcon: {
     width: 8,
     height: 10,
-  },
-  arrow: {
-    height: 24,
   },
   february2021: {
     fontWeight: "700",
@@ -297,7 +266,6 @@ const styles = StyleSheet.create({
         rotate: "-180deg",
       },
     ],
-    height: 24,
   },
   month: {
     flexDirection: "row",
@@ -337,19 +305,6 @@ const styles = StyleSheet.create({
     padding: 16,
     overflow: "hidden",
     backgroundColor: Color.lightColor,
-  },
-  spBody2Medium: {
-    marginTop: -12,
-    top: "50%",
-    height: 24,
-  },
-  flatdefault: {
-    marginTop: -11.5,
-    right: 8,
-    left: 8,
-    top: "50%",
-    height: 24,
-    position: "absolute",
   },
   body21: {
     fontSize: FontSize.size_5xs,
@@ -415,7 +370,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     right: 0,
-    left: 16,
   },
   entrenamiento11: {
     top: 0,
