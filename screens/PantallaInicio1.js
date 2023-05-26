@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     height: 22,
     width: 74,
     display: "flex",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
     textTransform: "uppercase",
     left: 3,
@@ -272,8 +272,8 @@ const styles = StyleSheet.create({
     left: 26,
     textAlign: "center",
     color: Color.black,
-    fontFamily: FontFamily.spCaptionRegular,
-    fontSize: FontSize.spTitleMedium_size,
+    fontFamily: FontFamily.robotoRegular,
+    fontSize: FontSize.size_xl,
     position: "absolute",
   },
   vectorIcon: {
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   february2021: {
     fontWeight: "700",
     fontFamily: FontFamily.interBold,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
   },
   arrow1: {
     transform: [
@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   mon: {
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
   },
   text: {
     fontSize: FontSize.size_mini,
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   },
   text19: {
     lineHeight: 21,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
   },
   dates: {
     marginTop: 20,
@@ -359,8 +359,8 @@ const styles = StyleSheet.create({
     width: 141,
     height: 26,
     top: 0,
-    fontFamily: FontFamily.spCaptionRegular,
-    fontSize: FontSize.spTitleMedium_size,
+    fontFamily: FontFamily.robotoRegular,
+    fontSize: FontSize.size_xl,
     textAlign: "left",
     position: "absolute",
   },
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     textAlign: "left",
     alignSelf: "stretch",
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
   },
   spSubheadingRegular: {
     marginTop: -8,

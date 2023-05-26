@@ -3,10 +3,8 @@ import { Pressable, StyleSheet, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
 
 const PantallaPersonalizacion = () => {
-  const navigation = useNavigation();
   return (
     <View style={styles.pantallaPersonalizacion}>
       <Image
@@ -32,7 +30,7 @@ const PantallaPersonalizacion = () => {
           <Text style={[styles.caption1, styles.captionTypo]}>Modo oscuro</Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dropdown1, styles.caption3Layout]} >
+      <Pressable style={[styles.dropdown1, styles.caption3Layout]}>
         <View style={[styles.stroke1, styles.strokePosition]}>
           <View style={[styles.bgPrimary, styles.primaryPosition]} />
         </View>
@@ -52,14 +50,14 @@ const PantallaPersonalizacion = () => {
           </Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark, styles.darkPosition]}>
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark1, styles.darkPosition]}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary2, styles.primaryPosition]}
@@ -101,7 +99,7 @@ const styles = StyleSheet.create({
   subheadingTypo: {
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     lineHeight: 21,
     fontSize: FontSize.size_base,
     top: 0,
@@ -114,11 +112,11 @@ const styles = StyleSheet.create({
   },
   captionTypo: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
     left: 0,
   },
@@ -193,7 +191,7 @@ const styles = StyleSheet.create({
     width: 281,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     lineHeight: 21,
     fontSize: FontSize.size_base,
     top: 0,
@@ -208,11 +206,11 @@ const styles = StyleSheet.create({
   },
   caption3: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
     left: 0,
   },
@@ -258,10 +256,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",

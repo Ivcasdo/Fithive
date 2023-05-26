@@ -8,10 +8,8 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
 
 const PantallaPerfilDeUsuario = () => {
-  const navigation = useNavigation();
   return (
     <View style={styles.pantallaPerfilDeUsuario}>
       <ImageBackground
@@ -50,7 +48,7 @@ const PantallaPerfilDeUsuario = () => {
           styles.firstLevelDefaultParentPosition,
         ]}
       >
-        <Pressable style={[styles.firstLevelDefault, styles.firstPosition]} onPress={() => navigation.navigate("PantallaCambioNombreUsuairo")}>
+        <Pressable style={[styles.firstLevelDefault, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight, styles.lightLayout]} />
           </View>
@@ -65,7 +63,7 @@ const PantallaPerfilDeUsuario = () => {
             >{`Cambiar nombre de usuario `}</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault1, styles.firstPosition]} onPress={() => navigation.navigate("PantallaCambioContrasea")}>
+        <Pressable style={[styles.firstLevelDefault1, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />
           </View>
@@ -80,7 +78,7 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault2, styles.firstPosition]} onPress={() => navigation.navigate("PantallaCambiarFotoPerfil")}>
+        <Pressable style={[styles.firstLevelDefault2, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />
           </View>
@@ -95,7 +93,7 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault3, styles.firstPosition]}onPress={() => navigation.navigate("PantallaCambioCorreoElectronico")}>
+        <Pressable style={[styles.firstLevelDefault3, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />
           </View>
@@ -110,7 +108,7 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault4, styles.firstPosition]} onPress={() => navigation.navigate("PantallaPersonalizacion")}>
+        <Pressable style={[styles.firstLevelDefault4, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />
           </View>
@@ -125,7 +123,7 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault5, styles.firstPosition]} onPress={() => navigation.navigate("PantallaNotificaciones")}>
+        <Pressable style={[styles.firstLevelDefault5, styles.firstPosition]}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />
           </View>
@@ -140,7 +138,7 @@ const PantallaPerfilDeUsuario = () => {
             >{`Notificaciones `}</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.dark, styles.darkLayout]} onPress={() => navigation.navigate("PantallaIniciarSesion")}>
+        <Pressable style={[styles.dark, styles.darkLayout]}>
           <Image
             style={[styles.darkIcon, styles.darkLayout]}
             contentFit="cover"
@@ -224,10 +222,10 @@ const styles = StyleSheet.create({
   body2: {
     top: 0,
     left: 0,
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     lineHeight: 18,
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     width: 111,
     position: "absolute",
   },
@@ -260,7 +258,7 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: FontSize.size_base,
     lineHeight: 21,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     width: 272,
   },
   spSubheadingRegular: {

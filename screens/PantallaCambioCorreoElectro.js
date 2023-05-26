@@ -3,10 +3,8 @@ import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambioCorreoElectro = () => {
-  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambioCorreoElectro}>
       <Image
@@ -59,14 +57,14 @@ const PantallaCambioCorreoElectro = () => {
           source={require("../assets/email1.png")}
         />
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark, styles.darkPosition]}>
         <Image
           style={[styles.darkIcon, styles.primaryPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark1, styles.darkPosition]}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary2, styles.primaryPosition]}
@@ -136,17 +134,17 @@ const styles = StyleSheet.create({
     height: 20,
     opacity: 0.54,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     left: 0,
     position: "absolute",
   },
   caption1: {
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     lineHeight: 15,
     color: Color.textColor,
     textAlign: "left",
     width: 328,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
   },
   caption: {
@@ -200,10 +198,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",

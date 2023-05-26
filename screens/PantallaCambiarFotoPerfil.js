@@ -9,10 +9,8 @@ import {
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambiarFotoPerfil = () => {
-  const navigation = useNavigation();
   return (
     <View style={styles.pantallaCambiarFotoPerfil}>
       <Image
@@ -40,14 +38,14 @@ const PantallaCambiarFotoPerfil = () => {
           </Text>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark, styles.darkPosition]}>
         <Image
           style={[styles.darkIcon, styles.lightPosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark1, styles.darkPosition]}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary, styles.bgLightPosition]}
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     width: 312,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 20,
     position: "absolute",
   },
@@ -198,10 +196,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   body2: {
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     color: Color.lightColor,
     textAlign: "center",
     justifyContent: "center",
@@ -231,11 +229,11 @@ const styles = StyleSheet.create({
   },
   caption1: {
     left: 6,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     lineHeight: 15,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
   },
   caption: {

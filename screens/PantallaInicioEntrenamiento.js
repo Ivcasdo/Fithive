@@ -1,37 +1,17 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
-import Submenu from "./PantallaMenu";
-import { useState } from "react";
 
-const PantallaInicioEntrenamiento = ({ visible, onClose}) => {
-  const navigation = useNavigation();
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
-  const handleOpenSubmenu = () => {
-    setIsSubmenuOpen(true);
-  };
-  const handleCloseSubmenu = () => {
-    setIsSubmenuOpen(false);
-  };
-  const handleScreenPress = () => {
-    if (isSubmenuOpen) {
-      handleCloseSubmenu();
-    }
-  };
+const PantallaInicioEntrenamiento = () => {
   return (
-    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicioEntrenamiento}>
-      <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.pantallaInicioEntrenamientoChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
-      </Pressable>
       <Text style={styles.planDeEntrenamiento}>{`Plan 
 de entrenamiento  `}</Text>
       <Text style={styles.semanaX}>Semana x</Text>
@@ -52,7 +32,7 @@ de entrenamiento  `}</Text>
           <Text style={styles.subheading}>Entrenamiento espalda</Text>
         </Pressable>
       </View>
-      <Pressable style={[styles.accent, styles.accentLayout]} onPress={() => navigation.navigate("PantallaBibliotecaDeEntrenamientos")}>
+      <Pressable style={[styles.accent, styles.accentLayout]}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -66,7 +46,7 @@ de entrenamiento  `}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent2, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPlanesDeEntrenamiento")}>
+      <Pressable style={[styles.accent2, styles.darkPosition]}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -81,7 +61,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent4, styles.accentLayout]} onPress={() => navigation.navigate("PlantillaBibliotecaDeEjercicios")}>
+      <Pressable style={[styles.accent4, styles.accentLayout]}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -95,7 +75,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaRealizarEntrenamiento")}>
+      <Pressable style={[styles.dark, styles.darkPosition]}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -111,9 +91,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
-    </TouchableWithoutFeedback>
   );
 };
 
@@ -160,7 +138,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   bodyTypo1: {
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
     textTransform: "uppercase",
     color: Color.textColor,
@@ -175,7 +153,7 @@ const styles = StyleSheet.create({
   },
   bodyTypo: {
     justifyContent: "center",
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
     textTransform: "uppercase",
     fontSize: FontSize.size_4xs,
@@ -196,8 +174,8 @@ const styles = StyleSheet.create({
     left: 29,
     textAlign: "left",
     color: Color.black,
-    fontFamily: FontFamily.spCaptionRegular,
-    fontSize: FontSize.spTitleMedium_size,
+    fontFamily: FontFamily.robotoRegular,
+    fontSize: FontSize.size_xl,
     position: "absolute",
   },
   semanaX: {
@@ -205,8 +183,8 @@ const styles = StyleSheet.create({
     left: 221,
     textAlign: "center",
     color: Color.black,
-    fontFamily: FontFamily.spCaptionRegular,
-    fontSize: FontSize.spTitleMedium_size,
+    fontFamily: FontFamily.robotoRegular,
+    fontSize: FontSize.size_xl,
     position: "absolute",
   },
   frameChild: {
@@ -246,7 +224,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     textAlign: "left",
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     position: "absolute",
   },
   spSubheadingRegular: {
@@ -282,7 +260,7 @@ const styles = StyleSheet.create({
     top: 7,
     left: 1,
     fontSize: FontSize.size_4xs,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
     textTransform: "uppercase",
   },
