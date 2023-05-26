@@ -2,28 +2,20 @@ import * as React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { Color, FontFamily, Border, FontSize } from "../GlobalStyles";
+import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
 const PantallaInicio1 = () => {
   return (
-    <View style={[styles.pantallaInicio1, styles.calendarBg]}>
+    <View style={styles.pantallaInicio1}>
       <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
       <Text style={styles.calendario}>Calendario</Text>
-      <Pressable style={[styles.accent, styles.accentLayout]}>
-        <LinearGradient
-          style={styles.accent1}
-          locations={[0, 1]}
-          colors={["#1dde7d", "#72dfc5"]}
-        />
-        <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
-      </Pressable>
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
-          <View style={styles.arrowLayout}>
+          <View style={[styles.arrow, styles.arrowFlexBox]}>
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
@@ -33,7 +25,7 @@ const PantallaInicio1 = () => {
           <Text style={[styles.february2021, styles.february2021FlexBox]}>
             February 2021
           </Text>
-          <View style={[styles.arrow1, styles.arrowLayout]}>
+          <View style={[styles.arrow1, styles.arrowFlexBox]}>
             <Image
               style={styles.vectorIcon}
               contentFit="cover"
@@ -42,7 +34,7 @@ const PantallaInicio1 = () => {
           </View>
         </View>
         <View style={[styles.dates, styles.rowFlexBox]}>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>MON</Text>
             <Text style={styles.text}>1</Text>
             <Text style={styles.text}>8</Text>
@@ -50,7 +42,7 @@ const PantallaInicio1 = () => {
             <Text style={styles.text}>22</Text>
             <Text style={styles.text}>29</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>TUE</Text>
             <Text style={styles.text}>2</Text>
             <Text style={styles.text}>9</Text>
@@ -58,17 +50,17 @@ const PantallaInicio1 = () => {
             <Text style={styles.text}>23</Text>
             <Text style={styles.text}>30</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>WED</Text>
             <Text style={styles.text}>3</Text>
             <Text style={styles.text}>10</Text>
             <Text style={styles.text}>17</Text>
-            <View style={[styles.wrapper, styles.lightFlexBox]}>
+            <View style={[styles.wrapper, styles.arrowFlexBox]}>
               <Text style={styles.text}>24</Text>
             </View>
             <Text style={styles.text}>31</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>THU</Text>
             <Text style={styles.text}>4</Text>
             <Text style={styles.text}>11</Text>
@@ -76,7 +68,7 @@ const PantallaInicio1 = () => {
             <Text style={styles.text}>25</Text>
             <Text style={[styles.text19, styles.monTypo]}>1</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>FRI</Text>
             <Text style={styles.text}>5</Text>
             <Text style={styles.text}>12</Text>
@@ -84,7 +76,7 @@ const PantallaInicio1 = () => {
             <Text style={styles.text}>26</Text>
             <Text style={[styles.text19, styles.monTypo]}>2</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>SAT</Text>
             <Text style={styles.text}>6</Text>
             <Text style={styles.text}>13</Text>
@@ -92,7 +84,7 @@ const PantallaInicio1 = () => {
             <Text style={styles.text}>27</Text>
             <Text style={[styles.text19, styles.monTypo]}>3</Text>
           </View>
-          <View style={styles.rowFlexBox}>
+          <View style={[styles.row, styles.rowFlexBox]}>
             <Text style={[styles.mon, styles.monTypo]}>SUN</Text>
             <Text style={styles.text}>7</Text>
             <Text style={styles.text}>14</Text>
@@ -102,16 +94,6 @@ const PantallaInicio1 = () => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent2, styles.accentLayout]}>
-        <LinearGradient
-          style={styles.accent1}
-          locations={[0, 1]}
-          colors={["#1dde7d", "#72dfc5"]}
-        />
-        <Text style={[styles.body21, styles.bodyTypo]}>
-          IR A Entrenamientos
-        </Text>
-      </Pressable>
       <View style={styles.entrenamiento}>
         <Text style={[styles.entrenamiento1, styles.february2021FlexBox]}>
           Entrenamiento
@@ -119,14 +101,14 @@ const PantallaInicio1 = () => {
         <View style={styles.entrenamiento1Parent}>
           <View style={[styles.entrenamiento11, styles.entrenamientoPosition]}>
             <Image
-              style={[styles.lineIcon, styles.lineIconPosition]}
+              style={styles.lineIcon}
               contentFit="cover"
               source={require("../assets/line.png")}
             />
-            <View style={[styles.light, styles.lightFlexBox]}>
+            <View style={[styles.light, styles.lightPosition]}>
               <View style={styles.lightShadowBox} />
             </View>
-            <View style={[styles.spSubheadingRegular, styles.lineIconPosition]}>
+            <View style={styles.spSubheadingRegular}>
               <Text
                 style={styles.subheading}
               >{`Piernas                       `}</Text>
@@ -134,71 +116,71 @@ const PantallaInicio1 = () => {
           </View>
           <View style={[styles.entrenamiento12, styles.entrenamientoPosition]}>
             <Image
-              style={[styles.lineIcon, styles.lineIconPosition]}
+              style={styles.lineIcon}
               contentFit="cover"
               source={require("../assets/line.png")}
             />
-            <View style={[styles.light, styles.lightFlexBox]}>
+            <View style={[styles.light, styles.lightPosition]}>
               <View style={styles.lightShadowBox} />
             </View>
-            <View style={[styles.spSubheadingRegular, styles.lineIconPosition]}>
+            <View style={styles.spSubheadingRegular}>
               <Text style={styles.subheading}>Estiramientos 1</Text>
             </View>
           </View>
         </View>
       </View>
+      <Pressable style={[styles.accent, styles.accentLayout]}>
+        <View style={styles.lightPosition}>
+          <LinearGradient
+            style={[styles.bgAccent, styles.bgAccentPosition]}
+            locations={[0, 1]}
+            colors={["#1dde7d", "#72dfc5"]}
+          />
+        </View>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={[styles.body2, styles.bodyTypo]}>Cambiar vista</Text>
+          </View>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.accent2, styles.accentLayout]}>
+        <View style={styles.lightPosition}>
+          <LinearGradient
+            style={[styles.bgAccent, styles.bgAccentPosition]}
+            locations={[0, 1]}
+            colors={["#1dde7d", "#72dfc5"]}
+          />
+        </View>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={[styles.body21, styles.bodyTypo]}>
+              Ir a entrenamientos
+            </Text>
+          </View>
+        </View>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  calendarBg: {
-    backgroundColor: Color.lightColor,
-    overflow: "hidden",
-  },
   calendarPosition: {
     left: 13,
     position: "absolute",
   },
-  accentLayout: {
-    height: 35,
-    width: 94,
-    position: "absolute",
-  },
-  bodyTypo: {
-    height: 27,
-    width: 103,
-    display: "flex",
-    color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
-    fontWeight: "500",
-    textTransform: "uppercase",
-    left: -4,
-    top: 4,
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    position: "absolute",
-  },
   rowFlexBox: {
     justifyContent: "space-between",
-    alignSelf: "stretch",
     alignItems: "center",
+    alignSelf: "stretch",
     overflow: "hidden",
+  },
+  arrowFlexBox: {
+    justifyContent: "center",
+    alignItems: "center",
   },
   february2021FlexBox: {
     textAlign: "left",
     color: Color.black,
-  },
-  arrowLayout: {
-    height: 24,
-    width: 24,
-    backgroundColor: Color.whitesmoke,
-    borderRadius: Border.br_81xl,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
   },
   monTypo: {
     opacity: 0.5,
@@ -206,18 +188,50 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: Color.black,
   },
-  lightFlexBox: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
   entrenamientoPosition: {
     height: 17,
     left: -15,
     right: 71,
     position: "absolute",
   },
-  lineIconPosition: {
-    left: 16,
+  lightPosition: {
+    left: "0%",
+    bottom: "0%",
+    right: "0%",
+    top: "0%",
+    height: "100%",
+    position: "absolute",
+    width: "100%",
+  },
+  accentLayout: {
+    height: 40,
+    width: 97,
+    left: 21,
+    position: "absolute",
+  },
+  bgAccentPosition: {
+    left: 0,
+    right: 0,
+  },
+  flatdefaultPosition: {
+    marginTop: -12,
+    top: "50%",
+    height: 24,
+    position: "absolute",
+  },
+  bodyTypo: {
+    height: 22,
+    width: 74,
+    display: "flex",
+    fontFamily: FontFamily.spBUTTON,
+    fontWeight: "500",
+    textTransform: "uppercase",
+    left: 3,
+    top: 1,
+    color: Color.textColor,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
     position: "absolute",
   },
   pantallaInicio1Child: {
@@ -234,30 +248,22 @@ const styles = StyleSheet.create({
     fontSize: FontSize.spTitleMedium_size,
     position: "absolute",
   },
-  accent1: {
-    left: 0,
-    borderRadius: Border.br_80xl,
-    backgroundColor: Color.accentColor,
-    bottom: 0,
-    right: 0,
-    top: 0,
-    position: "absolute",
-  },
-  body2: {
-    fontSize: FontSize.size_3xs,
-  },
-  accent: {
-    top: 299,
-    left: 21,
-  },
   vectorIcon: {
     width: 8,
     height: 10,
   },
+  arrow: {
+    height: 24,
+    width: 24,
+    backgroundColor: Color.whitesmoke,
+    borderRadius: Border.br_81xl,
+    justifyContent: "center",
+    flexDirection: "row",
+    overflow: "hidden",
+  },
   february2021: {
     fontWeight: "700",
     fontFamily: FontFamily.interBold,
-    textAlign: "left",
     fontSize: FontSize.spBUTTON_size,
   },
   arrow1: {
@@ -266,10 +272,18 @@ const styles = StyleSheet.create({
         rotate: "-180deg",
       },
     ],
+    height: 24,
+    width: 24,
+    backgroundColor: Color.whitesmoke,
+    borderRadius: Border.br_81xl,
+    justifyContent: "center",
+    flexDirection: "row",
+    overflow: "hidden",
   },
   month: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
   },
   mon: {
     fontSize: FontSize.spCaptionRegular_size,
@@ -280,6 +294,10 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.interRegular,
     textAlign: "left",
     color: Color.black,
+  },
+  row: {
+    alignItems: "center",
+    alignSelf: "stretch",
   },
   wrapper: {
     backgroundColor: "#79fb9d",
@@ -294,7 +312,8 @@ const styles = StyleSheet.create({
   dates: {
     marginTop: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
     flex: 1,
   },
   calendar: {
@@ -305,23 +324,16 @@ const styles = StyleSheet.create({
     padding: 16,
     overflow: "hidden",
     backgroundColor: Color.lightColor,
-  },
-  body21: {
-    fontSize: FontSize.size_5xs,
-  },
-  accent2: {
-    top: 513,
-    left: 24,
+    left: 13,
   },
   entrenamiento1: {
     left: 5,
     width: 141,
     height: 26,
-    textAlign: "left",
     top: 0,
     fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.spTitleMedium_size,
-    color: Color.black,
+    textAlign: "left",
     position: "absolute",
   },
   lineIcon: {
@@ -329,7 +341,9 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     height: 1,
     opacity: 0.24,
+    left: 16,
     bottom: 0,
+    position: "absolute",
     overflow: "hidden",
   },
   lightShadowBox: {
@@ -347,29 +361,26 @@ const styles = StyleSheet.create({
     backgroundColor: Color.lightColor,
   },
   light: {
-    height: "100%",
-    top: "0%",
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
     display: "none",
-    position: "absolute",
-    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   subheading: {
     fontSize: FontSize.size_smi,
     lineHeight: 17,
+    color: Color.textColor,
     textAlign: "left",
     alignSelf: "stretch",
-    color: Color.textColor,
     fontFamily: FontFamily.spCaptionRegular,
   },
   spSubheadingRegular: {
     marginTop: -8,
+    right: 0,
     top: "50%",
+    left: 16,
     justifyContent: "center",
     alignItems: "center",
-    right: 0,
+    position: "absolute",
   },
   entrenamiento11: {
     top: 0,
@@ -393,11 +404,40 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
   },
+  bgAccent: {
+    borderRadius: Border.br_80xl,
+    backgroundColor: Color.accentColor,
+    bottom: 0,
+    left: 0,
+    top: 0,
+    position: "absolute",
+  },
+  body2: {
+    fontSize: FontSize.size_4xs,
+  },
+  spBody2Medium: {
+    left: 0,
+    right: 0,
+  },
+  flatdefault: {
+    right: 8,
+    left: 8,
+  },
+  accent: {
+    top: 293,
+  },
+  body21: {
+    fontSize: FontSize.size_5xs,
+  },
+  accent2: {
+    top: 529,
+  },
   pantallaInicio1: {
     height: 800,
     overflow: "hidden",
     width: "100%",
     flex: 1,
+    backgroundColor: Color.lightColor,
   },
 });
 
