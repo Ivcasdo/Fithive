@@ -1,20 +1,73 @@
 import React, { useState } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, TextInput, Text, Pressable } from "react-native";
+import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import PantallaCreacionDeEntrenami from "./PantallaCreacionDeEntrenami1";
+import PantallaCreacionDeEntrenamientos2 from "./PantallaCreacionDeEntrenami2";
+import PantallaCreacionDeEntrenamientos3 from "./PantallaCreacionDeEntrenami";
 const PantallaCreacionDeEntrenami4 = () => {
   const [switchOnValue, setSwitchOnValue] = useState(false);
 
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }if (isPantallaCreacionDeEntrenamiVisible){
+      handleCerrarPantallaCreacionDeEntrenami();
+    }if (isPantallaCreacionDeEntrenami2Visible){
+      handleCerrarPantallaCreacionDeEntrenami2();
+    }if (isPantallaCreacionDeEntrenami3Visible){
+      handleCerrarPantallaCreacionDeEntrenami3();
+    }
+  };
+
+  const [isPantallaCreacionDeEntrenamiVisible, setIsPantallaCreacionDeEntrenamiVisible] = useState(false);
+  const handleAbrirPantallaCreacionDeEntrenami = () => {
+    setIsPantallaCreacionDeEntrenamiVisible(true);
+  };
+  const handleCerrarPantallaCreacionDeEntrenami = () => {
+    setIsPantallaCreacionDeEntrenamiVisible(false);
+  };
+
+  const [isPantallaCreacionDeEntrenami2Visible, setIsPantallaCreacionDeEntrenami2Visible] = useState(false);
+  const handleAbrirPantallaCreacionDeEntrenami2 = () => {
+    setIsPantallaCreacionDeEntrenami2Visible(true);
+  };
+  const handleCerrarPantallaCreacionDeEntrenami2 = () => {
+    setIsPantallaCreacionDeEntrenami2Visible(false);
+    setIsPantallaCreacionDeEntrenamiVisible(false);
+  };
+
+  const [isPantallaCreacionDeEntrenami3Visible, setIsPantallaCreacionDeEntrenami3Visible] = useState(false);
+  const handleAbrirPantallaCreacionDeEntrenami3 = () => {
+    setIsPantallaCreacionDeEntrenami3Visible(true);
+  };
+  const handleCerrarPantallaCreacionDeEntrenami3 = () => {
+    setIsPantallaCreacionDeEntrenami3Visible(false);
+    setIsPantallaCreacionDeEntrenamiVisible(false);
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCreacionDeEntrenami}>
+    <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.pantallaCreacionDeEntrenamiChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={[styles.default, styles.defaultPosition]}>
         <View style={styles.stroke}>
           <View style={[styles.bgPrimary, styles.body22Position]} />
@@ -43,7 +96,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           <Text style={styles.caption1}>Tipo de entrenamiento</Text>
         </View>
       </View>
-      <Pressable style={styles.default2}>
+      <Pressable style={styles.default2} onPress={handleAbrirPantallaCreacionDeEntrenami}>
         <Image
           style={styles.lightIcon}
           contentFit="cover"
@@ -76,7 +129,7 @@ ejercicio`}</Text>
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.darkPosition]}>
+      <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.body22Position]}
@@ -90,7 +143,7 @@ ejercicio`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.body22Position]}
@@ -120,7 +173,14 @@ ejercicio`}</Text>
           />
         </View>
       </View>
+      {isPantallaCreacionDeEntrenamiVisible && (
+        <PantallaCreacionDeEntrenami onabrirPantallaCreacionDeEntrenamientos2={handleAbrirPantallaCreacionDeEntrenami2}  onabrirPantallaCreacionDeEntrenamientos3={handleAbrirPantallaCreacionDeEntrenami3} onClose={handleCerrarPantallaCreacionDeEntrenami} />
+      )}
+      {isPantallaCreacionDeEntrenami2Visible && <PantallaCreacionDeEntrenamientos2 onClose={handleCerrarPantallaCreacionDeEntrenami2} />}
+      {isPantallaCreacionDeEntrenami3Visible && <PantallaCreacionDeEntrenamientos3 onClose={handleCerrarPantallaCreacionDeEntrenami3} />}
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -136,7 +196,9 @@ const styles = StyleSheet.create({
     left: 0,
   },
   body22Layout: {
+    marginTop: -12,
     height: 24,
+    top: "55%",
     position: "absolute",
   },
   frameChildShadowBox: {

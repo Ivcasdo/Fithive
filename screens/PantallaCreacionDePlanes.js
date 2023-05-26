@@ -6,7 +6,6 @@ import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import { useState } from "react";
-import anadirentrenamiento from "./PantallaCreacionDeEntrenami3"
 import PantallaCreacionDePlanes3 from "./PantallaCreacionDePlanes3";
 const PantallaCreacionDePlanes = ({ visible, onClose}) => {
   const navigation = useNavigation();
@@ -21,6 +20,8 @@ const PantallaCreacionDePlanes = ({ visible, onClose}) => {
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
+    }if(isanadirentrenamientoVisible){
+      handleCerraranadirentrenamiento();
     }
   };
 
