@@ -1,140 +1,93 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
+import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
-const PlantillaBibliotecaDeEjerci = () => {
+const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
+  const handleCerrarPantallaSuperpuesta = () => {
+    onClose();
+  };
   return (
     <View style={styles.plantillaBibliotecaDeEjerci}>
-      <View style={[styles.firstLevel, styles.coverPosition]}>
-        <View style={styles.dialog}>
-          <View style={styles.colorsbgCardPosition}>
-            <View style={[styles.bgLight, styles.strokePosition]} />
-          </View>
+      <View style={[styles.lightHamburger, styles.defaultLayout]}>
+        <View style={styles.lightPosition}>
+          <View style={[styles.bgLight, styles.primaryPosition]} />
         </View>
-        <View style={[styles.lightHamburger, styles.defaultLayout]}>
-          <View style={styles.colorsbgCardPosition}>
-            <View style={[styles.bgLight, styles.strokePosition]} />
-          </View>
-          <View style={[styles.spTitleMedium, styles.firstLevelPosition]}>
-            <Text style={styles.title}>Nuevo ejercicio</Text>
-          </View>
-          <Image
-            style={[styles.closeIcon, styles.searchLayout]}
-            contentFit="cover"
-            source={require("../assets/close.png")}
-          />
-          <View style={[styles.search, styles.searchLayout]}>
-            <View style={styles.colorsbgCardPosition}>
-              <View style={[styles.iconsButton, styles.strokePosition]} />
-            </View>
-            <View style={styles.colorsbgCardPosition}>
-              <View
-                style={[styles.iconsColorizer1, styles.colorsbgCardPosition]}
-              />
-            </View>
-          </View>
-          <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
-            <View style={styles.colorsbgCardPosition}>
-              <View style={[styles.iconsButton, styles.strokePosition]} />
-            </View>
-            <View style={styles.colorsbgCardPosition}>
-              <View
-                style={[styles.iconsColorizer1, styles.colorsbgCardPosition]}
-              />
-            </View>
-          </View>
-          <Image
-            style={[styles.logoSampleIcon, styles.flatdefaultPosition]}
-            contentFit="cover"
-            source={require("../assets/logo-sample.png")}
-          />
+        <View style={styles.spTitleMedium}>
+          <Text style={styles.title}>Nuevo ejercicio</Text>
         </View>
-        <View style={[styles.cover, styles.coverPosition]}>
-          <View style={[styles.bgLight, styles.strokePosition]} />
-          <Pressable style={[styles.dark, styles.darkPosition]}>
-            <View style={styles.colorsbgCardPosition}>
-              <LinearGradient
-                style={styles.primaryShadowBox}
-                locations={[0, 1]}
-                colors={["#1a73e9", "#6c92f4"]}
-              />
-            </View>
-            <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body2, styles.bodyTypo]}>empezar</Text>
-              </View>
-            </View>
-          </Pressable>
-          <Pressable style={[styles.dark2, styles.darkLayout]}>
-            <Image
-              style={[styles.darkIcon, styles.strokePosition]}
-              contentFit="cover"
-              source={require("../assets/-dark1.png")}
-            />
-            <View style={[styles.flatdefault1, styles.darkPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body21, styles.bodyTypo]}>borrar</Text>
-              </View>
-            </View>
-          </Pressable>
-          <Pressable style={[styles.dark3, styles.darkLayout]}>
-            <Image
-              style={[styles.darkIcon, styles.strokePosition]}
-              contentFit="cover"
-              source={require("../assets/-dark1.png")}
-            />
-            <View style={[styles.flatdefault1, styles.darkPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body21, styles.bodyTypo]}>editar</Text>
-              </View>
-            </View>
-          </Pressable>
-        </View>
-        <View style={[styles.default, styles.defaultLayout]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary1, styles.strokePosition]} />
-          </View>
-          <TextInput
-            style={styles.spSubheadingRegular}
-            placeholder="Ejercicio de fuerza "
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <View style={styles.caption}>
-            <Text
-              style={[styles.caption1, styles.captionTypo]}
-            >{`Tipo de ejercicio `}</Text>
-          </View>
-        </View>
-        <Pressable style={styles.dark4}>
-          <View style={styles.colorsbgCardPosition}>
-            <LinearGradient
-              style={styles.primaryShadowBox}
-              locations={[0, 1]}
-              colors={["#1a73e9", "#6c92f4"]}
-            />
-          </View>
-          <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-            <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-              <Text style={[styles.body23, styles.bodyTypo]}>guardar</Text>
-            </View>
-          </View>
+        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
+        <Image
+          style={[styles.closeIcon, styles.darkLayout]}
+          contentFit="cover"
+          source={require("../assets/close.png")}
+        />
         </Pressable>
-        <View style={[styles.default1, styles.defaultLayout]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary1, styles.strokePosition]} />
+        <View style={[styles.search, styles.darkLayout]}>
+          <View style={styles.lightPosition}>
+            <View style={[styles.iconsButton, styles.primaryPosition]} />
           </View>
-          <TextInput
-            style={styles.spSubheadingRegular}
-            placeholder="Ejercicio 2"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          <View style={styles.lightPosition}>
+            <View style={[styles.iconsColorizer1, styles.lightPosition]} />
+          </View>
+        </View>
+        <View style={[styles.bookmarkPlusOutline, styles.darkLayout]}>
+          <View style={styles.lightPosition}>
+            <View style={[styles.iconsButton, styles.primaryPosition]} />
+          </View>
+          <View style={styles.lightPosition}>
+            <View style={[styles.iconsColorizer1, styles.lightPosition]} />
+          </View>
+        </View>
+        <Image
+          style={[styles.logoSampleIcon, styles.flatdefaultPosition]}
+          contentFit="cover"
+          source={require("../assets/logo-sample.png")}
+        />
+      </View>
+      <View style={[styles.default, styles.defaultLayout]}>
+        <View style={[styles.stroke, styles.primaryPosition]}>
+          <View style={[styles.bgPrimary, styles.primaryPosition]} />
+        </View>
+        <TextInput
+          style={styles.spSubheadingRegular}
+          placeholder="Ejercicio de fuerza "
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        />
+        <View style={styles.caption}>
+          <Text
+            style={[styles.caption1, styles.captionTypo]}
+          >{`Tipo de ejercicio `}</Text>
+        </View>
+      </View>
+      <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleCerrarPantallaSuperpuesta}>
+        <View style={styles.lightPosition}>
+          <LinearGradient
+            style={[styles.bgPrimary1, styles.primaryPosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
           />
-          <View style={styles.caption}>
-            <Text style={[styles.caption3, styles.captionTypo]}>Nombre</Text>
+        </View>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={styles.body2}>guardar</Text>
           </View>
+        </View>
+      </Pressable>
+      <View style={[styles.default1, styles.defaultLayout]}>
+        <View style={[styles.stroke, styles.primaryPosition]}>
+          <View style={[styles.bgPrimary, styles.primaryPosition]} />
+        </View>
+        <TextInput
+          style={styles.spSubheadingRegular}
+          placeholder="Ejercicio 2"
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption3, styles.captionTypo]}>Nombre</Text>
         </View>
       </View>
     </View>
@@ -142,31 +95,21 @@ const PlantillaBibliotecaDeEjerci = () => {
 };
 
 const styles = StyleSheet.create({
-  coverPosition: {
-    left: 0,
-    right: 0,
+  defaultLayout: {
+    height: 56,
+    position: "absolute",
   },
-  strokePosition: {
+  primaryPosition: {
     bottom: 0,
     left: 0,
     right: 0,
     position: "absolute",
   },
-  defaultLayout: {
-    height: 56,
-    position: "absolute",
-  },
-  firstLevelPosition: {
-    bottom: 16,
-    position: "absolute",
-  },
-  searchLayout: {
-    width: 40,
+  darkLayout: {
     height: 40,
-    top: 8,
     position: "absolute",
   },
-  colorsbgCardPosition: {
+  lightPosition: {
     left: "0%",
     bottom: "0%",
     right: "0%",
@@ -180,104 +123,71 @@ const styles = StyleSheet.create({
     marginTop: -12,
     position: "absolute",
   },
-  darkPosition: {
-    bottom: 8,
-    position: "absolute",
-  },
-  bodyTypo: {
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
-    height: 24,
-    fontFamily: FontFamily.spBUTTON,
-    fontWeight: "500",
-    top: 0,
-    left: 0,
-    position: "absolute",
-  },
-  darkLayout: {
-    width: 72,
-    bottom: 8,
-    height: 40,
-    display: "none",
-    position: "absolute",
-  },
   captionTypo: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   bgLight: {
     top: 0,
     backgroundColor: Color.lightColor,
-  },
-  dialog: {
-    shadowRadius: 16,
-    elevation: 16,
-    display: "none",
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 16,
-    },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
+    bottom: 0,
   },
   title: {
-    fontSize: FontSize.spTitleMedium_size,
+    fontSize: FontSize.size_xl,
     lineHeight: 26,
     width: 216,
     height: 24,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   spTitleMedium: {
     top: 16,
     right: 72,
+    bottom: 16,
     left: 72,
+    position: "absolute",
   },
   closeIcon: {
+    width: 40,
+    top: 8,
     height: 40,
     left: 8,
   },
   iconsButton: {
     borderRadius: Border.br_11xs,
-    top: 0,
     display: "none",
+    top: 0,
     backgroundColor: Color.lightColor,
+    bottom: 0,
   },
   iconsColorizer1: {
     backgroundColor: Color.grayColor,
   },
   search: {
     right: 56,
-    height: 40,
     display: "none",
+    width: 40,
+    top: 8,
+    height: 40,
   },
   bookmarkPlusOutline: {
     right: 8,
-    height: 40,
     display: "none",
+    width: 40,
+    top: 8,
+    height: 40,
   },
   logoSampleIcon: {
     marginLeft: -59,
@@ -287,88 +197,11 @@ const styles = StyleSheet.create({
     display: "none",
   },
   lightHamburger: {
-    top: 0,
     left: 0,
     right: 0,
-  },
-  primaryShadowBox: {
-    backgroundColor: Color.accentColor,
-    elevation: 4,
-    shadowRadius: 4,
-    borderRadius: Border.br_7xs,
-    bottom: 0,
     top: 0,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 16,
-    },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
-    left: 0,
-    right: 0,
-    position: "absolute",
   },
-  body2: {
-    width: 132,
-    color: Color.lightColor,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
-  },
-  spBody2Medium: {
-    height: 24,
-    left: 0,
-    right: 0,
-  },
-  flatdefault: {
-    right: 8,
-    left: 8,
-    height: 24,
-  },
-  dark: {
-    right: 200,
-    left: 12,
-    height: 40,
-    display: "none",
-  },
-  darkIcon: {
-    maxWidth: "100%",
-    maxHeight: "100%",
-    opacity: 0.32,
-    top: 0,
-    overflow: "hidden",
-  },
-  body21: {
-    width: 56,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
-    color: Color.textColor,
-  },
-  flatdefault1: {
-    right: 8,
-    left: 8,
-    top: 8,
-    bottom: 8,
-  },
-  dark2: {
-    left: 254,
-  },
-  dark3: {
-    left: 171,
-  },
-  cover: {
-    bottom: 314,
-    height: 72,
-    position: "absolute",
-  },
-  bgPrimary1: {
+  bgPrimary: {
     backgroundColor: Color.textColor,
     top: 0,
   },
@@ -381,7 +214,7 @@ const styles = StyleSheet.create({
     height: 20,
     opacity: 0.54,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     left: 0,
     right: 0,
     position: "absolute",
@@ -401,22 +234,49 @@ const styles = StyleSheet.create({
     right: 15,
     left: 165,
   },
-  body23: {
-    width: 112,
-    color: Color.lightColor,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
+  bgPrimary1: {
+    borderRadius: Border.br_7xs,
+    shadowColor: "rgba(38, 50, 56, 0.08)",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    elevation: 4,
+    shadowOpacity: 1,
+    backgroundColor: Color.accentColor,
+    top: 0,
   },
-  dark4: {
-    right: 203,
-    bottom: 265,
-    left: 29,
-    height: 40,
+  body2: {
+    fontSize: FontSize.size_sm,
+    textTransform: "uppercase",
+    color: Color.lightColor,
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 112,
+    height: 24,
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
+    left: 0,
+    top: 0,
     position: "absolute",
+  },
+  spBody2Medium: {
+    height: 24,
+    left: 0,
+    right: 0,
+  },
+  flatdefault: {
+    right: 8,
+    left: 8,
+    height: 24,
+  },
+  dark: {
+    top: 144,
+    right: 203,
+    left: 29,
   },
   caption3: {
     width: 109,
@@ -426,18 +286,13 @@ const styles = StyleSheet.create({
     right: 223,
     left: 28,
   },
-  firstLevel: {
-    height: 449,
-    bottom: 16,
-    position: "absolute",
-    backgroundColor: Color.lightColor,
-  },
   plantillaBibliotecaDeEjerci: {
-    flex: 1,
-    height: 800,
-    overflow: "hidden",
+    flex: 0.35,
+    height: 209,
     width: "100%",
     backgroundColor: Color.lightColor,
+    position: "absolute",
+    bottom: 0,
   },
 });
 

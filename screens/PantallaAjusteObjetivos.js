@@ -4,175 +4,170 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
-const PantallaAjusteObjetivos = () => {
+const PantallaAjusteObjetivos = ({ onClose }) => {
+  const handleCerrarPantallaSuperpuesta = () => {
+    onClose();
+  };
   return (
     <View style={styles.pantallaAjusteObjetivos}>
-      <View style={[styles.firstLevel, styles.strokePosition]}>
-        <View style={[styles.dialog, styles.dialogShadowBox]}>
-          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-            <View style={[styles.bgLight, styles.lightPosition]} />
-          </View>
+      <View style={[styles.dialog, styles.dialogShadowBox]}>
+        <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+          <View style={[styles.bgLight, styles.lightPosition]} />
         </View>
-        <View style={[styles.lightHamburger, styles.lightPosition]}>
-          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-            <View style={[styles.bgLight, styles.lightPosition]} />
-          </View>
-          <View style={styles.spTitleMedium}>
-            <Text style={styles.title}>Cambiar Objetivo</Text>
-          </View>
-          <Image
-            style={[styles.closeIcon, styles.searchLayout]}
-            contentFit="cover"
-            source={require("../assets/close.png")}
-          />
-          <View style={[styles.search, styles.searchLayout]}>
-            <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-              <View style={[styles.iconsButton, styles.lightPosition]} />
-            </View>
-            <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-              <View style={[styles.iconsColorizer1, styles.bgPrimary4Bg]} />
-            </View>
-          </View>
-          <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
-            <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-              <View style={[styles.iconsButton, styles.lightPosition]} />
-            </View>
-            <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-              <View style={[styles.iconsColorizer1, styles.bgPrimary4Bg]} />
-            </View>
-          </View>
-          <Image
-            style={[styles.logoSampleIcon, styles.flatdefaultPosition]}
-            contentFit="cover"
-            source={require("../assets/logo-sample.png")}
-          />
-        </View>
-        <View style={[styles.default, styles.defaultPosition]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary, styles.lightPosition]} />
-          </View>
-          <TextInput
-            style={styles.spSubheadingRegular}
-            placeholder=" 77 kg"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption1, styles.captionTypo]}>{`Peso `}</Text>
-          </View>
-        </View>
-        <View style={[styles.default1, styles.defaultPosition]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary, styles.lightPosition]} />
-          </View>
-          <TextInput
-            style={styles.spSubheadingRegular}
-            placeholder="22"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption1, styles.captionTypo]}>Edad</Text>
-          </View>
-        </View>
-        <View style={[styles.default2, styles.darkPosition]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary, styles.lightPosition]} />
-          </View>
-          <TextInput
-            style={styles.spSubheadingRegular}
-            placeholder=" 180 cm"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption1, styles.captionTypo]}>Altura</Text>
-          </View>
-        </View>
-        <Pressable style={[styles.dark, styles.darkPosition]}>
-          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
-            <LinearGradient
-              style={[styles.bgPrimary3, styles.lightPosition]}
-              locations={[0, 1]}
-              colors={["#1a73e9", "#6c92f4"]}
-            />
-          </View>
-          <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-            <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-              <Text style={styles.body2}>guardar</Text>
-            </View>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.dropdown, styles.dropdownLayout]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
-          </View>
-          <View style={styles.spSubheadingRegular3}>
-            <Text style={[styles.subheading, styles.subheadingTypo]}>
-              Bajar de peso
-            </Text>
-          </View>
-          <Image
-            style={styles.dropdownIcon}
-            contentFit="cover"
-            source={require("../assets/dropdown1.png")}
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption7, styles.dropdownLayout]}>
-              Objetivo
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.dropdown1, styles.caption9Layout]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
-          </View>
-          <View style={styles.spSubheadingRegular3}>
-            <Text style={[styles.subheading1, styles.caption9Layout]}>
-              Muy activo
-            </Text>
-          </View>
-          <Image
-            style={styles.dropdownIcon}
-            contentFit="cover"
-            source={require("../assets/dropdown1.png")}
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption9, styles.caption9Layout]}>
-              Nivel de actividad
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.dropdown2, styles.dropdown2Layout]}>
-          <View style={[styles.stroke, styles.strokePosition]}>
-            <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
-          </View>
-          <View style={styles.spSubheadingRegular3}>
-            <Text style={[styles.subheading2, styles.dropdown2Layout]}>
-              Masculino
-            </Text>
-          </View>
-          <Image
-            style={styles.dropdownIcon}
-            contentFit="cover"
-            source={require("../assets/dropdown1.png")}
-          />
-          <View style={styles.caption}>
-            <Text style={[styles.caption11, styles.dropdown2Layout]}>
-              Genero
-            </Text>
-          </View>
-        </Pressable>
       </View>
+      <View style={[styles.lightHamburger, styles.lightPosition]}>
+        <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+          <View style={[styles.bgLight, styles.lightPosition]} />
+        </View>
+        <View style={styles.spTitleMedium}>
+          <Text style={styles.title}>Cambiar Objetivo</Text>
+        </View>
+        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
+        <Image
+          style={[styles.closeIcon, styles.searchLayout]}
+          contentFit="cover"
+          source={require("../assets/close.png")}
+        />
+        </Pressable>
+        <View style={[styles.search, styles.searchLayout]}>
+          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+            <View style={[styles.iconsButton, styles.lightPosition]} />
+          </View>
+          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+            <View style={[styles.iconsColorizer1, styles.bgPrimary4Bg]} />
+          </View>
+        </View>
+        <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
+          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+            <View style={[styles.iconsButton, styles.lightPosition]} />
+          </View>
+          <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+            <View style={[styles.iconsColorizer1, styles.bgPrimary4Bg]} />
+          </View>
+        </View>
+        <Image
+          style={[styles.logoSampleIcon, styles.flatdefaultPosition]}
+          contentFit="cover"
+          source={require("../assets/logo-sample.png")}
+        />
+      </View>
+      <View style={[styles.default, styles.defaultPosition]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary, styles.lightPosition]} />
+        </View>
+        <TextInput
+          style={styles.spSubheadingRegular}
+          placeholder=" 77 kg"
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption1, styles.captionTypo]}>{`Peso `}</Text>
+        </View>
+      </View>
+      <View style={[styles.default1, styles.defaultPosition]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary, styles.lightPosition]} />
+        </View>
+        <TextInput
+          style={styles.spSubheadingRegular}
+          placeholder="22"
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption1, styles.captionTypo]}>Edad</Text>
+        </View>
+      </View>
+      <View style={[styles.default2, styles.darkPosition]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary, styles.lightPosition]} />
+        </View>
+        <TextInput
+          style={styles.spSubheadingRegular}
+          placeholder=" 180 cm"
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption1, styles.captionTypo]}>Altura</Text>
+        </View>
+      </View>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+        <View style={[styles.colorsbgCard, styles.dialogPosition]}>
+          <LinearGradient
+            style={[styles.bgPrimary3, styles.lightPosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
+          />
+        </View>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={styles.body2}>guardar</Text>
+          </View>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.dropdown, styles.dropdownLayout]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
+        </View>
+        <View style={styles.spSubheadingRegular3}>
+          <Text style={[styles.subheading, styles.subheadingTypo]}>
+            Bajar de peso
+          </Text>
+        </View>
+        <Image
+          style={styles.dropdownIcon}
+          contentFit="cover"
+          source={require("../assets/dropdown1.png")}
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption7, styles.dropdownLayout]}>Objetivo</Text>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.dropdown1, styles.caption9Layout]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
+        </View>
+        <View style={styles.spSubheadingRegular3}>
+          <Text style={[styles.subheading1, styles.caption9Layout]}>
+            Muy activo
+          </Text>
+        </View>
+        <Image
+          style={styles.dropdownIcon}
+          contentFit="cover"
+          source={require("../assets/dropdown1.png")}
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption9, styles.caption9Layout]}>
+            Nivel de actividad
+          </Text>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.dropdown2, styles.dropdown2Layout]}>
+        <View style={[styles.stroke, styles.lightPosition]}>
+          <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
+        </View>
+        <View style={styles.spSubheadingRegular3}>
+          <Text style={[styles.subheading2, styles.dropdown2Layout]}>
+            Masculino
+          </Text>
+        </View>
+        <Image
+          style={styles.dropdownIcon}
+          contentFit="cover"
+          source={require("../assets/dropdown1.png")}
+        />
+        <View style={styles.caption}>
+          <Text style={[styles.caption11, styles.dropdown2Layout]}>Genero</Text>
+        </View>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  strokePosition: {
-    left: 0,
-    right: 0,
-  },
   dialogShadowBox: {
     shadowOpacity: 1,
     shadowOffset: {
@@ -191,7 +186,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   lightPosition: {
-    top: 0,
     left: 0,
     right: 0,
   },
@@ -217,13 +211,13 @@ const styles = StyleSheet.create({
   },
   captionTypo: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   darkPosition: {
     left: 27,
@@ -236,12 +230,12 @@ const styles = StyleSheet.create({
   subheadingTypo: {
     lineHeight: 21,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 20,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   caption9Layout: {
     width: 132,
@@ -253,6 +247,8 @@ const styles = StyleSheet.create({
   },
   bgLight: {
     bottom: 0,
+    top: 0,
+    left: 0,
     position: "absolute",
     backgroundColor: Color.lightColor,
   },
@@ -271,16 +267,16 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   title: {
-    fontSize: FontSize.spTitleMedium_size,
+    fontSize: FontSize.size_xl,
     lineHeight: 26,
     width: 216,
     height: 24,
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   spTitleMedium: {
@@ -296,8 +292,10 @@ const styles = StyleSheet.create({
   },
   iconsButton: {
     borderRadius: Border.br_11xs,
-    display: "none",
     bottom: 0,
+    top: 0,
+    left: 0,
+    display: "none",
     position: "absolute",
     backgroundColor: Color.lightColor,
   },
@@ -328,11 +326,15 @@ const styles = StyleSheet.create({
   },
   lightHamburger: {
     height: 56,
+    top: 0,
+    left: 0,
     position: "absolute",
   },
   bgPrimary: {
     backgroundColor: Color.textColor,
     bottom: 0,
+    top: 0,
+    left: 0,
     position: "absolute",
   },
   stroke: {
@@ -344,7 +346,7 @@ const styles = StyleSheet.create({
   spSubheadingRegular: {
     opacity: 0.54,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 20,
     bottom: 6,
     left: 0,
@@ -380,6 +382,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
     backgroundColor: Color.accentColor,
+    bottom: 0,
+    top: 0,
+    left: 0,
     shadowOpacity: 1,
     shadowOffset: {
       width: 0,
@@ -387,10 +392,9 @@ const styles = StyleSheet.create({
     },
     shadowColor: "rgba(38, 50, 56, 0.08)",
     position: "absolute",
-    bottom: 0,
   },
   body2: {
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     textTransform: "uppercase",
     color: Color.lightColor,
     textAlign: "center",
@@ -399,10 +403,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 112,
     height: 24,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   spBody2Medium: {
@@ -416,15 +420,15 @@ const styles = StyleSheet.create({
     height: 24,
   },
   dark: {
+    top: 288,
     right: 205,
-    bottom: 137,
     height: 40,
   },
   bgPrimary4: {
-    top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+    top: 0,
   },
   subheading: {
     width: 135,
@@ -447,13 +451,13 @@ const styles = StyleSheet.create({
   },
   caption7: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   dropdown: {
     height: 48,
@@ -463,22 +467,22 @@ const styles = StyleSheet.create({
   subheading1: {
     lineHeight: 21,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 20,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   caption9: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   dropdown1: {
     height: 48,
@@ -488,40 +492,35 @@ const styles = StyleSheet.create({
   subheading2: {
     lineHeight: 21,
     fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 20,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   caption11: {
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 16,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     textAlign: "left",
     color: Color.textColor,
-    top: 0,
     left: 0,
+    top: 0,
   },
   dropdown2: {
     top: 150,
     left: 178,
     height: 48,
   },
-  firstLevel: {
-    height: 465,
-    bottom: 0,
-    position: "absolute",
-    backgroundColor: Color.lightColor,
-  },
   pantallaAjusteObjetivos: {
-    flex: 1,
-    height: 800,
-    overflow: "hidden",
+    flex: 0.58,
+    height: 349,
     width: "100%",
     backgroundColor: Color.lightColor,
+    position: "absolute",
+    bottom: 0,
   },
 });
 

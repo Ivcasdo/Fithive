@@ -12,9 +12,33 @@ import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 
-const PantallaMenu = () => {
-
+const PantallaMenu = ({ onClose }) => {
   const navigation = useNavigation();
+
+  const handleboton1 = () => {
+    navigation.navigate("PantallaInicio1");
+    onClose();
+  };
+  const handleboton2 = () => {
+    navigation.navigate("PantallaInicioEntrenamiento");
+    onClose();
+  };
+  const handleboton3 = () => {
+    navigation.navigate("PantallaInicioNutricion");
+    onClose();
+  };
+  const handleboton4 = () => {
+    navigation.navigate("PantallaMedidasCorporales");
+    onClose();
+  };
+  const handleboton5 = () => {
+    navigation.navigate("PantallaEstadisticas");
+    onClose();
+  };
+  const handleboton6 = () => {
+    navigation.navigate("PantallaPerfilDeUsuario");
+    onClose();
+  };
   return (
     
  
@@ -64,7 +88,7 @@ const PantallaMenu = () => {
         <View style={[styles.dark, styles.darkPosition]}>
           <View style={styles.lightPosition} />
         </View>
-        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+        <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]} onPress={handleboton6}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -79,7 +103,7 @@ const PantallaMenu = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicio1")}>
+        <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]} onPress={handleboton1}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -92,7 +116,7 @@ const PantallaMenu = () => {
             <Text style={[styles.body21, styles.bodyTypo]}>Home</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
+        <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]} onPress={handleboton2}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -105,7 +129,7 @@ const PantallaMenu = () => {
             <Text style={[styles.body21, styles.bodyTypo]}>Entrenamientos</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaMedidasCorporales")}>
+        <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]} onPress={handleboton4}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -120,7 +144,7 @@ const PantallaMenu = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaEstadisticas")}>
+        <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]} onPress={handleboton5}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>
@@ -134,7 +158,7 @@ const PantallaMenu = () => {
           </View>
         </Pressable>
         
-        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]} onPress={() => navigation.navigate("PantallaInicioNutricion")}>
+        <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]} onPress={handleboton3}>
           <View style={[styles.colorsbgCard, styles.shadowPosition]}>
             <View style={styles.lightPosition} />
           </View>

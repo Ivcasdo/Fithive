@@ -1,17 +1,46 @@
-import * as React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import PantallaMedidasCorporales2 from "./PantallaMedidasCorporales2";
 const PantallaMedidasCorporales = () => {
+  const navigation = useNavigation();
+
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }if(isPantallaMedidasCorporales2Visible){
+      handleCerrarPantallaMedidasCorporales2();
+    }
+  };
+  const [isPantallaMedidasCorporales2Visible, setIsPantallaMedidasCorporales2Visible] = useState(false);
+  const handleAbrirPantallaMedidasCorporales2 = () => {
+    setIsPantallaMedidasCorporales2Visible(true);
+  };
+  const handleCerrarPantallaMedidasCorporales2 = () => {
+    setIsPantallaMedidasCorporales2Visible(false);
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaMedidasCorporales}>
+      <Pressable onPress={handleOpenSubmenu}>
       <Image
         style={styles.pantallaMedidasCorporalesChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={[styles.frameParent, styles.parentLayout]}>
         <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
           <View style={[styles.frameChild, styles.frameChildShadowBox]} />
@@ -23,33 +52,33 @@ const PantallaMedidasCorporales = () => {
           <View style={[styles.frameChild3, styles.frameChildLayout]} />
           <View style={[styles.frameChild4, styles.frameChildLayout]} />
           <View
-            style={[styles.spSubheadingRegularParent, styles.subheadingLayout6]}
+            style={[styles.spSubheadingRegularParent, styles.subheadingLayout7]}
           >
             <View
               style={[styles.spSubheadingRegular, styles.subheadingPosition1]}
             >
-              <Text style={[styles.subheading, styles.subheadingTypo2]}>
+              <Text style={[styles.subheading, styles.subheadingTypo3]}>
                 Cintura
               </Text>
             </View>
             <View
               style={[styles.spSubheadingRegular1, styles.subheadingPosition1]}
             >
-              <Text style={[styles.subheading1, styles.subheadingTypo1]}>
+              <Text style={[styles.subheading1, styles.subheadingTypo2]}>
                 Indice de grasa
               </Text>
             </View>
             <View
               style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}
             >
-              <Text style={[styles.subheading2, styles.subheadingTypo1]}>
+              <Text style={[styles.subheading2, styles.subheadingTypo2]}>
                 Fecha
               </Text>
             </View>
             <View
               style={[styles.spSubheadingRegular3, styles.subheadingPosition1]}
             >
-              <Text style={[styles.subheading3, styles.subheadingTypo2]}>
+              <Text style={[styles.subheading3, styles.subheadingTypo3]}>
                 Peso
               </Text>
             </View>
@@ -57,7 +86,7 @@ const PantallaMedidasCorporales = () => {
           <View
             style={[
               styles.spSubheadingRegularWrapper,
-              styles.subheadingLayout5,
+              styles.subheadingLayout6,
             ]}
           >
             <View
@@ -82,9 +111,7 @@ const PantallaMedidasCorporales = () => {
               </Text>
             </View>
           </View>
-          <View
-            style={[styles.spSubheadingRegularFrame, styles.subheadingLayout3]}
-          >
+          <View style={[styles.spSubheadingRegularFrame, styles.body2Layout]}>
             <View
               style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
             >
@@ -180,7 +207,7 @@ const PantallaMedidasCorporales = () => {
             </View>
           </View>
         </View>
-        <Pressable style={[styles.accent, styles.body2Position]}>
+        <Pressable style={[styles.accent, styles.accentPosition]} onPress={handleAbrirPantallaMedidasCorporales2}>
           <View style={styles.accent1}>
             <LinearGradient
               style={[styles.bgAccent, styles.subheadingPosition]}
@@ -188,16 +215,20 @@ const PantallaMedidasCorporales = () => {
               colors={["#1dde7d", "#72dfc5"]}
             />
           </View>
-          <View style={[styles.flatdefault, styles.subheadingPosition1]}>
-            <View style={[styles.spBody2Medium, styles.subheadingPosition]} />
+          <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+            <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+              <Text style={[styles.body2, styles.body2Layout]}>
+                Añadir medidas
+              </Text>
+            </View>
           </View>
-          <Text style={[styles.body2, styles.body2Position]}>
-            Añadir medidas
-          </Text>
         </Pressable>
       </View>
       <Text style={styles.medidasCorporales}>Medidas corporales</Text>
+      {isPantallaMedidasCorporales2Visible && <PantallaMedidasCorporales2 onClose={handleCerrarPantallaMedidasCorporales2} />}
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -235,7 +266,7 @@ const styles = StyleSheet.create({
     top: 0,
     position: "absolute",
   },
-  subheadingLayout6: {
+  subheadingLayout7: {
     height: 23,
     overflow: "hidden",
   },
@@ -245,33 +276,33 @@ const styles = StyleSheet.create({
     top: "50%",
     position: "absolute",
   },
-  subheadingTypo2: {
+  subheadingTypo3: {
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     lineHeight: 15,
-    fontSize: FontSize.spCaptionRegular_size,
+    fontSize: FontSize.size_xs,
     height: 24,
     left: 0,
     top: 0,
     position: "absolute",
   },
-  subheadingTypo1: {
+  subheadingTypo2: {
     lineHeight: 14,
     fontSize: FontSize.size_2xs,
     alignItems: "center",
     display: "flex",
     textAlign: "left",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     height: 24,
     left: 0,
     top: 0,
     position: "absolute",
   },
-  subheadingLayout5: {
+  subheadingLayout6: {
     width: 81,
     position: "absolute",
   },
@@ -281,14 +312,10 @@ const styles = StyleSheet.create({
   },
   subheadingFlexBox: {
     justifyContent: "center",
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
-    top: 0,
   },
   subheadingLayout4: {
     width: 38,
@@ -302,9 +329,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     left: 0,
     top: 0,
+  },
+  body2Layout: {
+    height: 22,
+    position: "absolute",
   },
   subheadingLayout3: {
     width: 40,
@@ -329,8 +360,14 @@ const styles = StyleSheet.create({
     top: 46,
     overflow: "hidden",
   },
-  body2Position: {
-    top: 4,
+  accentPosition: {
+    top: 0,
+    position: "absolute",
+  },
+  flatdefaultPosition: {
+    marginTop: -12,
+    height: 24,
+    top: "50%",
     position: "absolute",
   },
   pantallaMedidasCorporalesChild: {
@@ -420,6 +457,11 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading4: {
+    lineHeight: 18,
+    fontSize: FontSize.size_sm,
+    justifyContent: "center",
+    fontFamily: FontFamily.robotoRegular,
+    top: 0,
     width: 81,
     position: "absolute",
     height: 24,
@@ -450,13 +492,13 @@ const styles = StyleSheet.create({
   },
   subheading6: {
     justifyContent: "center",
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    lineHeight: 18,
+    fontSize: FontSize.size_sm,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
     height: 24,
     position: "absolute",
@@ -468,22 +510,22 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   spSubheadingRegularFrame: {
-    height: 22,
+    width: 40,
+    left: 0,
     top: 23,
-    position: "absolute",
     overflow: "hidden",
   },
   subheading7: {
     width: 52,
     height: 21,
     justifyContent: "center",
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    lineHeight: 18,
+    fontSize: FontSize.size_sm,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
     left: 0,
   },
@@ -502,13 +544,13 @@ const styles = StyleSheet.create({
   },
   subheading8: {
     justifyContent: "center",
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    lineHeight: 18,
+    fontSize: FontSize.size_sm,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
     left: 0,
   },
@@ -526,7 +568,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     left: 0,
     top: 0,
   },
@@ -540,13 +582,13 @@ const styles = StyleSheet.create({
     width: 40,
     left: 0,
     justifyContent: "center",
-    lineHeight: 18,
-    fontSize: FontSize.spBUTTON_size,
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
-    fontFamily: FontFamily.spCaptionRegular,
+    lineHeight: 18,
+    fontSize: FontSize.size_sm,
+    fontFamily: FontFamily.robotoRegular,
     top: 0,
   },
   spSubheadingRegularWrapper3: {
@@ -573,7 +615,6 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_80xl,
     backgroundColor: Color.accentColor,
     top: 0,
-    right: 0,
     position: "absolute",
   },
   accent1: {
@@ -585,37 +626,32 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
   },
-  spBody2Medium: {
-    marginTop: -12,
-    height: 24,
-    top: "50%",
-    position: "absolute",
-  },
-  flatdefault: {
-    right: 8,
-    left: 8,
-    height: 24,
-    top: "50%",
-  },
   body2: {
-    left: -4,
+    top: 1,
+    left: 3,
+    fontSize: FontSize.size_4xs,
     textTransform: "uppercase",
     fontWeight: "500",
-    fontFamily: FontFamily.spBUTTON,
-    width: 84,
-    height: 27,
-    fontSize: FontSize.size_5xs,
-    top: 4,
+    fontFamily: FontFamily.robotoMedium,
+    width: 56,
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
   },
+  spBody2Medium: {
+    right: 0,
+    left: 0,
+  },
+  flatdefault: {
+    right: 8,
+    left: 8,
+  },
   accent: {
-    left: 231,
-    width: 75,
-    height: 35,
+    left: 227,
+    width: 79,
+    height: 38,
   },
   frameParent: {
     top: 129,
@@ -626,10 +662,10 @@ const styles = StyleSheet.create({
   },
   medidasCorporales: {
     top: 80,
-    fontSize: FontSize.spTitleMedium_size,
+    fontSize: FontSize.size_xl,
     color: Color.black,
     textAlign: "center",
-    fontFamily: FontFamily.spCaptionRegular,
+    fontFamily: FontFamily.robotoRegular,
     left: 22,
     position: "absolute",
   },

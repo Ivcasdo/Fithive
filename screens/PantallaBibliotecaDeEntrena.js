@@ -1,11 +1,14 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressabl } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
+
 const PantallaBibliotecaDeEntrena = () => {
+  
   return (
+   
     <View style={styles.pantallaBibliotecaDeEntrena}>
       <View style={[styles.firstLevel, styles.coverPosition]}>
         <View style={[styles.dialog, styles.dialogShadowBox]}>
@@ -89,7 +92,9 @@ const PantallaBibliotecaDeEntrena = () => {
           </Pressable>
         </View>
       </View>
+      
     </View>
+    
   );
 };
 

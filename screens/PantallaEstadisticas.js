@@ -1,16 +1,35 @@
-import * as React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, Color, FontSize } from "../GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
 const PantallaEstadisticas = () => {
+  const navigation = useNavigation();
+
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaEstadisticas}>
+      <Pressable onPress={handleOpenSubmenu}>
       <Image
         style={styles.pantallaEstadisticasChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={styles.nbchartsLinechatsWrapper}>
         <View style={[styles.nbchartsLinechats, styles.textPosition]}>
           <Image
@@ -96,7 +115,10 @@ const PantallaEstadisticas = () => {
         </View>
       </View>
       <Text style={[styles.estadisticas, styles.textTypo]}>Estadisticas</Text>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    
+    </TouchableWithoutFeedback>
   );
 };
 

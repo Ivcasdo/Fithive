@@ -1,17 +1,48 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
+import PlantillaBibliotecaDeEjercios1 from "./PlantillaBibliotecaDeEjerci";
+import { useState } from "react";
 
 const PlantillaBibliotecaDeEjerci2 = () => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }if (isPantallaCreacionDeEjerciciosVisible){
+      handleCerrarPantallaCreacionDeEjercicios();
+    }
+  }
+  const [isPantallaCreacionDeEjerciciosVisible, setIsPantallaCreacionDeEjerciciosVisible] = useState(false);
+  const handleAbrirPantallaCreacionDeEjercicios = () => {
+    setIsPantallaCreacionDeEjerciciosVisible(true);
+  };
+  const handleCerrarPantallaCreacionDeEjercicios = () => {
+    setIsPantallaCreacionDeEjerciciosVisible(false);
+  };
+
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.plantillaBibliotecaDeEjerci}>
+    <Pressable onPress={handleOpenSubmenu}> 
       <Image
         style={styles.plantillaBibliotecaDeEjerciChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.body21Position]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
@@ -46,7 +77,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.accent}>
+      <Pressable style={styles.accent} onPress={handleAbrirPantallaCreacionDeEjercicios}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.subheadingPosition1]}
@@ -60,7 +91,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.dark}>
+      <Pressable style={styles.dark} onPress={() => navigation.goBack()}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.subheadingPosition1]}
@@ -68,13 +99,16 @@ const PlantillaBibliotecaDeEjerci2 = () => {
             colors={["#1a73e9", "#6c92f4"]}
           />
         </View>
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition2]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition2]}>
             <Text style={[styles.body21, styles.bodyTypo]}>volver</Text>
           </View>
         </View>
       </Pressable>
+      {isPantallaCreacionDeEjerciciosVisible && <PlantillaBibliotecaDeEjercios1 onClose={handleCerrarPantallaCreacionDeEjercicios} />}
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -128,6 +162,12 @@ const styles = StyleSheet.create({
     marginTop: -12,
     height: 24,
     top: "50%",
+    position: "absolute",
+  },
+  flatdefaultPosition2: {
+    marginTop: -12,
+    height: 24,
+    top: "55%",
     position: "absolute",
   },
   bodyTypo: {

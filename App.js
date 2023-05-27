@@ -41,7 +41,7 @@ import PantallaCambioCorreoElectro from "./screens/PantallaCambioCorreoElectro";
 import PantallaCambioNombreUsuairo from "./screens/PantallaCambioNombreUsuairo";
 import PantallaCambioContrasea from "./screens/PantallaCambioContrasea";
 import PantallaPerfilDeUsuario from "./screens/PantallaPerfilDeUsuario";
-
+import PantallaCrearComida from "./screens/PantallaCrearComida";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
 
@@ -63,6 +63,11 @@ const App = () => {
       <NavigationContainer>
         {hideSplashScreen ? (
           <Stack.Navigator initialRouteName="PantallaIniciarSesion" screenOptions={{ headerShown: false }}>
+             <Stack.Screen
+              name="PantallaCrearComida"
+              component={PantallaCrearComida}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="PantallaInicio1"
               component={PantallaInicio1}

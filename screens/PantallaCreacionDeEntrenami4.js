@@ -129,7 +129,7 @@ ejercicio`}</Text>
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
+      <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.goBack()}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.body22Position]}
@@ -143,7 +143,7 @@ ejercicio`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.goBack()}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.body22Position]}

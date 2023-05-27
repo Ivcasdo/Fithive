@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     left: 0,
     color: Color.textColor,
-    top: 0,
+    top: -4,
   },
   body2Layout: {
     height: 24,
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     left: 0,
     color: Color.textColor,
-    top: 0,
+    top: 3,
     height: 24,
     fontSize: FontSize.spCaptionRegular_size,
   },

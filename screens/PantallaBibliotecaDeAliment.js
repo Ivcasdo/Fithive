@@ -1,17 +1,36 @@
-import * as React from "react";
-import { Pressable, StyleSheet, View, Text } from "react-native";
+import React, { useState } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
+import Submenu from "./PantallaMenu";
 const PantallaBibliotecaDeAliment = () => {
+  const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
+
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaBibliotecaDeAliment}>
+      <Pressable onPress={handleOpenSubmenu}>
       <Image
         style={styles.pantallaBibliotecaDeAlimentChild}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
+      </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.bgAccentPosition]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
@@ -66,7 +85,7 @@ const PantallaBibliotecaDeAliment = () => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.accentPosition]}>
+      <Pressable style={[styles.accent, styles.accentPosition]} onPress={() => navigation.navigate("PantallaCrearComida")} >
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -80,7 +99,7 @@ const PantallaBibliotecaDeAliment = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.accent2}>
+      <Pressable style={styles.accent2} onPress={() => navigation.goBack()}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -88,13 +107,15 @@ const PantallaBibliotecaDeAliment = () => {
             colors={["#1dde7d", "#72dfc5"]}
           />
         </View>
-        <View style={[styles.flatdefault1, styles.flatdefault1Position]}>
-          <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
+        <View style={[styles.flatdefault1, styles.flatdefault1Position2]}>
+          <View style={[styles.spBody2Medium, styles.flatdefault1Position2]}>
             <Text style={[styles.body21, styles.bodyTypo]}>Añadir al dia</Text>
           </View>
         </View>
       </Pressable>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -184,6 +205,12 @@ const styles = StyleSheet.create({
     marginTop: -12,
     height: 24,
     top: "50%",
+    position: "absolute",
+  },
+  flatdefault1Position2: {
+    marginTop: -12,
+    height: 24,
+    top: "55%",
     position: "absolute",
   },
   bodyTypo: {
