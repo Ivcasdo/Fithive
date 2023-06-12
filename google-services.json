@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "151360157474",
+    "project_id": "tfgivan-b5e4b",
+    "storage_bucket": "tfgivan-b5e4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:151360157474:android:c6bfd5f9e41a36f091d77b",
+        "android_client_info": {
+          "package_name": "io.invertase.firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "151360157474-uuresundv8a6tsh86bk4unc9c34arikf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFPLyrYwQflVZ3YBLaMpkuOp9up4hLLts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "151360157474-uuresundv8a6tsh86bk4unc9c34arikf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

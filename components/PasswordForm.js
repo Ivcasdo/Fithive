@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 
-const PasswordForm = () => {
+const PasswordForm = ({ value, onChangeText }) => {
   return (
     <View style={styles.default}>
       <View style={[styles.stroke, styles.strokePosition]} />
@@ -12,6 +12,8 @@ const PasswordForm = () => {
         placeholder="Password"
         keyboardType="default"
         placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        value={value}
+        onChangeText={onChangeText}
       />
       <Image
         style={[styles.lockIcon, styles.strokePosition]}

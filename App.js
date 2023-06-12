@@ -44,6 +44,8 @@ import PantallaPerfilDeUsuario from "./screens/PantallaPerfilDeUsuario";
 import PantallaCrearComida from "./screens/PantallaCrearComida";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity } from "react-native";
+import { useState, useEffect } from "react";
+import auth from '@react-native-firebase/auth';
 
 const App = () => {
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
@@ -53,6 +55,21 @@ const App = () => {
     Inter_regular: require("./assets/fonts/Inter_regular.ttf"),
     Inter_bold: require("./assets/fonts/Inter_bold.ttf"),
   });
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
 
   if (!fontsLoaded && !error) {
     return null;

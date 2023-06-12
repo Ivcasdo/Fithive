@@ -12,15 +12,29 @@ import TextInputForm from "../components/TextInputForm";
 import PasswordForm from "../components/PasswordForm";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, Padding, Border, FontSize } from "../GlobalStyles";
-
+import auth from '@react-native-firebase/auth';
+import { useState } from "react";
 const PantallaIniciarSesion = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
+  const handleLogin = () => {
+    auth().signInWithEmailAndPassword(email, password).then(() => {
+        console.log('Inicio de sesión exitoso');
+        navigation.navigate("PantallaInicio1")
+        // Realiza las acciones necesarias después del inicio de sesión exitoso
+      })
+      .catch((error) => {
+        console.log('Error en el inicio de sesión:', error);
+        // Maneja los errores del inicio de sesión
+      });
+  };
   return (
     <View style={styles.pantallaIniciarSesion}>
       <View style={styles.register2}>
-        <TextInputForm />
-        <PasswordForm />
+        <TextInputForm value={email} onChangeText={setEmail}/>
+        <PasswordForm value={password} onChangeText={setPassword}/>
       </View>
       <View style={styles.lineDottedParent}>
         <Image
@@ -59,7 +73,7 @@ const PantallaIniciarSesion = () => {
       </Pressable>
       <Pressable
         style={[styles.accent2, styles.accentPosition]}
-        onPress={() => navigation.navigate("PantallaInicio1")}
+        onPress={handleLogin}
       >
         <LinearGradient
           style={styles.accentShadowBox}
