@@ -11,10 +11,21 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import { useState, useEffect } from "react";
 
 const PantallaMenu = ({ onClose }) => {
   const navigation = useNavigation();
-
+  const user = auth().currentUser;
+  const userRef = database().ref(`users/${user.uid}`);
+  const [userName, setUsername] = useState(null);
+  useEffect(() => {
+    userRef.once('value', (snapshot) => {
+      const userData = snapshot.val();
+      setUsername(userData.nombre);
+    });
+  })
   const handleboton1 = () => {
     navigation.navigate("PantallaInicio1");
     onClose();
@@ -40,8 +51,6 @@ const PantallaMenu = ({ onClose }) => {
     onClose();
   };
   return (
-    
- 
     <View style={styles.pantallaMenu}>
       <View style={[styles.shadow, styles.shadowPosition]}>
         <View style={[styles.colorsbgCard, styles.shadowPosition]}>
@@ -65,7 +74,7 @@ const PantallaMenu = ({ onClose }) => {
         </View>
         <Pressable style={[styles.spBody1Regular, styles.body2Layout]}>
           <Text style={[styles.body1, styles.bodyLayout]}>
-            CorreoEjemplo99@gmail.com
+            {user.email}
           </Text>
           <Image
             style={styles.dropdownIcon}
@@ -74,7 +83,7 @@ const PantallaMenu = ({ onClose }) => {
           />
         </Pressable>
         <View style={[styles.spBody2Medium, styles.body2Layout]}>
-          <Text style={[styles.body2, styles.bodyTypo]}>Jazmin Lopez</Text>
+          <Text style={[styles.body2, styles.bodyTypo]}>{userName}</Text> 
         </View>
         <View style={[styles.avatar, styles.avatarPosition]}>
           <Image

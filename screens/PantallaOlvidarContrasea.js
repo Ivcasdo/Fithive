@@ -11,9 +11,40 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily, Padding, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import auth from '@react-native-firebase/auth';
 
 const PantallaOlvidarContrasea = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+ 
+
+  const handlePasswordRecovery = () => {
+    if (email === '') {
+      alert('Por favor, ingresa tu correo electrónico');
+      return;
+    }
+    auth().sendPasswordResetEmail(email).then(() => {
+        alert('Se ha enviado un correo para restablecer tu contraseña');
+        navigation.navigate("PantallaIniciarSesion")
+      })
+      .catch(error => {
+        switch (error.code) {
+          case 'auth/invalid-email':
+            alert('El correo electrónico no es válido');
+            break;
+          case 'auth/user-not-found':
+            alert('No se encontró ninguna cuenta con ese correo electrónico');
+            break;
+          case 'auth/network-request-failed':
+            alert('Error de red, verifica tu conexión a internet');
+            break;
+          default:
+            alert('Error desconocido:', error);
+        }
+      });
+    
+  };
   return (
     <View style={styles.pantallaOlvidarContrasea}>
       <View style={styles.register2}>
@@ -25,9 +56,11 @@ const PantallaOlvidarContrasea = () => {
           />
           <TextInput
             style={[styles.spSubheadingRegular, styles.body2FlexBox]}
-            placeholder="ejemplo1234@gmail.com"
+            placeholder="Correo electrónico"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={email}
+            onChangeText={setEmail}
           />
           <Image
             style={styles.emailIcon}
@@ -45,7 +78,7 @@ const PantallaOlvidarContrasea = () => {
         resizeMode="cover"
         source={require("../assets/lgo21.png")}
       />
-      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaIniciarSesion")}>
+      <Pressable style={styles.accent} onPress={handlePasswordRecovery}>
         <LinearGradient
           style={[styles.accent1, styles.darkPosition]}
           locations={[0, 1]}

@@ -4,7 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontSize, FontFamily } from "../GlobalStyles";
 
-const TextInputForm = () => {
+const TextInputForm = ({ value, onChangeText }) => {
   return (
     <View style={styles.focused}>
       <LinearGradient
@@ -17,6 +17,8 @@ const TextInputForm = () => {
         placeholder="ejemplo1234@gmail.com"
         keyboardType="default"
         placeholderTextColor="rgba(0, 0, 0, 0.87)"
+        value={value}
+        onChangeText={onChangeText}
       />
       <Image
         style={styles.emailIcon}

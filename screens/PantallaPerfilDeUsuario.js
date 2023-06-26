@@ -4,15 +4,36 @@ import {
   StyleSheet,
   Pressable,
   View,
-  Text,
+  Text,TouchableWithoutFeedback
 } from "react-native";
 import { Image } from "expo-image";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth from '@react-native-firebase/auth';
+import Submenu from "./PantallaMenu";
+import { useState } from "react";
 
 const PantallaPerfilDeUsuario = () => {
   const navigation = useNavigation();
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+
+  const handleOpenSubmenu = () => {
+    setIsSubmenuOpen(true);
+  };
+  const handleCloseSubmenu = () => {
+    setIsSubmenuOpen(false);
+  };
+  const handleScreenPress = () => {
+    if (isSubmenuOpen) {
+      handleCloseSubmenu();
+    }
+  };
+  const handleLogout = () => {
+    auth().signOut().then(() => console.log('User signed out!'));
+    navigation.navigate("PantallaIniciarSesion")
+  }
   return (
+    <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaPerfilDeUsuario}>
       <ImageBackground
         style={[
@@ -22,7 +43,7 @@ const PantallaPerfilDeUsuario = () => {
         resizeMode="cover"
         source={require("../assets/ellipse21.png")}
       />
-      <Pressable style={[styles.ellipseParent, styles.darkFlexBox]}>
+      <Pressable style={[styles.ellipseParent, styles.darkFlexBox]} onPress={handleOpenSubmenu}>
         <Image
           style={styles.frameChildLayout}
           contentFit="cover"
@@ -140,7 +161,7 @@ const PantallaPerfilDeUsuario = () => {
             >{`Notificaciones `}</Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.dark, styles.darkLayout]} onPress={() => navigation.navigate("PantallaIniciarSesion")}>
+        <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleLogout}>
           <Image
             style={[styles.darkIcon, styles.darkLayout]}
             contentFit="cover"
@@ -148,7 +169,9 @@ const PantallaPerfilDeUsuario = () => {
           />
         </Pressable>
       </View>
+      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

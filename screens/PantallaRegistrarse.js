@@ -11,10 +11,70 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import { useState } from "react";
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const PantallaRegistrarse = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userName, setUserName] = useState('');
 
+
+  const handleSignUp = () => {
+    if (email === '' || password === '' || confirmPassword === '' || userName === '') {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
+
+    if (password === confirmPassword) {
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user) {
+            const userRef = database().ref('users').child(user.uid);
+            userRef.set({
+              nombre: userName,
+              correo: email,
+              contraseña: password,
+              caloriasDiarias: 0, // Valor predeterminado, puedes ajustarlo según tus necesidades
+              medidasCorporales: [],
+              entrenamientos: [],
+              comidas: [],
+              planesDeEntrenamiento: [],
+              ejercicios: [],
+              entradasCalendario: []
+            });
+
+            navigation.navigate('PantallaIniciarSesion');
+          }
+        })
+        .catch((error) => {
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              alert('El correo electrónico ya está en uso');
+              break;
+            case 'auth/invalid-email':
+              alert('El correo electrónico no es válido');
+              break;
+            case 'auth/weak-password':
+              alert('La contraseña es débil');
+              break;
+            case 'auth/network-request-failed':
+              alert('Error de red, verifica tu conexión a internet');
+              break;
+            default:
+              console.log('Error desconocido:', error);
+              break;
+          }
+        });
+    } else {
+      alert('Las contraseñas no coinciden');
+    }
+  };
   return (
     <View style={styles.pantallaRegistrarse}>
       <View style={[styles.register2, styles.accentPosition]}>
@@ -29,6 +89,8 @@ const PantallaRegistrarse = () => {
             placeholder="ejemplo1233@gmail.com"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={email}
+            onChangeText={setEmail}
           />
           <Image
             style={[styles.emailIcon, styles.iconLayout]}
@@ -46,6 +108,8 @@ const PantallaRegistrarse = () => {
             placeholder="Nombre de usuario"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={userName}
+            onChangeText={setUserName}
           />
           <Image
             style={[styles.permIdentityIcon, styles.strokePosition]}
@@ -60,6 +124,8 @@ const PantallaRegistrarse = () => {
             placeholder="Password"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={password}
+            onChangeText={setPassword}
           />
           <Image
             style={[styles.permIdentityIcon, styles.strokePosition]}
@@ -74,6 +140,8 @@ const PantallaRegistrarse = () => {
             placeholder="Confirm password"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
           <Image
             style={[styles.permIdentityIcon, styles.strokePosition]}
@@ -82,7 +150,8 @@ const PantallaRegistrarse = () => {
           />
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.accentPosition]}>
+    
+      <Pressable style={[styles.accent, styles.accentPosition]} onPress={handleSignUp}>
         <LinearGradient
           style={[styles.accent1, styles.darkPosition]}
           locations={[0, 1]}
@@ -129,7 +198,6 @@ const PantallaRegistrarse = () => {
 const styles = StyleSheet.create({
   accentPosition: {
     left: 16,
-    top: "50%",
     position: "absolute",
   },
   darkPosition: {
@@ -164,8 +232,8 @@ const styles = StyleSheet.create({
   },
   flatdefaultPosition: {
     height: 24,
-    marginTop: -12,
     top: "50%",
+    marginTop: -12,
     position: "absolute",
   },
   body2Typo: {
@@ -236,7 +304,7 @@ const styles = StyleSheet.create({
     width: 32,
   },
   register2: {
-    marginTop: -208,
+    top: 192,
     right: 16,
     height: 312,
     paddingBottom: 82,
@@ -272,7 +340,7 @@ const styles = StyleSheet.create({
     left: 8,
   },
   accent: {
-    marginTop: 53,
+    top: 453,
     right: 22,
     height: 40,
   },

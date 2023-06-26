@@ -12,15 +12,53 @@ import TextInputForm from "../components/TextInputForm";
 import PasswordForm from "../components/PasswordForm";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, Padding, Border, FontSize } from "../GlobalStyles";
+import auth from '@react-native-firebase/auth';
+import { useState } from "react";
 
 const PantallaIniciarSesion = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
+  const handleLogin = () => {
+    if (email === '' || password === '') {
+      // El campo de correo electrónico o contraseña está vacío
+      alert('Por favor, ingresa tu correo electrónico y contraseña');
+      return;
+    }
+    auth().signInWithEmailAndPassword(email, password).then(() => {
+        console.log('Inicio de sesión exitoso');
+        navigation.navigate("PantallaInicio1")
+        // Realiza las acciones necesarias después del inicio de sesión exitoso
+      })
+      .catch((error) => {
+        switch (error.code) {
+          case 'auth/invalid-email':
+          alert('El correo electrónico no es válido');
+          break;
+        case 'auth/user-disabled':
+          alert('La cuenta de usuario está desactivada');
+          break;
+        case 'auth/user-not-found':
+          alert('No se encontró ninguna cuenta con ese correo electrónico');
+          break;
+        case 'auth/wrong-password':
+          alert('La contraseña es incorrecta');
+          break;
+        case 'auth/network-request-failed':
+          alert('Error de red, verifica tu conexión a internet');
+          break;
+        default:
+          alert('Ocurrió un error desconocido');
+        }
+      });
+    
+  };
   return (
     <View style={styles.pantallaIniciarSesion}>
       <View style={styles.register2}>
-        <TextInputForm />
-        <PasswordForm />
+        <TextInputForm value={email} onChangeText={setEmail}/>
+        <PasswordForm value={password} onChangeText={setPassword}/>
       </View>
       <View style={styles.lineDottedParent}>
         <Image
@@ -59,7 +97,7 @@ const PantallaIniciarSesion = () => {
       </Pressable>
       <Pressable
         style={[styles.accent2, styles.accentPosition]}
-        onPress={() => navigation.navigate("PantallaInicio1")}
+        onPress={handleLogin}
       >
         <LinearGradient
           style={styles.accentShadowBox}
