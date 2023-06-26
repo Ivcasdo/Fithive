@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
   pantallaMenu: {
     position: "absolute",
     flex: 1,
-    height: 800,
+    height: 900,
     width: "70%",
   },
 });

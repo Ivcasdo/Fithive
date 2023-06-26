@@ -6,10 +6,13 @@ import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import { useState } from "react";
+import moment from 'moment';
+import { Calendar } from 'react-native-calendars';
 
 const PantallaInicio1 = ({ visible, onClose}) => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -22,6 +25,22 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       handleCloseSubmenu();
     }
   };
+ 
+  
+  const handleDayPress = (day) => {
+    const selectedDay = moment(day.dateString).format('YYYY-MM-DD');
+    setSelectedDate(selectedDay);
+    // Aquí puedes actualizar los datos de la lista según el día seleccionado
+  };
+
+  const handlePreviousMonth = () => {
+    setSelectedDate(moment(selectedDate).subtract(1, 'month').format('YYYY-MM-DD'));
+  };
+
+  const handleNextMonth = () => {
+    setSelectedDate(moment(selectedDate).add(1, 'month').format('YYYY-MM-DD'));
+  };
+ 
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicio1}>
@@ -36,82 +55,53 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       <View style={[styles.calendar, styles.calendarPosition]}>
         <View style={[styles.month, styles.rowFlexBox]}>
           <View style={[styles.arrow, styles.arrowFlexBox]}>
-            <Image
+            <Pressable onPress={handlePreviousMonth}>
+              <Image
               style={styles.vectorIcon}
               contentFit="cover"
               source={require("../assets/vector1.png")}
-            />
+              />
+            </Pressable>
           </View>
           <Text style={[styles.february2021, styles.february2021FlexBox]}>
-            February 2021
+            {moment(selectedDate).format('MMMM YYYY')}
           </Text>
           <View style={[styles.arrow1, styles.arrowFlexBox]}>
-            <Image
-              style={styles.vectorIcon}
-              contentFit="cover"
-              source={require("../assets/vector11.png")}
-            />
+            <Pressable onPress={handleNextMonth}>
+              <Image
+                style={[styles.vectorIcon,{ transform: [{ rotateY: '180deg' }] }] }
+                contentFit="cover"
+                source={require("../assets/vector11.png")}
+              />
+            </Pressable>
           </View>
         </View>
-        <View style={[styles.dates, styles.rowFlexBox]}>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>MON</Text>
-            <Text style={styles.text}>1</Text>
-            <Text style={styles.text}>8</Text>
-            <Text style={styles.text}>15</Text>
-            <Text style={styles.text}>22</Text>
-            <Text style={styles.text}>29</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>TUE</Text>
-            <Text style={styles.text}>2</Text>
-            <Text style={styles.text}>9</Text>
-            <Text style={styles.text}>16</Text>
-            <Text style={styles.text}>23</Text>
-            <Text style={styles.text}>30</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>WED</Text>
-            <Text style={styles.text}>3</Text>
-            <Text style={styles.text}>10</Text>
-            <Text style={styles.text}>17</Text>
-            <View style={[styles.wrapper, styles.arrowFlexBox]}>
-              <Text style={styles.text}>24</Text>
-            </View>
-            <Text style={styles.text}>31</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>THU</Text>
-            <Text style={styles.text}>4</Text>
-            <Text style={styles.text}>11</Text>
-            <Text style={styles.text}>18</Text>
-            <Text style={styles.text}>25</Text>
-            <Text style={[styles.text19, styles.monTypo]}>1</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>FRI</Text>
-            <Text style={styles.text}>5</Text>
-            <Text style={styles.text}>12</Text>
-            <Text style={styles.text}>19</Text>
-            <Text style={styles.text}>26</Text>
-            <Text style={[styles.text19, styles.monTypo]}>2</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>SAT</Text>
-            <Text style={styles.text}>6</Text>
-            <Text style={styles.text}>13</Text>
-            <Text style={styles.text}>20</Text>
-            <Text style={styles.text}>27</Text>
-            <Text style={[styles.text19, styles.monTypo]}>3</Text>
-          </View>
-          <View style={[styles.row, styles.rowFlexBox]}>
-            <Text style={[styles.mon, styles.monTypo]}>SUN</Text>
-            <Text style={styles.text}>7</Text>
-            <Text style={styles.text}>14</Text>
-            <Text style={styles.text}>21</Text>
-            <Text style={styles.text}>28</Text>
-            <Text style={[styles.text19, styles.monTypo]}>4</Text>
-          </View>
+        <View style={[styles.dates, styles.rowFlexBox1]}>
+        <Calendar
+          onDayPress={handleDayPress}
+          current={selectedDate}
+          markedDates={{
+            [selectedDate]: { selected: true, selectedColor: '#1dde7d' },
+          }}
+          theme={{
+            'stylesheet.calendar.main': {
+              week: {
+                marginTop: 5, // Ajusta el espacio entre las filas de fechas
+                marginBottom: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+              },
+            },
+            'stylesheet.calendar.day.basic': {
+              base: {
+                width: 30, // Ajusta el tamaño de las celdas
+                height: 30,
+                alignItems: 'center',
+              },
+            },
+          }}
+          
+        />
         </View>
       </View>
       <View style={styles.entrenamiento}>
@@ -191,6 +181,12 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   rowFlexBox: {
+    justifyContent: "space-between",
+    alignItems: "center",
+    alignSelf: "stretch",
+    overflow: "hidden",
+  },
+  rowFlexBox1: {
     justifyContent: "space-between",
     alignItems: "center",
     alignSelf: "stretch",
@@ -280,6 +276,11 @@ const styles = StyleSheet.create({
     width: 8,
     height: 10,
   },
+  posCalendar:{
+    flex: 1,
+    alignItems: 'center', // Alinea el contenido al centro horizontalmente
+    justifyContent: 'center',
+  },
   arrow: {
     height: 24,
     width: 24,
@@ -338,7 +339,8 @@ const styles = StyleSheet.create({
     fontSize: FontSize.spBUTTON_size,
   },
   dates: {
-    marginTop: 20,
+    marginTop: 5,
+    height: 100 ,
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "stretch",
@@ -348,11 +350,12 @@ const styles = StyleSheet.create({
     top: 101,
     borderRadius: 5,
     width: 323,
-    height: 195,
+    height: 300,
     padding: 16,
     overflow: "hidden",
     backgroundColor: Color.lightColor,
     left: 13,
+    alignItems: "center"
   },
   entrenamiento1: {
     left: 5,
@@ -461,11 +464,11 @@ const styles = StyleSheet.create({
     top: 529,
   },
   pantallaInicio1: {
-    height: 800,
     overflow: "hidden",
     width: "100%",
     flex: 1,
     backgroundColor: Color.lightColor,
+    bottom: 14,
   },
 });
 
