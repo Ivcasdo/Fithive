@@ -7,12 +7,17 @@ import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import { useState } from "react";
 import moment from 'moment';
-import { Calendar } from 'react-native-calendars';
+import CalendarPicker from 'react-native-calendar-picker';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const PantallaInicio1 = ({ visible, onClose}) => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+  const user = auth().currentUser;
+  const userRef = database().ref(`users/${user.uid}`);
+  const [entrenamientos, setEntrenamientos] = useState([]);
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -26,21 +31,35 @@ const PantallaInicio1 = ({ visible, onClose}) => {
     }
   };
  
+  const obtenerEntrenamientos = async () => {
+      if (selectedDate) {
+        try {
+          const entradasSnapshot = await database()
+            .ref('users/${user.uid}/entradasCalendario')
+            .orderByChild('fecha')
+            .equalTo(selectedDate)
+            .once('value');
   
+          const entrenamientosList = [];
+          entradasSnapshot.forEach((entradaSnapshot) => {
+            const entrada = entradaSnapshot.val();
+            if (entrada.entrenamientos) {
+              const entradaEntrenamientos = Object.values(entrada.entrenamientos);
+              entrenamientosList.push(...entradaEntrenamientos);
+            }
+          });
+  
+          setEntrenamientos(entrenamientosList);
+        } catch (error) {
+          console.error('Error al obtener los entrenamientos', error);
+        }
+      }
+    };
   const handleDayPress = (day) => {
     const selectedDay = moment(day.dateString).format('YYYY-MM-DD');
     setSelectedDate(selectedDay);
     // Aquí puedes actualizar los datos de la lista según el día seleccionado
   };
-
-  const handlePreviousMonth = () => {
-    setSelectedDate(moment(selectedDate).subtract(1, 'month').format('YYYY-MM-DD'));
-  };
-
-  const handleNextMonth = () => {
-    setSelectedDate(moment(selectedDate).add(1, 'month').format('YYYY-MM-DD'));
-  };
- 
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicio1}>
@@ -52,56 +71,39 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       />
       </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
-      <View style={[styles.calendar, styles.calendarPosition]}>
-        <View style={[styles.month, styles.rowFlexBox]}>
-          <View style={[styles.arrow, styles.arrowFlexBox]}>
-            <Pressable onPress={handlePreviousMonth}>
-              <Image
-              style={styles.vectorIcon}
-              contentFit="cover"
-              source={require("../assets/vector1.png")}
-              />
-            </Pressable>
-          </View>
-          <Text style={[styles.february2021, styles.february2021FlexBox]}>
-            {moment(selectedDate).format('MMMM YYYY')}
-          </Text>
-          <View style={[styles.arrow1, styles.arrowFlexBox]}>
-            <Pressable onPress={handleNextMonth}>
-              <Image
-                style={[styles.vectorIcon,{ transform: [{ rotateY: '180deg' }] }] }
-                contentFit="cover"
-                source={require("../assets/vector11.png")}
-              />
-            </Pressable>
-          </View>
-        </View>
-        <View style={[styles.dates, styles.rowFlexBox1]}>
-        <Calendar
-          onDayPress={handleDayPress}
-          current={selectedDate}
-          markedDates={{
-            [selectedDate]: { selected: true, selectedColor: '#1dde7d' },
-          }}
-          theme={{
-            'stylesheet.calendar.main': {
-              week: {
-                marginTop: 5, // Ajusta el espacio entre las filas de fechas
-                marginBottom: 5,
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-              },
-            },
-            'stylesheet.calendar.day.basic': {
-              base: {
-                width: 30, // Ajusta el tamaño de las celdas
-                height: 30,
-                alignItems: 'center',
-              },
-            },
-          }}
-          
-        />
+      <View style={[styles.calendar, styles.calendarPosition1]}>
+        <View style={[styles.dates, styles.rowFlexBox]}>
+          <CalendarPicker
+            startFromMonday= {true}
+            onDateChange={handleDayPress}
+            selectedStartDate={selectedDate}
+            selectedDayColor="#1dde7d"
+            selectedDayTextColor="#ffffff"
+            weekdays={['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']}
+            months={['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']}
+            textStyle={{
+              fontSize: 12
+            }}
+            width= {300}
+            previousComponent = {
+              <View style={[styles.arrow, styles.arrowFlexBox]}>
+                <Image
+                  style={styles.vectorIcon}
+                  contentFit="cover"
+                  source={require("../assets/vector1.png")}
+                />
+              </View>
+            }
+            nextComponent = {
+              <View style={[styles.arrow1, styles.arrowFlexBox]}>
+                <Image
+                  style={[styles.vectorIcon,{ transform: [{ rotateY: '180deg' }] }] }
+                  contentFit="cover"
+                  source={require("../assets/vector11.png")}
+                />
+              </View>
+            }
+          />
         </View>
       </View>
       <View style={styles.entrenamiento}>
@@ -139,7 +141,7 @@ const PantallaInicio1 = ({ visible, onClose}) => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.accentLayout]}>
+      <Pressable style={[styles.accent, styles.accentLayout1]}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -178,19 +180,22 @@ const PantallaInicio1 = ({ visible, onClose}) => {
 const styles = StyleSheet.create({
   calendarPosition: {
     left: 13,
-    position: "absolute",
+    position: "relative",
+  },
+  calendarPosition1: {
+    left: 13,
+    position: "relative",
   },
   rowFlexBox: {
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     alignSelf: "stretch",
     overflow: "hidden",
-  },
-  rowFlexBox1: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    alignSelf: "stretch",
-    overflow: "hidden",
+    top: 0,
+    bottom: 100,
+    right: 17,
+    height: "100%",
+    width: "100%",
   },
   arrowFlexBox: {
     justifyContent: "center",
@@ -222,6 +227,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   accentLayout: {
+    height: 40,
+    width: 97,
+    left: 21,
+    position: "absolute",
+  },
+  accentLayout1: {
+    top: 350,
     height: 40,
     width: 97,
     left: 21,
@@ -264,7 +276,7 @@ const styles = StyleSheet.create({
     height: 31,
   },
   calendario: {
-    top: 69,
+    top: 60,
     left: 26,
     textAlign: "center",
     color: Color.black,
@@ -313,6 +325,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "stretch",
+    position: "relative",
+    zIndex: 2,
+    backgroundColor: "#fff",
   },
   mon: {
     fontSize: FontSize.spCaptionRegular_size,
@@ -339,23 +354,22 @@ const styles = StyleSheet.create({
     fontSize: FontSize.spBUTTON_size,
   },
   dates: {
-    marginTop: 5,
-    height: 100 ,
+
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "stretch",
     flex: 1,
+    position: "absolute",
   },
   calendar: {
-    top: 101,
     borderRadius: 5,
     width: 323,
     height: 300,
     padding: 16,
     overflow: "hidden",
     backgroundColor: Color.lightColor,
-    left: 13,
-    alignItems: "center"
+    alignItems: "center",
+    top:55,
   },
   entrenamiento1: {
     left: 5,
@@ -428,7 +442,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   entrenamiento: {
-    top: 349,
+    top: 390,
     width: 299,
     height: 160,
     left: 21,
@@ -468,7 +482,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
     backgroundColor: Color.lightColor,
-    bottom: 14,
+
   },
 });
 
