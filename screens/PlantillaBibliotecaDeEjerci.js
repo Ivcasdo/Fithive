@@ -3,11 +3,61 @@ import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { useState } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
+  const [nombreEjercicio, setNombreEjercicio] = useState('');
+  const [tipoEjercicio, setTipoEjercicio] = useState('');
+  const user = auth().currentUser;
+  const userRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}`);
+  
+
+  const handleNombreChange = (text) => {
+    setNombreEjercicio(text);
+  };
+  const handleTipoChange = (text) => {
+    setTipoEjercicio(text);
+  };
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  const handleCrearEjercicio = () => {
+    const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
+    console.log(ejerciciosRef);
+    ejerciciosRef.once('value', (snapshot) => {
+      if (snapshot.exists()) {
+        // El usuario ya tiene una lista de ejercicios
+        const ejercicios = snapshot.val();
+  
+        // Agregar el nuevo ejercicio a la lista existente
+        const nuevoEjercicio = {
+          nombre: nombreEjercicio,
+          tipo: tipoEjercicio,
+        };
+        const nuevoEjercicioRef = ejerciciosRef.push();
+        nuevoEjercicioRef.set(nuevoEjercicio);
+  
+        // Mostrar por consola la lista de ejercicios actualizada
+        console.log('Lista de ejercicios actualizada:', ejercicios);
+      } else {
+        // El usuario no tiene una lista de ejercicios
+        // Crear la lista de ejercicios y agregar el nuevo ejercicio
+        const nuevoEjercicio = {
+          nombre: nombreEjercicio,
+          tipo: tipoEjercicio,
+        };
+        const nuevoEjercicioRef = ejerciciosRef.push();
+        nuevoEjercicioRef.set(nuevoEjercicio ); // Usamos 0 como clave inicial para crear una lista indexada
+  
+        // Mostrar por consola la nueva lista de ejercicios
+        console.log('Nueva lista de ejercicios creada:', [nuevoEjercicio]);
+      }
+    });
+    onClose();
+  };
+
   return (
     <View style={styles.plantillaBibliotecaDeEjerci}>
       <View style={[styles.lightHamburger, styles.defaultLayout]}>
@@ -55,6 +105,8 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
           placeholder="Ejercicio de fuerza "
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={tipoEjercicio}
+          onChangeText={handleTipoChange}
         />
         <View style={styles.caption}>
           <Text
@@ -62,7 +114,7 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
           >{`Tipo de ejercicio `}</Text>
         </View>
       </View>
-      <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleCerrarPantallaSuperpuesta}>
+      <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleCrearEjercicio}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgPrimary1, styles.primaryPosition]}
@@ -85,6 +137,8 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
           placeholder="Ejercicio 2"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nombreEjercicio}
+          onChangeText={handleNombreChange}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption3, styles.captionTypo]}>Nombre</Text>

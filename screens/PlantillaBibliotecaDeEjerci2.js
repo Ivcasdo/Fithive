@@ -1,16 +1,21 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback, FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import PlantillaBibliotecaDeEjercios1 from "./PlantillaBibliotecaDeEjerci";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+
 
 const PlantillaBibliotecaDeEjerci2 = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [ejercicios, setEjercicios] = useState([]);
+  const user = auth().currentUser;
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -32,6 +37,28 @@ const PlantillaBibliotecaDeEjerci2 = () => {
   const handleCerrarPantallaCreacionDeEjercicios = () => {
     setIsPantallaCreacionDeEjerciciosVisible(false);
   };
+  useEffect(() => {
+    // Obtener la lista de ejercicios del usuario desde la base de datos
+    const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
+    ejerciciosRef.once('value').then(snapshot => {
+      const ejerciciosData = snapshot.val();
+      console.log(ejerciciosData);
+      if (ejerciciosData) {
+        const ejerciciosArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(ejerciciosData).forEach((key) => {
+          ejerciciosArray.push(ejerciciosData[key]);
+        });
+        setEjercicios(ejerciciosArray);
+        console.log(ejercicios);
+      }
+    });
+  }, []);
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.lineView, styles.frameLayout]} />
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
@@ -45,28 +72,17 @@ const PlantillaBibliotecaDeEjerci2 = () => {
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.body21Position]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingPosition]}>
-            {" "}
-            Ejercicio 3
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular1, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingPosition]}>
-            {" "}
-            Ejercicio 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingPosition]}>
-            {" "}
-            Ejercicio 1
-          </Text>
-        </View>
+        <FlatList
+          data={ejercicios}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View >
+              <Text style={[styles.subheading, styles.subheadingpo]}>{item.nombre}{index.toString()}</Text>
+              {index !== ejercicios.length && <FlatListItemseparator />}
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20}}
+        />
         <View style={styles.spSubheadingRegularWrapper}>
           <View
             style={[styles.spSubheadingRegular3, styles.subheadingPosition2]}
@@ -113,6 +129,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
 };
 
 const styles = StyleSheet.create({
+ 
   frameChildShadowBox: {
     height: 276,
     shadowOpacity: 1,
@@ -200,6 +217,7 @@ const styles = StyleSheet.create({
     },
     width: 299,
     position: "absolute",
+
   },
   frameItem: {
     top: 23,
@@ -208,7 +226,7 @@ const styles = StyleSheet.create({
     top: 46,
   },
   lineView: {
-    top: 68,
+    top:40,
   },
   frameChild1: {
     top: 90,
@@ -221,6 +239,7 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "left",
     fontFamily: FontFamily.spCaptionRegular,
+    zIndex: 2,
   },
   spSubheadingRegular: {
     marginTop: -70,
@@ -251,6 +270,10 @@ const styles = StyleSheet.create({
     right: 150,
     left: 5,
     height: 24,
+  },
+  subheadingpo:{
+    left: 5,
+    top:22,
   },
   spSubheadingRegularWrapper: {
     left: -1,

@@ -12,7 +12,7 @@ import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 import { useState } from "react";
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 
 const PantallaRegistrarse = () => {
@@ -35,20 +35,21 @@ const PantallaRegistrarse = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           if (user) {
-            const userRef = database().ref('users').child(user.uid);
-            userRef.set({
+            const userRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref('users').child(user.uid);
+            const newUser = {
               nombre: userName,
               correo: email,
               contraseña: password,
-              caloriasDiarias: 0, // Valor predeterminado, puedes ajustarlo según tus necesidades
-              medidasCorporales: [],
-              entrenamientos: [],
-              comidas: [],
-              planesDeEntrenamiento: [],
-              ejercicios: [],
-              entradasCalendario: []
-            });
-
+              caloriasDiarias: 0,
+              medidasCorporales: {},
+              comidas: {},
+              planesDeEntrenamiento: {},
+              entrenamientos: {},
+              ejercicios: {},
+              entradasCalendario: {}
+            };
+            console.log(newUser);
+            userRef.set(newUser);
             navigation.navigate('PantallaIniciarSesion');
           }
         })

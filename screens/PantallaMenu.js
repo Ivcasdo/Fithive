@@ -11,14 +11,14 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { useState, useEffect } from "react";
 
 const PantallaMenu = ({ onClose }) => {
   const navigation = useNavigation();
   const user = auth().currentUser;
-  const userRef = database().ref(`users/${user.uid}`);
+  const userRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}`);
   const [userName, setUsername] = useState(null);
   useEffect(() => {
     userRef.once('value', (snapshot) => {
