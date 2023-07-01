@@ -11,7 +11,7 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
   const [nombreEjercicio, setNombreEjercicio] = useState('');
   const [tipoEjercicio, setTipoEjercicio] = useState('');
   const user = auth().currentUser;
-  const userRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}`);
+
   
 
   const handleNombreChange = (text) => {
@@ -25,7 +25,6 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
   };
   const handleCrearEjercicio = () => {
     const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
-    console.log(ejerciciosRef);
     ejerciciosRef.once('value', (snapshot) => {
       if (snapshot.exists()) {
         // El usuario ya tiene una lista de ejercicios

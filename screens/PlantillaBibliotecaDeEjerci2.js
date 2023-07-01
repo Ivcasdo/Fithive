@@ -6,9 +6,9 @@ import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import PlantillaBibliotecaDeEjercios1 from "./PlantillaBibliotecaDeEjerci";
+import PlantillaBibliotecaDeEjercios2 from "./PlantillaBibliotecaDeEjerci1";
 import { useState, useEffect } from "react";
 import auth, { firebase } from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
 
 
 const PlantillaBibliotecaDeEjerci2 = () => {
@@ -16,7 +16,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [ejercicios, setEjercicios] = useState([]);
   const user = auth().currentUser;
-
+  const [itempantalla, setItempantalla] = useState(null);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -28,6 +28,8 @@ const PlantillaBibliotecaDeEjerci2 = () => {
       handleCloseSubmenu();
     }if (isPantallaCreacionDeEjerciciosVisible){
       handleCerrarPantallaCreacionDeEjercicios();
+    }if (isPantallaEditarEjerciciosVisible){
+      handleCerrarPantallaEditarEjercicios();
     }
   }
   const [isPantallaCreacionDeEjerciciosVisible, setIsPantallaCreacionDeEjerciciosVisible] = useState(false);
@@ -37,12 +39,21 @@ const PlantillaBibliotecaDeEjerci2 = () => {
   const handleCerrarPantallaCreacionDeEjercicios = () => {
     setIsPantallaCreacionDeEjerciciosVisible(false);
   };
+  const [isPantallaEditarEjerciciosVisible, setIsPantallaEditarEjerciciosVisible] = useState(false);
+  const handleAbrirPantallaEditarEjercicios = (ejercicio) => {
+    setItempantalla(ejercicio);
+    setIsPantallaEditarEjerciciosVisible(true);
+  };
+  const handleCerrarPantallaEditarEjercicios = () => {
+    setIsPantallaEditarEjerciciosVisible(false);
+  };
+
   useEffect(() => {
     // Obtener la lista de ejercicios del usuario desde la base de datos
     const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
-    ejerciciosRef.once('value').then(snapshot => {
+    const handleSnapshot = (snapshot) => {
       const ejerciciosData = snapshot.val();
-      console.log(ejerciciosData);
+
       if (ejerciciosData) {
         const ejerciciosArray = [];
         // Convertir los ejercicios en un array y actualizar el estado
@@ -50,9 +61,15 @@ const PlantillaBibliotecaDeEjerci2 = () => {
           ejerciciosArray.push(ejerciciosData[key]);
         });
         setEjercicios(ejerciciosArray);
-        console.log(ejercicios);
       }
-    });
+    };
+  
+    ejerciciosRef.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      ejerciciosRef.off('value', handleSnapshot);
+    };
   }, []);
   const FlatListItemseparator = () => {
     return (
@@ -76,12 +93,14 @@ const PlantillaBibliotecaDeEjerci2 = () => {
           data={ejercicios}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index}) => (
-            <View >
-              <Text style={[styles.subheading, styles.subheadingpo]}>{item.nombre}{index.toString()}</Text>
-              {index !== ejercicios.length && <FlatListItemseparator />}
+            <View style= {{marginBottom: 10,top:7}}>
+              <Pressable onPress={() => handleAbrirPantallaEditarEjercicios(item)}>
+                <Text style={[styles.subheading, styles.subheadingpo]}>{item.nombre}</Text>
+                {index !== ejercicios.length && <FlatListItemseparator />}
+              </Pressable>
             </View>
           )}
-          contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20}}
+          contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20, bottom:0, top:15}}
         />
         <View style={styles.spSubheadingRegularWrapper}>
           <View
@@ -122,6 +141,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
         </View>
       </Pressable>
       {isPantallaCreacionDeEjerciciosVisible && <PlantillaBibliotecaDeEjercios1 onClose={handleCerrarPantallaCreacionDeEjercicios} />}
+      {isPantallaEditarEjerciciosVisible && <PlantillaBibliotecaDeEjercios2  onClose={handleCerrarPantallaEditarEjercicios} item={itempantalla} />}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -144,7 +164,7 @@ const styles = StyleSheet.create({
   },
   body21Position: {
     left: 0,
-    top: 0,
+    top: 10,
   },
   frameLayout: {
     height: 1,
@@ -226,7 +246,7 @@ const styles = StyleSheet.create({
     top: 46,
   },
   lineView: {
-    top:40,
+    top:0,
   },
   frameChild1: {
     top: 90,
@@ -273,7 +293,7 @@ const styles = StyleSheet.create({
   },
   subheadingpo:{
     left: 5,
-    top:22,
+    
   },
   spSubheadingRegularWrapper: {
     left: -1,
@@ -283,6 +303,7 @@ const styles = StyleSheet.create({
     top: 0,
     position: "absolute",
     overflow: "hidden",
+    bottom: -1,
   },
   rectangleParent: {
     top: 71,
