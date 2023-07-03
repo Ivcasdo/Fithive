@@ -8,6 +8,7 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  // crear ejercicio biblioteca
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.lightHamburger, styles.spBody2MediumPosition]}>

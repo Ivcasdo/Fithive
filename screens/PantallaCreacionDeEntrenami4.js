@@ -6,14 +6,16 @@ import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import PantallaCreacionDeEntrenami from "./PantallaCreacionDeEntrenami1";
-import PantallaCreacionDeEntrenamientos2 from "./PantallaCreacionDeEntrenami2";
-import PantallaCreacionDeEntrenamientos3 from "./PantallaCreacionDeEntrenami";
+import PantallaElegirCrearEjercicio from "./PantallaCreacionDeEntrenami1";
+import PantallaCrearEjercicio from "./PantallaCreacionDeEntrenami2";
+import PantallaCrearEjercicioBiblioteca from "./PantallaCreacionDeEntrenami";
 const PantallaCreacionDeEntrenami4 = () => {
+  //pantalla menu crear ejercicio
   const [switchOnValue, setSwitchOnValue] = useState(false);
-
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [ejercicios, setEjercicios] = useState([]);
+  const [ejercicio, setEjercicio] = useState('');
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -24,40 +26,45 @@ const PantallaCreacionDeEntrenami4 = () => {
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
-    }if (isPantallaCreacionDeEntrenamiVisible){
-      handleCerrarPantallaCreacionDeEntrenami();
-    }if (isPantallaCreacionDeEntrenami2Visible){
-      handleCerrarPantallaCreacionDeEntrenami2();
-    }if (isPantallaCreacionDeEntrenami3Visible){
-      handleCerrarPantallaCreacionDeEntrenami3();
+    }if (isPantallaElegirCrearEjercicioVisible){
+      handleCerrarPantallaElegirCrearEjercicio();
+    }if (isPantallaCrearEjercicioVisible){
+      handleCerrarPantallaCrearEjercicio();
+    }if (isPantallaCrearEjercicioBibliotecaVisible){
+      handleCerrarPantallaCrearEjercicioBiblioteca();
     }
   };
 
-  const [isPantallaCreacionDeEntrenamiVisible, setIsPantallaCreacionDeEntrenamiVisible] = useState(false);
-  const handleAbrirPantallaCreacionDeEntrenami = () => {
-    setIsPantallaCreacionDeEntrenamiVisible(true);
+  const [isPantallaElegirCrearEjercicioVisible, setIsPantallaElegirCrearEjercicioVisible] = useState(false);
+  const handleAbrirPantallaElegirCrearEjercicio = () => {
+    setIsPantallaElegirCrearEjercicioVisible(true);
   };
-  const handleCerrarPantallaCreacionDeEntrenami = () => {
-    setIsPantallaCreacionDeEntrenamiVisible(false);
-  };
-
-  const [isPantallaCreacionDeEntrenami2Visible, setIsPantallaCreacionDeEntrenami2Visible] = useState(false);
-  const handleAbrirPantallaCreacionDeEntrenami2 = () => {
-    setIsPantallaCreacionDeEntrenami2Visible(true);
-  };
-  const handleCerrarPantallaCreacionDeEntrenami2 = () => {
-    setIsPantallaCreacionDeEntrenami2Visible(false);
-    setIsPantallaCreacionDeEntrenamiVisible(false);
+  const handleCerrarPantallaElegirCrearEjercicio = () => {
+    setIsPantallaElegirCrearEjercicioVisible(false);
   };
 
-  const [isPantallaCreacionDeEntrenami3Visible, setIsPantallaCreacionDeEntrenami3Visible] = useState(false);
-  const handleAbrirPantallaCreacionDeEntrenami3 = () => {
-    setIsPantallaCreacionDeEntrenami3Visible(true);
+  const [isPantallaCrearEjercicioVisible, setIsPantallaCrearEjercicioVisible] = useState(false);
+  const handleAbrirPantallaCrearEjercicio = () => {
+    setIsPantallaCrearEjercicioVisible(true);
   };
-  const handleCerrarPantallaCreacionDeEntrenami3 = () => {
-    setIsPantallaCreacionDeEntrenami3Visible(false);
-    setIsPantallaCreacionDeEntrenamiVisible(false);
+  const handleCerrarPantallaCrearEjercicio = (ejercicio) => {
+    setEjercicio(ejercicio);
+    console.log(JSON.stringify(ejercicio));
+    setIsPantallaCrearEjercicioVisible(false);
+    setIsPantallaElegirCrearEjercicioVisible(false);
   };
+
+  const [isPantallaCrearEjercicioBibliotecaVisible, setIsPantallaCrearEjercicioBibliotecaVisible] = useState(false);
+  const handleAbrirPantallaCrearEjercicioBiblioteca = () => {
+    setIsPantallaCrearEjercicioBibliotecaVisible(true);
+  };
+  const handleCerrarPantallaCrearEjercicioBiblioteca = () => {
+    setIsPantallaCrearEjercicioBibliotecaVisible(false);
+    setIsPantallaElegirCrearEjercicioVisible(false);
+  };
+
+
+
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -96,7 +103,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           <Text style={styles.caption1}>Tipo de entrenamiento</Text>
         </View>
       </View>
-      <Pressable style={styles.default2} onPress={handleAbrirPantallaCreacionDeEntrenami}>
+      <Pressable style={styles.default2} onPress={handleAbrirPantallaElegirCrearEjercicio}>
         <Image
           style={styles.lightIcon}
           contentFit="cover"
@@ -173,11 +180,11 @@ ejercicio`}</Text>
           />
         </View>
       </View>
-      {isPantallaCreacionDeEntrenamiVisible && (
-        <PantallaCreacionDeEntrenami onabrirPantallaCreacionDeEntrenamientos2={handleAbrirPantallaCreacionDeEntrenami2}  onabrirPantallaCreacionDeEntrenamientos3={handleAbrirPantallaCreacionDeEntrenami3} onClose={handleCerrarPantallaCreacionDeEntrenami} />
+      {isPantallaElegirCrearEjercicioVisible && (
+        <PantallaElegirCrearEjercicio onabrirPantallaCrearEjercicio={handleAbrirPantallaCrearEjercicio}  onabrirPantallaCrearEjercicioBiblioteca={handleAbrirPantallaCrearEjercicioBiblioteca} onClose={handleCerrarPantallaElegirCrearEjercicio} />
       )}
-      {isPantallaCreacionDeEntrenami2Visible && <PantallaCreacionDeEntrenamientos2 onClose={handleCerrarPantallaCreacionDeEntrenami2} />}
-      {isPantallaCreacionDeEntrenami3Visible && <PantallaCreacionDeEntrenamientos3 onClose={handleCerrarPantallaCreacionDeEntrenami3} />}
+      {isPantallaCrearEjercicioVisible && <PantallaCrearEjercicio onClose={handleCerrarPantallaCrearEjercicio} ejercicio={ejercicio} />}
+      {isPantallaCrearEjercicioBibliotecaVisible && <PantallaCrearEjercicioBiblioteca onClose={handleCerrarPantallaCrearEjercicioBiblioteca} />}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>

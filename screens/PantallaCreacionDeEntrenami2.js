@@ -5,11 +5,40 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
-const PantallaCreacionDeEntrenami = ({ onClose }) => {
+const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
   const [switchOnValue, setSwitchOnValue] = useState(false);
+  const [nombreEjercicio, setNombreEjercicio] = useState('');
+  const [tipoEjercicio, setTipoEjercicio] = useState('');
+  const [numSeries, setNumSeries] = useState('');
+  const [numReps, setNumReps] = useState('');
+
+  const handleNombreChange = (text) => {
+    setNombreEjercicio(text);
+  };
+  const handleTipoChange = (text) => {
+    setTipoEjercicio(text);
+  };
+  const handleNumSeriesChange = (text) => {
+    setNumSeries(text);
+  };
+  const handleNumRepsChange = (text) => {
+    setNumReps(text);
+  };
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  const handleGuardarEjercicio = () => {
+    const nuevoEjercicio = {
+      nombre: nombreEjercicio,
+      tipo: tipoEjercicio,
+      repeticiones: numReps,
+      series: numSeries,
+    };
+    ejercicio = nuevoEjercicio;
+    console.log(ejercicio);
+    onClose(ejercicio);
+  };
+  //pantalla crear ejercicio
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.lightHamburger, styles.defaultLayout]}>
@@ -49,7 +78,7 @@ const PantallaCreacionDeEntrenami = ({ onClose }) => {
         />
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
-        <Pressable style={styles.dark} onPress={handleCerrarPantallaSuperpuesta}>
+        <Pressable style={styles.dark} onPress={handleGuardarEjercicio}>
           <View style={styles.lightPosition1}>
             <LinearGradient
               style={[styles.bgPrimary, styles.lightPosition]}
@@ -89,6 +118,8 @@ const PantallaCreacionDeEntrenami = ({ onClose }) => {
           placeholder="Ejercicio 2"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nombreEjercicio}
+          onChangeText={handleNombreChange}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>Nombre</Text>
@@ -103,6 +134,8 @@ const PantallaCreacionDeEntrenami = ({ onClose }) => {
           placeholder="3 "
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={numSeries}
+          onChangeText={handleNumSeriesChange}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
@@ -119,6 +152,8 @@ const PantallaCreacionDeEntrenami = ({ onClose }) => {
           placeholder="Entrenamiento "
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={tipoEjercicio}
+          onChangeText={handleTipoChange}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
@@ -135,6 +170,8 @@ const PantallaCreacionDeEntrenami = ({ onClose }) => {
           placeholder=" 2"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={numReps}
+          onChangeText={handleNumRepsChange}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>

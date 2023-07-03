@@ -9,7 +9,7 @@ import { useState } from "react";
 const PantallaBibliotecaDeEntrena1 = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+//biblioteca entrenamientos
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };

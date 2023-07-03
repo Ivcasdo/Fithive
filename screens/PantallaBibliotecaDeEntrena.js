@@ -6,7 +6,7 @@ import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
 
 const PantallaBibliotecaDeEntrena = () => {
-  
+  //pantalla editar entrenamientos
   return (
    
     <View style={styles.pantallaBibliotecaDeEntrena}>

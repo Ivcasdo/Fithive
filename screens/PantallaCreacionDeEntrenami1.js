@@ -4,12 +4,12 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 
-const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCreacionDeEntrenamientos2, onabrirPantallaCreacionDeEntrenamientos3 }) => {
+const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCrearEjercicio, onabrirPantallaCrearEjercicioBiblioteca }) => {
 
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-  
+  //pantalla añadir ejercicio de biblioteca o de creacion propia
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.lightHamburger, styles.spBody2MediumPosition]}>
@@ -50,7 +50,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCreacionDeEntrena
           source={require("../assets/logo-sample.png")}
         />
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]}onPress={onabrirPantallaCreacionDeEntrenamientos3}>
+      <Pressable style={[styles.dark, styles.darkPosition]}onPress={onabrirPantallaCrearEjercicioBiblioteca}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={styles.primaryShadowBox}
@@ -66,7 +66,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCreacionDeEntrena
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark2, styles.darkPosition]} onPress={onabrirPantallaCreacionDeEntrenamientos2}>
+      <Pressable style={[styles.dark2, styles.darkPosition]} onPress={onabrirPantallaCrearEjercicio}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={styles.primaryShadowBox}
