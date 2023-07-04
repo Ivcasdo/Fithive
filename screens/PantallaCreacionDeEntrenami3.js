@@ -3,8 +3,16 @@ import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import { useState, useEffect } from "react";
 
-const PantallaCreacionDeEntrenami3 = () => {
+const PantallaCreacionDeEntrenami3 = ({ onClose, item }) => {
+  //pantalla editar ejercicios
+ 
+
+  const handleCerrarPantallaSuperpuesta = () => {
+    
+    onClose();
+  };
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.firstLevel, styles.coverPosition]}>
@@ -18,13 +26,15 @@ const PantallaCreacionDeEntrenami3 = () => {
             <View style={[styles.bgLight, styles.bgLightPosition]} />
           </View>
           <View style={[styles.spTitleMedium, styles.firstLevelPosition]}>
-            <Text style={styles.title}>Press de hombro</Text>
+            <Text style={styles.title}>{item.nombre}</Text>
           </View>
-          <Image
-            style={[styles.closeIcon, styles.searchLayout]}
-            contentFit="cover"
-            source={require("../assets/close.png")}
-          />
+          <Pressable onPress={handleCerrarPantallaSuperpuesta}>
+            <Image
+              style={[styles.closeIcon, styles.searchLayout]}
+              contentFit="cover"
+              source={require("../assets/close.png")}
+            />
+          </Pressable>
           <View style={[styles.search, styles.searchLayout]}>
             <View style={styles.dialogPosition}>
               <View style={[styles.iconsButton, styles.bgLightPosition]} />
@@ -277,11 +287,12 @@ const styles = StyleSheet.create({
     backgroundColor: Color.lightColor,
   },
   pantallaCreacionDeEntrenami: {
-    flex: 1,
-    height: 800,
-    overflow: "hidden",
+    flex: 0.4,
+    height: 296,
     width: "100%",
     backgroundColor: Color.lightColor,
+    position: "absolute",
+    bottom: 0,
   },
 });
 

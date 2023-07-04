@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
+import { View, StyleSheet, Text, Pressable, TextInput, Alert } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
@@ -28,15 +28,24 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
     onClose();
   };
   const handleGuardarEjercicio = () => {
-    const nuevoEjercicio = {
-      nombre: nombreEjercicio,
-      tipo: tipoEjercicio,
-      repeticiones: numReps,
-      series: numSeries,
-    };
-    ejercicio = nuevoEjercicio;
-    console.log(ejercicio);
-    onClose(ejercicio);
+    // Verificar si todas las variables han cambiado
+    if (nombreEjercicio !== '' && tipoEjercicio !== '' && numSeries !== '' && numReps !== '') {
+      // Verificar si numSeries y numReps son números enteros sin decimales
+      if (Number.isInteger(Number(numSeries)) && Number.isInteger(Number(numReps))) {
+        const nuevoEjercicio = {
+          nombre: nombreEjercicio,
+          tipo: tipoEjercicio,
+          repeticiones: numReps,
+          series: numSeries,
+        };
+        ejercicio = nuevoEjercicio;
+        onClose(ejercicio);
+      } else {
+        alert('el numero de series y el numero de repeticiones deben ser números enteros sin decimales');
+      }
+    } else {
+      alert('Por favor, completa todos los campos');
+    }
   };
   //pantalla crear ejercicio
   return (

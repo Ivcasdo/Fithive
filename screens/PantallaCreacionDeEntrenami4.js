@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -9,20 +9,22 @@ import Submenu from "./PantallaMenu";
 import PantallaElegirCrearEjercicio from "./PantallaCreacionDeEntrenami1";
 import PantallaCrearEjercicio from "./PantallaCreacionDeEntrenami2";
 import PantallaCrearEjercicioBiblioteca from "./PantallaCreacionDeEntrenami";
+import PantallaEditarEjercicios from "./PantallaCreacionDeEntrenami3";
 const PantallaCreacionDeEntrenami4 = () => {
-  //pantalla menu crear ejercicio
+  //pantalla menu crear entrenamiento
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [ejercicios, setEjercicios] = useState([]);
   const [ejercicio, setEjercicio] = useState('');
-
+  const [editar, setEditar] = useState(null);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
   };
+
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
@@ -32,6 +34,8 @@ const PantallaCreacionDeEntrenami4 = () => {
       handleCerrarPantallaCrearEjercicio();
     }if (isPantallaCrearEjercicioBibliotecaVisible){
       handleCerrarPantallaCrearEjercicioBiblioteca();
+    }if (isPantallaEditarEjercicioVisible){
+      handleCerrarPantallaEditarEjercicio();
     }
   };
 
@@ -42,18 +46,17 @@ const PantallaCreacionDeEntrenami4 = () => {
   const handleCerrarPantallaElegirCrearEjercicio = () => {
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-
   const [isPantallaCrearEjercicioVisible, setIsPantallaCrearEjercicioVisible] = useState(false);
   const handleAbrirPantallaCrearEjercicio = () => {
     setIsPantallaCrearEjercicioVisible(true);
   };
   const handleCerrarPantallaCrearEjercicio = (ejercicio) => {
-    setEjercicio(ejercicio);
-    console.log(JSON.stringify(ejercicio));
+    if(ejercicio){
+      setEjercicio(ejercicio);
+    }
     setIsPantallaCrearEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-
   const [isPantallaCrearEjercicioBibliotecaVisible, setIsPantallaCrearEjercicioBibliotecaVisible] = useState(false);
   const handleAbrirPantallaCrearEjercicioBiblioteca = () => {
     setIsPantallaCrearEjercicioBibliotecaVisible(true);
@@ -62,9 +65,33 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaCrearEjercicioBibliotecaVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
+  const [isPantallaEditarEjercicioVisible, setIsPantallaEditarEjercicioVisible] = useState(false);
+  const handleAbrirPantallaEditarEjercicio = (item) => {
+    
+    setEditar(item);
 
+    setIsPantallaEditarEjercicioVisible(true);
+  };
+  const handleCerrarPantallaEditarEjercicio = () => {
+    setIsPantallaEditarEjercicioVisible(false);
+    setIsPantallaElegirCrearEjercicioVisible(false);
+  };
+  
 
+  useEffect(() => {
+    // Añadir el valor de `ejercicio` a la lista `ejercicios`
+    if (ejercicio !== ''){
+      setEjercicios([...ejercicios, ejercicio]);
+      setEjercicio('')
+    }
+    console.log(ejercicios);
+  }, [ejercicio]);
 
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.lineView, styles.frameLayout]} />
+    );
+  };
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -118,23 +145,16 @@ ejercicio`}</Text>
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildShadowBox]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingFlexBox]}>
-            {" "}
-            Press de banca
-          </Text>
-          <View
-            style={[styles.spSubheadingRegular3, styles.subheadingPosition]}
-          >
-            <Text
-              style={[styles.subheading1, styles.subheadingPosition]}
-            >{` Press de hombro `}</Text>
-            <View style={[styles.frameItem, styles.frameLayout]} />
-          </View>
-        </View>
+        <FlatList
+          data={ejercicios}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem= {({ item, index }) => 
+          <Pressable onPress={() => handleAbrirPantallaEditarEjercicio(item)}>
+            <Text style={[styles.subheadingFlexBox]}>{item.nombre}</Text>
+            {index !== ejercicios.length && <FlatListItemseparator />}
+          </Pressable>
+          }
+        />
       </View>
       <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.goBack()}>
         <View style={styles.lightPosition}>
@@ -185,6 +205,7 @@ ejercicio`}</Text>
       )}
       {isPantallaCrearEjercicioVisible && <PantallaCrearEjercicio onClose={handleCerrarPantallaCrearEjercicio} ejercicio={ejercicio} />}
       {isPantallaCrearEjercicioBibliotecaVisible && <PantallaCrearEjercicioBiblioteca onClose={handleCerrarPantallaCrearEjercicioBiblioteca} />}
+      {isPantallaEditarEjercicioVisible && <PantallaEditarEjercicios onClose={handleCerrarPantallaEditarEjercicio} item={editar}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -241,6 +262,7 @@ const styles = StyleSheet.create({
     color: Color.textColor,
     fontFamily: FontFamily.spCaptionRegular,
     top: 0,
+    left: 5,
   },
   subheadingPosition: {
     height: 27,
@@ -378,6 +400,7 @@ const styles = StyleSheet.create({
   frameChild: {
     backgroundColor: Color.whitesmoke_100,
     shadowColor: "rgba(0, 0, 0, 0.17)",
+    
     top: 0,
     left: 0,
   },
@@ -388,7 +411,7 @@ const styles = StyleSheet.create({
     top: 79,
   },
   lineView: {
-    top: 105,
+    top:20,
   },
   subheading: {
     width: 275,
