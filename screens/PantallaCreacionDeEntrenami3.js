@@ -1,91 +1,55 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-import { useState, useEffect } from "react";
 
-const PantallaCreacionDeEntrenami3 = ({ onClose, item }) => {
+const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
   //pantalla editar ejercicios
- 
-
   const handleCerrarPantallaSuperpuesta = () => {
-    
     onClose();
   };
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
-      <View style={[styles.firstLevel, styles.coverPosition]}>
-        <View style={[styles.dialog, styles.dialogShadowBox]}>
-          <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.bgLightPosition]} />
-          </View>
+      <View style={[styles.lightHamburger, styles.coverPosition]}>
+        <View style={styles.spTitleMedium}>
+          <Text style={styles.title}>{item.nombre}</Text>
         </View>
-        <View style={styles.lightHamburger}>
-          <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.bgLightPosition]} />
-          </View>
-          <View style={[styles.spTitleMedium, styles.firstLevelPosition]}>
-            <Text style={styles.title}>{item.nombre}</Text>
-          </View>
-          <Pressable onPress={handleCerrarPantallaSuperpuesta}>
-            <Image
-              style={[styles.closeIcon, styles.searchLayout]}
-              contentFit="cover"
-              source={require("../assets/close.png")}
-            />
-          </Pressable>
-          <View style={[styles.search, styles.searchLayout]}>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.bgLightPosition]} />
-            </View>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
-            </View>
-          </View>
-          <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.bgLightPosition]} />
-            </View>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
-            </View>
-          </View>
+        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
           <Image
-            style={[styles.logoSampleIcon, styles.flatdefaultPosition]}
+            style={[styles.closeIcon, styles.darkLayout]}
             contentFit="cover"
-            source={require("../assets/logo-sample.png")}
+            source={require("../assets/close.png")}
           />
-        </View>
-        <View style={[styles.cover, styles.coverPosition]}>
-          <View style={[styles.bgLight, styles.bgLightPosition]} />
-          <Pressable style={[styles.dark, styles.darkPosition]}>
-            <View style={styles.dialogPosition}>
-              <LinearGradient
-                style={[styles.bgPrimary, styles.bgLightPosition]}
-                locations={[0, 1]}
-                colors={["#1a73e9", "#6c92f4"]}
-              />
-            </View>
-            <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body2, styles.bodyTypo]}>editar</Text>
-              </View>
-            </View>
-          </Pressable>
-          <Pressable style={[styles.dark2, styles.darkPosition]}>
-            <Image
-              style={[styles.darkIcon, styles.bgLightPosition]}
-              contentFit="cover"
-              source={require("../assets/-dark.png")}
+        </Pressable>
+      </View>
+      <View style={[styles.cover, styles.coverPosition]}>
+        <Pressable style={[styles.dark, styles.darkLayout]}>
+          <View style={styles.dark1}>
+            <LinearGradient
+              style={[styles.bgPrimary, styles.darkIconPosition]}
+              locations={[0, 1]}
+              colors={["#1a73e9", "#6c92f4"]}
             />
-            <View style={[styles.flatdefault1, styles.darkPosition]}>
-              <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-                <Text style={[styles.body21, styles.bodyTypo]}>borrar</Text>
-              </View>
+          </View>
+          <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+            <View style={[styles.spBody2Medium, styles.flatdefaultPosition1]}>
+              <Text style={[styles.body2, styles.bodyTypo]}>editar</Text>
             </View>
-          </Pressable>
-        </View>
+          </View>
+        </Pressable>
+        <Pressable style={[styles.dark2, styles.darkLayout]}>
+          <Image
+            style={[styles.darkIcon, styles.darkIconPosition]}
+            contentFit="cover"
+            source={require("../assets/-dark.png")}
+          />
+          <View style={[styles.flatdefault1, styles.flatdefaultPosition]}>
+            <View style={[styles.spBody2Medium, styles.flatdefaultPosition1]}>
+              <Text style={[styles.body21, styles.bodyTypo]}>borrar</Text>
+            </View>
+          </View>
+        </Pressable>
       </View>
     </View>
   );
@@ -95,49 +59,28 @@ const styles = StyleSheet.create({
   coverPosition: {
     left: 0,
     right: 0,
+    position: "absolute",
   },
-  dialogShadowBox: {
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 16,
-    },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
+  darkLayout: {
+    height: 40,
+    position: "absolute",
   },
-  bgLightPosition: {
+  darkIconPosition: {
     bottom: 0,
-    top: 0,
     left: 0,
     right: 0,
+    top: 0,
     position: "absolute",
-  },
-  firstLevelPosition: {
-    bottom: 16,
-    position: "absolute",
-  },
-  searchLayout: {
-    width: 40,
-    height: 40,
-    top: 8,
-    position: "absolute",
-  },
-  dialogPosition: {
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
   },
   flatdefaultPosition: {
-    top: "50%",
-    marginTop: -12,
+    right: 8,
+    left: 8,
     position: "absolute",
   },
-  darkPosition: {
-    bottom: 8,
-    position: "absolute",
+  flatdefaultPosition1: {
+    top: "50%",
+    marginTop: -12,
+    height: 24,
   },
   bodyTypo: {
     justifyContent: "center",
@@ -145,150 +88,124 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     height: 24,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
-  },
-  bgLight: {
-    backgroundColor: Color.lightColor,
-  },
-  dialog: {
-    shadowRadius: 16,
-    elevation: 16,
-    display: "none",
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
   },
   title: {
-    fontSize: FontSize.spTitleMedium_size,
+    fontSize: 20,
     lineHeight: 26,
     textAlign: "left",
     height: 24,
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
     width: 216,
     color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
-    fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   spTitleMedium: {
     top: 16,
     right: 72,
+    bottom: 16,
     left: 72,
+    position: "absolute",
   },
   closeIcon: {
-    height: 40,
+    width: 40,
     left: 8,
-  },
-  iconsButton: {
-    borderRadius: Border.br_11xs,
-    display: "none",
-    backgroundColor: Color.lightColor,
-  },
-  iconsColorizer1: {
-    backgroundColor: Color.grayColor,
-  },
-  search: {
-    right: 56,
     height: 40,
-    display: "none",
-  },
-  bookmarkPlusOutline: {
-    right: 8,
-    height: 40,
-    display: "none",
-  },
-  logoSampleIcon: {
-    marginLeft: -59,
-    left: "50%",
-    width: 117,
-    height: 29,
-    display: "none",
+    top: 8,
   },
   lightHamburger: {
     height: 56,
     top: 0,
-    left: 0,
     right: 0,
-    position: "absolute",
   },
   bgPrimary: {
     borderRadius: Border.br_7xs,
-    shadowRadius: 4,
-    elevation: 4,
-    backgroundColor: Color.accentColor,
-    shadowOpacity: 1,
+    shadowColor: "rgba(38, 50, 56, 0.08)",
     shadowOffset: {
       width: 0,
-      height: 16,
+      height: 2,
     },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
+    shadowRadius: 4,
+    elevation: 4,
+    shadowOpacity: 1,
+    backgroundColor: Color.accentColor,
+  },
+  dark1: {
+    height: "100%",
+    top: "0%",
+    right: "0%",
+    bottom: "0%",
+    left: "0%",
+    position: "absolute",
+    width: "100%",
   },
   body2: {
     color: Color.lightColor,
     width: 216,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontSize: FontSize.size_sm,
   },
   spBody2Medium: {
-    height: 24,
     left: 0,
     right: 0,
+    position: "absolute",
   },
   flatdefault: {
-    right: 8,
-    left: 8,
+    top: "50%",
+    marginTop: -12,
     height: 24,
   },
   dark: {
     right: 116,
     left: 12,
-    height: 40,
+    bottom: 8,
   },
   darkIcon: {
     maxWidth: "100%",
+    overflow: "hidden",
     maxHeight: "100%",
     opacity: 0.32,
-    overflow: "hidden",
   },
   body21: {
     width: 64,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontSize: FontSize.size_sm,
     color: Color.textColor,
   },
   flatdefault1: {
-    right: 8,
-    left: 8,
-    top: 8,
     bottom: 8,
+    top: 8,
+    right: 8,
   },
   dark2: {
     left: 253,
     width: 80,
-    height: 40,
+    bottom: 8,
   },
   cover: {
-    bottom: 314,
+    top: 79,
     height: 72,
-    position: "absolute",
-    right: 0,
-  },
-  firstLevel: {
-    height: 449,
-    bottom: 16,
-    position: "absolute",
-    backgroundColor: Color.lightColor,
   },
   pantallaCreacionDeEntrenami: {
     flex: 0.4,
-    height: 296,
+    height: 200,
     width: "100%",
     backgroundColor: Color.lightColor,
     position: "absolute",
@@ -296,4 +213,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PantallaCreacionDeEntrenami3;
+export default PantallaCreacionDeEntrenami;

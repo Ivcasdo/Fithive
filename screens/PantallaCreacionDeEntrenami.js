@@ -1,13 +1,52 @@
-import * as React from "react";
-import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, Pressable, TextInput,TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
+import auth, { firebase } from '@react-native-firebase/auth';
 
 const PantallaCreacionDeEntrenami = ({ onClose}) => {
+  const [seleccion, setSeleccion] = useState('');
+  const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState(null);
+  const [listaEjercicios, setListaEjercicios] = useState([]);
+  const user = auth().currentUser;
+  const [ejerciciosFiltrados, setEjerciciosFiltrados] = useState([]);
+  const [texto, setTexto] = useState('nombre');
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  const handleEjercicioSeleccionado= (ejercicio) => {
+    setEjercicioSeleccionado(ejercicio);
+    setSeleccion(ejercicio.nombre);
+  };
+  useEffect(() => {
+    // Obtener la lista de ejercicios del usuario desde la base de datos
+    const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
+    const handleSnapshot = (snapshot) => {
+      const ejerciciosData = snapshot.val();
+
+      if (ejerciciosData) {
+        const ejerciciosArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(ejerciciosData).forEach((key) => {
+          ejerciciosArray.push(ejerciciosData[key]);
+        });
+        setListaEjercicios(ejerciciosArray);
+      }
+    };
+    ejerciciosRef.on('value', handleSnapshot);
+    
+    const ejerciciosFiltrados = listaEjercicios.filter((ejercicio) =>
+      ejercicio.nombre.toLowerCase().includes(seleccion.toLowerCase())
+    );
+    setEjerciciosFiltrados(ejerciciosFiltrados);
+    console.log(ejerciciosFiltrados);
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      ejerciciosRef.off('value', handleSnapshot);
+    };
+  }, [seleccion]);
+
   // crear ejercicio biblioteca
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -69,9 +108,11 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
         </View>
         <TextInput
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
-          placeholder="Ejercicio 2"
+          placeholder={texto}
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={seleccion}
+          onChangeText={(text) => setSeleccion(text)}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text
@@ -89,6 +130,14 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
         />
+        {ejerciciosFiltrados.map((ejercicio) => (
+          <TouchableOpacity
+            key={ejercicio.id}
+            onPress={() => setEjercicioSeleccionado(ejercicio)}
+          >
+            <Text>{ejercicio.nombre}</Text>
+          </TouchableOpacity>
+        ))}
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
             Nº de series

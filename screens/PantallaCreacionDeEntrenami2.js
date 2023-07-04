@@ -6,6 +6,7 @@ import { Switch as RNPSwitch } from "react-native-paper";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 
 const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
+  //crear ejercicio propio
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const [nombreEjercicio, setNombreEjercicio] = useState('');
   const [tipoEjercicio, setTipoEjercicio] = useState('');
