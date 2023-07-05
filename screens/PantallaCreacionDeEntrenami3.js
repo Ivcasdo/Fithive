@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,8 +6,15 @@ import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
 const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
   //pantalla editar ejercicios
+  const [borrar, setBorrar] = useState(false);
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
+  };
+  const handleBorrarEjercicio = () =>{
+    setBorrar(true);
+    console.log(borrar);
+    onClose(true, item);
+
   };
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -38,7 +45,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
             </View>
           </View>
         </Pressable>
-        <Pressable style={[styles.dark2, styles.darkLayout]}>
+        <Pressable style={[styles.dark2, styles.darkLayout]} onPress={handleBorrarEjercicio}>
           <Image
             style={[styles.darkIcon, styles.darkIconPosition]}
             contentFit="cover"

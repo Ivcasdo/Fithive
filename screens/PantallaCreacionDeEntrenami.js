@@ -5,19 +5,24 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import auth, { firebase } from '@react-native-firebase/auth';
 
-const PantallaCreacionDeEntrenami = ({ onClose}) => {
+const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
   const [seleccion, setSeleccion] = useState('');
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState(null);
   const [listaEjercicios, setListaEjercicios] = useState([]);
   const user = auth().currentUser;
   const [ejerciciosFiltrados, setEjerciciosFiltrados] = useState([]);
   const [texto, setTexto] = useState('nombre');
+  const [numReps, setNumReps] = useState('');
+  const [numSeries, setNumSeries] = useState('');
+
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-  const handleEjercicioSeleccionado= (ejercicio) => {
-    setEjercicioSeleccionado(ejercicio);
-    setSeleccion(ejercicio.nombre);
+  const handleNumSeriesChange = (text) => {
+    setNumSeries(text);
+  };
+  const handleNumRepsChange = (text) => {
+    setNumReps(text);
   };
   useEffect(() => {
     // Obtener la lista de ejercicios del usuario desde la base de datos
@@ -40,13 +45,34 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
       ejercicio.nombre.toLowerCase().includes(seleccion.toLowerCase())
     );
     setEjerciciosFiltrados(ejerciciosFiltrados);
-    console.log(ejerciciosFiltrados);
+ 
     // Limpiar la suscripción al desmontar el componente
     return () => {
       ejerciciosRef.off('value', handleSnapshot);
     };
   }, [seleccion]);
 
+  const handleGuardarEjercicio = () => {
+      // Verificar si todas las variables han cambiado
+    if (ejercicioSeleccionado.nombre !== '' && ejercicioSeleccionado.tipo !== '' && numSeries !== '' && numReps !== '') {
+        // Verificar si numSeries y numReps son números enteros sin decimales
+      if (Number.isInteger(Number(numSeries)) && Number.isInteger(Number(numReps))) {
+        const nuevoEjercicio = {
+          nombre: ejercicioSeleccionado.nombre,
+          tipo: ejercicioSeleccionado.tipo,
+          repeticiones: numReps,
+          series: numSeries,
+        };
+        item = nuevoEjercicio;
+        onClose(item);
+      } else {
+        alert('el numero de series y el numero de repeticiones deben ser números enteros sin decimales');
+      }
+    } else {
+      alert('Por favor, completa todos los campos');
+    }
+
+  };
   // crear ejercicio biblioteca
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -88,7 +114,7 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
           source={require("../assets/logo-sample.png")}
         />
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleGuardarEjercicio}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgPrimary, styles.primaryPosition]}
@@ -119,6 +145,17 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
             style={[styles.caption1, styles.captionPosition]}
           >{`Buscar `}</Text>
         </View>
+        {ejerciciosFiltrados.map((ejercicio) => (
+          <TouchableOpacity
+            style={{top:55,}}
+            onPress={() => {
+              setEjercicioSeleccionado(ejercicio);
+              setSeleccion(ejercicio.nombre);
+            }}
+          >
+            <Text>{ejercicio.nombre}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
       <View style={[styles.default1, styles.defaultPosition]}>
         <View style={[styles.stroke, styles.primaryPosition]}>
@@ -129,15 +166,10 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
           placeholder="3 "
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={numSeries}
+          onChangeText={handleNumSeriesChange}
         />
-        {ejerciciosFiltrados.map((ejercicio) => (
-          <TouchableOpacity
-            key={ejercicio.id}
-            onPress={() => setEjercicioSeleccionado(ejercicio)}
-          >
-            <Text>{ejercicio.nombre}</Text>
-          </TouchableOpacity>
-        ))}
+        
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
             Nº de series
@@ -153,6 +185,8 @@ const PantallaCreacionDeEntrenami = ({ onClose}) => {
           placeholder=" 2"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={numReps}
+          onChangeText={handleNumRepsChange}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>

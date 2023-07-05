@@ -61,18 +61,28 @@ const PantallaCreacionDeEntrenami4 = () => {
   const handleAbrirPantallaCrearEjercicioBiblioteca = () => {
     setIsPantallaCrearEjercicioBibliotecaVisible(true);
   };
-  const handleCerrarPantallaCrearEjercicioBiblioteca = () => {
+  const handleCerrarPantallaCrearEjercicioBiblioteca = (item) => {
+    if(item){
+      setEjercicio(item);
+    }
     setIsPantallaCrearEjercicioBibliotecaVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
   const [isPantallaEditarEjercicioVisible, setIsPantallaEditarEjercicioVisible] = useState(false);
   const handleAbrirPantallaEditarEjercicio = (item) => {
-    
     setEditar(item);
-
     setIsPantallaEditarEjercicioVisible(true);
   };
-  const handleCerrarPantallaEditarEjercicio = () => {
+  const handleCerrarPantallaEditarEjercicio = (borrar, item) => {
+    console.log(borrar);
+    if(borrar){
+      const nuevaListaEjercicios = ejercicios.filter(
+        ejercicio => ejercicio.nombre !== item.nombre && ejercicio.tipo !== item.tipo
+        // Reemplaza 'nombre' y 'otraPropiedad' con las propiedades correspondientes en tu objeto ejercicio
+      );
+      console.log(nuevaListaEjercicios);
+      setEjercicios(nuevaListaEjercicios);
+    }
     setIsPantallaEditarEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
