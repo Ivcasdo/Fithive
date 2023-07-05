@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
-const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
+const PantallaCreacionDeEntrenami = ({ onabrirPantallaCrearEjercicio, onClose, item }) => {
   //pantalla editar ejercicios
   const [borrar, setBorrar] = useState(false);
   const handleCerrarPantallaSuperpuesta = () => {
@@ -16,6 +16,9 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
     onClose(true, item);
 
   };
+  const handleEditarEjercicio = () =>{
+    onabrirPantallaCrearEjercicio(true)
+  }
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
       <View style={[styles.lightHamburger, styles.coverPosition]}>
@@ -31,7 +34,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
         </Pressable>
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
-        <Pressable style={[styles.dark, styles.darkLayout]}>
+        <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleEditarEjercicio}>
           <View style={styles.dark1}>
             <LinearGradient
               style={[styles.bgPrimary, styles.darkIconPosition]}

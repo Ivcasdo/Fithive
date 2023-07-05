@@ -1,14 +1,20 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text,TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, Text,TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation} from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
+import PantallaEditarEntrenamientos from "./PantallaBibliotecaDeEntrena";
 const PantallaBibliotecaDeEntrena1 = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [listaEntrenamientos, setListaEntrenamientos] = useState([]);
+  const user = auth().currentUser;
+  const [editar, setEditar] = useState(false);
+  const [editarEntrenamiento,setEditarEntrenamiento] = useState([]);
 //biblioteca entrenamientos
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -19,8 +25,48 @@ const PantallaBibliotecaDeEntrena1 = () => {
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
+    }if(isPantallaEditarEntrenamientoVisible){
+      handleCerrarPantallaEditarEntrenamiento();
     }
   }
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameItem, styles.frameLayout]} />
+    );
+  };
+  const [isPantallaEditarEntrenamientoVisible, setPantallaEditarEntrenamientoVisible] = useState(false);
+  const handleAbrirPantallaEditarEntrenamiento= (item, editar) =>{
+    setEditar(editar);
+    setEditarEntrenamiento(item);
+    setPantallaEditarEntrenamientoVisible(true);
+  };
+  const handleCerrarPantallaEditarEntrenamiento= () =>{
+    setPantallaEditarEntrenamientoVisible(false);
+  }
+  const handleAbrirPantallaCrearEntrenamiento= (editar) =>{
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar });
+  };
+
+  useEffect(() => {
+    const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+    const handleSnapshot = (snapshot) => {
+      const entrenamientosData = snapshot.val();
+      if (entrenamientosData) {
+        const entrenamientosArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(entrenamientosData).forEach((key) => {
+          entrenamientosArray.push(entrenamientosData[key]);
+        });
+        setListaEntrenamientos(entrenamientosArray);
+      }
+    };
+    entrenamientosRef.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      entrenamientosRef.off('value', handleSnapshot);
+    };
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaBibliotecaDeEntrena}>
@@ -33,28 +79,25 @@ const PantallaBibliotecaDeEntrena1 = () => {
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildShadowBox]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingPosition]}>
-            {" "}
-            Entrenamiento 3
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular1, styles.bgAccentPosition]}>
-          <Text style={[styles.subheading1, styles.subheadingPosition]}>
-            {" "}
-            Entrenamiento 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingPosition]}>
-            {" "}
-            Entrenamiento 1
-          </Text>
-        </View>
+        <FlatList
+          data={listaEntrenamientos}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View style= {{marginBottom: 10,top:7}}>
+              <Pressable onPress={() => handleAbrirPantallaEditarEntrenamiento(item, true)}>
+              <Text style={[styles.subheading1, {top:3,left:5}]}>{item.nombre}</Text>
+                {index !== listaEntrenamientos.length && <FlatListItemseparator />}
+              </Pressable>
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20, bottom:0, top:15}}
+        />
+        
+  
+ 
+        
+      
+       
         <View style={styles.spSubheadingRegularWrapper}>
           <View
             style={[styles.spSubheadingRegular3, styles.subheadingPosition1]}
@@ -65,7 +108,7 @@ const PantallaBibliotecaDeEntrena1 = () => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.accent}onPress={() => navigation.navigate("PantallaCreacionDeEntrenamientos")}>
+      <Pressable style={styles.accent}onPress={() => handleAbrirPantallaCrearEntrenamiento(false)}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -96,6 +139,7 @@ const PantallaBibliotecaDeEntrena1 = () => {
         </View>
       </Pressable>
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      {isPantallaEditarEntrenamientoVisible && <PantallaEditarEntrenamientos onClose={handleCerrarPantallaEditarEntrenamiento} item={editarEntrenamiento} editar={editar}/>}
     </View>
     </TouchableWithoutFeedback>
   );
@@ -119,7 +163,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: "rgba(95, 95, 95, 0.19)",
     borderStyle: "solid",
-    width: 300,
+    width: 299,
     left: 0,
     position: "absolute",
   },
@@ -189,7 +233,7 @@ const styles = StyleSheet.create({
     top: 68,
   },
   frameChild1: {
-    top: 90,
+    top: 25,
   },
   subheading: {
     width: 149,

@@ -9,6 +9,9 @@ const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCrearEjercicio, o
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  const handleAbrirCrearEjercicio= () =>{
+    onabrirPantallaCrearEjercicio(false);
+  }
   //pantalla añadir ejercicio de biblioteca o de creacion propia
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -66,7 +69,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, onabrirPantallaCrearEjercicio, o
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark2, styles.darkPosition]} onPress={onabrirPantallaCrearEjercicio}>
+      <Pressable style={[styles.dark2, styles.darkPosition]} onPress={handleAbrirCrearEjercicio}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={styles.primaryShadowBox}

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Pressable, TextInput, Alert } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
+import auth, { firebase } from '@react-native-firebase/auth';
 
-const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
+const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) => {
   //crear ejercicio propio
+  const user = auth().currentUser;
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const [nombreEjercicio, setNombreEjercicio] = useState('');
   const [tipoEjercicio, setTipoEjercicio] = useState('');
@@ -28,26 +30,81 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-  const handleGuardarEjercicio = () => {
-    // Verificar si todas las variables han cambiado
-    if (nombreEjercicio !== '' && tipoEjercicio !== '' && numSeries !== '' && numReps !== '') {
-      // Verificar si numSeries y numReps son números enteros sin decimales
-      if (Number.isInteger(Number(numSeries)) && Number.isInteger(Number(numReps))) {
-        const nuevoEjercicio = {
-          nombre: nombreEjercicio,
-          tipo: tipoEjercicio,
-          repeticiones: numReps,
-          series: numSeries,
-        };
-        ejercicio = nuevoEjercicio;
-        onClose(ejercicio);
-      } else {
-        alert('el numero de series y el numero de repeticiones deben ser números enteros sin decimales');
-      }
-    } else {
-      alert('Por favor, completa todos los campos');
-    }
+  const limpiartexto = () => {
+      setNombreEjercicio('');
+      setTipoEjercicio('');
+      setNumReps('');
+      setNumSeries('');
   };
+
+  const handleGuardarEjercicio = () => {
+    if(editar){
+        if(nombreEjercicio !== editar.nombre ||tipoEjercicio !== editar.tipo ||numSeries !== editar.numSeries ||numReps !== editar.numReps){
+          if (Number.isInteger(Number(numSeries)) && Number.isInteger(Number(numReps))) {
+          ejercicio = {
+            nombre: nombreEjercicio,
+            tipo: tipoEjercicio,
+            repeticiones: numReps,
+            series: numSeries,}
+          editBool=true;
+          console.log('actualizado'+JSON.stringify(ejercicio));
+          limpiartexto();
+          onClose(ejercicio, editBool);
+          }else {
+            alert('el numero de series y el numero de repeticiones deben ser números enteros sin decimales');
+          }
+        }else{
+          limpiartexto();
+          onClose(ejercicio, false);
+        }
+      
+    }else{
+    // Verificar si todas las variables han cambiado
+      if (nombreEjercicio !== '' && tipoEjercicio !== '' && numSeries !== '' && numReps !== '') {
+        // Verificar si numSeries y numReps son números enteros sin decimales
+        if (Number.isInteger(Number(numSeries)) && Number.isInteger(Number(numReps))) {
+          const nuevoEjercicio = {
+            nombre: nombreEjercicio,
+            tipo: tipoEjercicio,
+            repeticiones: numReps,
+            series: numSeries,
+          };
+          ejercicio = nuevoEjercicio;
+          limpiartexto();
+          //comprueba si el switch de añadir a la biblioteca esta encendido o no
+          if(switchOnValue){
+            const ejerciciosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/ejercicios`);
+            const nuevoEjercicio = {
+              nombre: nombreEjercicio,
+              tipo: tipoEjercicio,
+            };
+            const nuevoEjercicioRef = ejerciciosRef.push();
+            nuevoEjercicioRef.set(nuevoEjercicio);
+            console.log('Lista de ejercicios actualizada:');
+
+          }
+          onClose(ejercicio);
+        } else {
+          alert('el numero de series y el numero de repeticiones deben ser números enteros sin decimales');
+        }
+      } else {
+        alert('Por favor, completa todos los campos');
+    }}
+  };
+  useEffect(() => {
+    console.log(JSON.stringify(editar))
+    if(editar){
+      setNombreEjercicio(editar.nombre);
+      setTipoEjercicio(editar.tipo);
+      setNumReps(editar.repeticiones);
+      setNumSeries(editar.series);
+    }else{
+      setNombreEjercicio('');
+      setTipoEjercicio('');
+      setNumReps('');
+      setNumSeries('');
+    }
+  },[]);
   //pantalla crear ejercicio
   return (
     <View style={styles.pantallaCreacionDeEntrenami}>
@@ -177,7 +234,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
         </View>
         <TextInput
           style={[styles.spSubheadingRegular1, styles.coverPosition]}
-          placeholder=" 2"
+          placeholder="2 "
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numReps}
@@ -185,7 +242,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio }) => {
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
-            Nº de repeticiones
+            Nº de rep
           </Text>
         </View>
       </View>

@@ -4,27 +4,39 @@ import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback,
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import PantallaElegirCrearEjercicio from "./PantallaCreacionDeEntrenami1";
 import PantallaCrearEjercicio from "./PantallaCreacionDeEntrenami2";
 import PantallaCrearEjercicioBiblioteca from "./PantallaCreacionDeEntrenami";
 import PantallaEditarEjercicios from "./PantallaCreacionDeEntrenami3";
+import auth, { firebase } from '@react-native-firebase/auth';
+
 const PantallaCreacionDeEntrenami4 = () => {
   //pantalla menu crear entrenamiento
-  const [switchOnValue, setSwitchOnValue] = useState(false);
+  const user = auth().currentUser;
+  const route = useRoute();
+  const [switchOnValue, setSwitchOnValue] = useState(true);
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [ejercicios, setEjercicios] = useState([]);
   const [ejercicio, setEjercicio] = useState('');
   const [editar, setEditar] = useState(null);
+  const [editbool, setEditBool]= useState(false);
+  const [nomEntrenamiento, setNomEntrenamiento] = useState('');
+  const [tipoEntrenamiento, setTipoEntrenamiento] = useState('')
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
   };
-
+  const handleNombreChange = (text) => {
+    setNomEntrenamiento(text);
+  };
+  const handleTipoChange = (text) => {
+    setTipoEntrenamiento(text);
+  };
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
@@ -40,24 +52,61 @@ const PantallaCreacionDeEntrenami4 = () => {
   };
 
   const [isPantallaElegirCrearEjercicioVisible, setIsPantallaElegirCrearEjercicioVisible] = useState(false);
+  const [isPantallaCrearEjercicioVisible, setIsPantallaCrearEjercicioVisible] = useState(false);
+  const [isPantallaCrearEjercicioBibliotecaVisible, setIsPantallaCrearEjercicioBibliotecaVisible] = useState(false);
+  const [isPantallaEditarEjercicioVisible, setIsPantallaEditarEjercicioVisible] = useState(false);
   const handleAbrirPantallaElegirCrearEjercicio = () => {
+    if (isPantallaCrearEjercicioVisible){
+      setIsPantallaCrearEjercicioVisible(false);
+    }if (isPantallaCrearEjercicioBibliotecaVisible){
+      setIsPantallaCrearEjercicioBibliotecaVisible(false);
+    }if (isPantallaEditarEjercicioVisible){
+      setIsPantallaEditarEjercicioVisible(false);
+    }
     setIsPantallaElegirCrearEjercicioVisible(true);
   };
   const handleCerrarPantallaElegirCrearEjercicio = () => {
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-  const [isPantallaCrearEjercicioVisible, setIsPantallaCrearEjercicioVisible] = useState(false);
-  const handleAbrirPantallaCrearEjercicio = () => {
+
+
+  
+  const handleAbrirPantallaCrearEjercicio = (editarbool) => {
+    if(editarbool){
+      setIsPantallaEditarEjercicioVisible(false);
+      setEditBool(true);
+    }else{
+      setEditBool(false);
+    }
+    console.log(editbool);
     setIsPantallaCrearEjercicioVisible(true);
   };
-  const handleCerrarPantallaCrearEjercicio = (ejercicio) => {
-    if(ejercicio){
-      setEjercicio(ejercicio);
-    }
+  const handleCerrarPantallaCrearEjercicio = (ejercicio,editbool) => {
+    if (editbool) {
+      setEjercicios((ejercicios) =>
+        ejercicios.map((ejercicioActual) => {
+          if (ejercicioActual === editar) {
+            return ejercicio;
+          } else {
+            return ejercicioActual;
+          }
+        })
+      );
+      //console.log('ejercicio actualizado'+ ejercicio);
+      console.log(ejercicios);
+      
+    }else{
+      if(ejercicio){
+        setEjercicio(ejercicio);
+      }
+    }; 
+    setEditar(null);
     setIsPantallaCrearEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-  const [isPantallaCrearEjercicioBibliotecaVisible, setIsPantallaCrearEjercicioBibliotecaVisible] = useState(false);
+
+
+ 
   const handleAbrirPantallaCrearEjercicioBiblioteca = () => {
     setIsPantallaCrearEjercicioBibliotecaVisible(true);
   };
@@ -68,7 +117,9 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaCrearEjercicioBibliotecaVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-  const [isPantallaEditarEjercicioVisible, setIsPantallaEditarEjercicioVisible] = useState(false);
+
+
+ 
   const handleAbrirPantallaEditarEjercicio = (item) => {
     setEditar(item);
     setIsPantallaEditarEjercicioVisible(true);
@@ -87,15 +138,77 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
   
+  const handleGuardarEntrenamiento = () =>{
+    const entrenamiento = {
+      nombre: nomEntrenamiento,
+      tipo: tipoEntrenamiento,
+      ejercicios: ejercicios
+    };
+    if(route.params.editar){
+      if(entrenamiento===route.params.item){
+        navigation.goBack();
+      }else{
+        const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+        entrenamientosRef.once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const entrene = childSnapshot.val();
 
+            if(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo){
+              if(entrene.ejercicios == route.params.item.ejercicios){
+                if(nomEntrenamiento !== ''){
+                  entrenamientosRef.child(childSnapshot.key).update({ nombre: nomEntrenamiento });
+                }
+                if(tipoEntrenamiento !== ''){
+                  entrenamientosRef.child(childSnapshot.key).update({tipo: tipoEntrenamiento});
+                }
+                if(ejercicios !== []){
+                  entrenamientosRef.child(childSnapshot.key).update({ejercicios: ejercicios});
+                }
+              }
+            } 
+          })
+        });
+      }
+    }else{
+      const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+      entrenamientosRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          // El usuario ya tiene una lista de ejercicios
+          const entrenamientos = snapshot.val();
+    
+          // Agregar el nuevo ejercicio a la lista existente
+          const nuevoEntrenamientoRef = entrenamientosRef.push();
+          nuevoEntrenamientoRef.set(entrenamiento);
+    
+          // Mostrar por consola la lista de ejercicios actualizada
+          console.log('Lista de entrenamientos actualizada:', entrenamientos);
+        } else {
+          // El usuario no tiene una lista de ejercicios
+          // Crear la lista de ejercicios y agregar el nuevo ejercicio
+          
+          const nuevoEntrenamientoRef = entrenamientosRef.push();
+          nuevoEntrenamientoRef.set(entrenamiento); // Usamos 0 como clave inicial para crear una lista indexada
+    
+          // Mostrar por consola la nueva lista de ejercicios
+          console.log('Nueva lista de ejercicios creada:', [entrenamiento]);
+        }
+      });
+    }
+    navigation.goBack();
+  };
   useEffect(() => {
+    if (route.params.editar) {
+      setNomEntrenamiento(route.params.item.nombre);
+      setTipoEntrenamiento(route.params.item.tipo);
+      setEjercicios(route.params.item.ejercicios);
+    }
     // Añadir el valor de `ejercicio` a la lista `ejercicios`
     if (ejercicio !== ''){
       setEjercicios([...ejercicios, ejercicio]);
       setEjercicio('')
     }
-    console.log(ejercicios);
-  }, [ejercicio]);
+
+  }, [ejercicio,ejercicios,route.params]);
 
   const FlatListItemseparator = () => {
     return (
@@ -121,6 +234,8 @@ const PantallaCreacionDeEntrenami4 = () => {
           placeholder="Input caption"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nomEntrenamiento}
+          onChangeText={handleNombreChange}
         />
         <View style={styles.caption}>
           <Text style={styles.caption1}>Nombre</Text>
@@ -135,6 +250,8 @@ const PantallaCreacionDeEntrenami4 = () => {
           placeholder="Input caption"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={tipoEntrenamiento}
+          onChangeText={handleTipoChange}
         />
         <View style={styles.caption}>
           <Text style={styles.caption1}>Tipo de entrenamiento</Text>
@@ -166,7 +283,7 @@ ejercicio`}</Text>
           }
         />
       </View>
-      <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.goBack()}>
+      <Pressable style={[styles.accent, styles.darkPosition]} onPress={handleGuardarEntrenamiento}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.body22Position]}
@@ -213,9 +330,9 @@ ejercicio`}</Text>
       {isPantallaElegirCrearEjercicioVisible && (
         <PantallaElegirCrearEjercicio onabrirPantallaCrearEjercicio={handleAbrirPantallaCrearEjercicio}  onabrirPantallaCrearEjercicioBiblioteca={handleAbrirPantallaCrearEjercicioBiblioteca} onClose={handleCerrarPantallaElegirCrearEjercicio} />
       )}
-      {isPantallaCrearEjercicioVisible && <PantallaCrearEjercicio onClose={handleCerrarPantallaCrearEjercicio} ejercicio={ejercicio} />}
+      {isPantallaCrearEjercicioVisible && <PantallaCrearEjercicio onClose={handleCerrarPantallaCrearEjercicio} ejercicio={ejercicio} editbool={editbool} editar={editar}/>}
       {isPantallaCrearEjercicioBibliotecaVisible && <PantallaCrearEjercicioBiblioteca onClose={handleCerrarPantallaCrearEjercicioBiblioteca} />}
-      {isPantallaEditarEjercicioVisible && <PantallaEditarEjercicios onClose={handleCerrarPantallaEditarEjercicio} item={editar}/>}
+      {isPantallaEditarEjercicioVisible && <PantallaEditarEjercicios onabrirPantallaCrearEjercicio={handleAbrirPantallaCrearEjercicio} onClose={handleCerrarPantallaEditarEjercicio} item={editar}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>

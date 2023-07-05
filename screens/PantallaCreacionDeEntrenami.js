@@ -190,7 +190,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
-            Nº de repeticiones
+            Nº de rep
           </Text>
         </View>
       </View>
