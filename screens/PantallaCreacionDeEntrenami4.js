@@ -11,7 +11,7 @@ import PantallaCrearEjercicio from "./PantallaCreacionDeEntrenami2";
 import PantallaCrearEjercicioBiblioteca from "./PantallaCreacionDeEntrenami";
 import PantallaEditarEjercicios from "./PantallaCreacionDeEntrenami3";
 import auth, { firebase } from '@react-native-firebase/auth';
-
+import { isEqual } from "lodash";
 const PantallaCreacionDeEntrenami4 = () => {
   //pantalla menu crear entrenamiento
   const user = auth().currentUser;
@@ -24,7 +24,8 @@ const PantallaCreacionDeEntrenami4 = () => {
   const [editar, setEditar] = useState(null);
   const [editbool, setEditBool]= useState(false);
   const [nomEntrenamiento, setNomEntrenamiento] = useState('');
-  const [tipoEntrenamiento, setTipoEntrenamiento] = useState('')
+  const [tipoEntrenamiento, setTipoEntrenamiento] = useState('');
+  const [datosCargados, setDatosCargados] = useState(false);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -137,24 +138,35 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaEditarEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-  
+  const compararEntrenamientos =(entrenamiento1, entrenamiento2) =>{
+    const props1 = Object.keys(entrenamiento1);
+    const props2 = Object.keys(entrenamiento2);
+    if (propsObjeto1.length !== propsObjeto2.length) {
+      return false;
+    }
+
+  };
   const handleGuardarEntrenamiento = () =>{
     const entrenamiento = {
       nombre: nomEntrenamiento,
       tipo: tipoEntrenamiento,
       ejercicios: ejercicios
     };
+   
+
     if(route.params.editar){
-      if(entrenamiento===route.params.item){
+      if(entrenamiento.nombre==route.params.item.nombre && entrenamiento.tipo == route.params.item.tipo && entrenamiento.ejercicios == route.params.item.ejercicios){
+        console.log('sin cambios')
         navigation.goBack();
       }else{
+        console.log('cambia algo');
         const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
         entrenamientosRef.once('value', (snapshot) => {
           snapshot.forEach((childSnapshot) => {
             const entrene = childSnapshot.val();
-
+            
             if(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo){
-              if(entrene.ejercicios == route.params.item.ejercicios){
+              if(isEqual(entrene.ejercicios, route.params.item.ejercicios)){
                 if(nomEntrenamiento !== ''){
                   entrenamientosRef.child(childSnapshot.key).update({ nombre: nomEntrenamiento });
                 }
@@ -164,12 +176,15 @@ const PantallaCreacionDeEntrenami4 = () => {
                 if(ejercicios !== []){
                   entrenamientosRef.child(childSnapshot.key).update({ejercicios: ejercicios});
                 }
+                console.log('actualizado');
+                navigation.goBack();
               }
             } 
           })
         });
       }
     }else{
+      console.log('crear entrenamiento')
       const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
       entrenamientosRef.once('value', (snapshot) => {
         if (snapshot.exists()) {
@@ -191,16 +206,18 @@ const PantallaCreacionDeEntrenami4 = () => {
     
           // Mostrar por consola la nueva lista de ejercicios
           console.log('Nueva lista de ejercicios creada:', [entrenamiento]);
+          navigation.goBack();
         }
       });
     }
-    navigation.goBack();
+    
   };
   useEffect(() => {
-    if (route.params.editar) {
+    if (route.params.editar && !datosCargados) {
       setNomEntrenamiento(route.params.item.nombre);
       setTipoEntrenamiento(route.params.item.tipo);
       setEjercicios(route.params.item.ejercicios);
+      setDatosCargados(true);
     }
     // Añadir el valor de `ejercicio` a la lista `ejercicios`
     if (ejercicio !== ''){

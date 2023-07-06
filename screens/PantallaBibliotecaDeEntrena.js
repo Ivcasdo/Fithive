@@ -4,9 +4,11 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 import { useNavigation} from "@react-navigation/native";
-
+import { isEqual } from "lodash";
+import auth, { firebase } from '@react-native-firebase/auth';
 const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
   //pantalla editar entrenamientos
+  const user = auth().currentUser;
   const navigation = useNavigation();
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
@@ -16,6 +18,16 @@ const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
     onClose();
   };
   const handleBorrarEntrenamiento = () => {
+    const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+    entrenamientosRef.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const entrene = childSnapshot.val();
+        console.log(isEqual(entrene, item));
+        if(isEqual(entrene, item)){
+          entrenamientosRef.child(childSnapshot.key).remove();
+        }
+      })
+    });
     onClose();
   };
   return (
@@ -48,7 +60,7 @@ const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
               </View>
             </View>
           </Pressable>
-          <Pressable style={[styles.dark2, styles.darkLayout]}>
+          <Pressable style={[styles.dark2, styles.darkLayout]} onPress={handleBorrarEntrenamiento}>
             <Image
               style={[styles.darkIcon, styles.darkIconPosition]}
               contentFit="cover"
