@@ -14,7 +14,7 @@ const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
     onClose();
   };
   const handleEditarEntrenamiento = () => {
-    navigation.navigate("PantallaCreacionDeEntrenamientos", {item:item,editar: editar });
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {item:item,editar: editar , planes: false});
     onClose();
   };
   const handleBorrarEntrenamiento = () => {

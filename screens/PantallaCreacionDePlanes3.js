@@ -4,14 +4,16 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-const PantallaCreacionDePlanes3 = ({ onClose }) => {
+const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
+  //pantalla añadir buscar entrenamientos
   const navigation = useNavigation();
+  
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
   const handleboton = () => {
     onClose();
-    navigation.navigate("PantallaCreacionDeEntrenamientos");
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true });
   };
   return (
     <View style={styles.pantallaCreacionDePlanes3}>

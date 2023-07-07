@@ -44,7 +44,7 @@ const PantallaBibliotecaDeEntrena1 = () => {
     setPantallaEditarEntrenamientoVisible(false);
   }
   const handleAbrirPantallaCrearEntrenamiento= (editar) =>{
-    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar });
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar ,planes: false});
   };
 
   useEffect(() => {

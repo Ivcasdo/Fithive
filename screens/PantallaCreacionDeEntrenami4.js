@@ -138,22 +138,16 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaEditarEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
-  const compararEntrenamientos =(entrenamiento1, entrenamiento2) =>{
-    const props1 = Object.keys(entrenamiento1);
-    const props2 = Object.keys(entrenamiento2);
-    if (propsObjeto1.length !== propsObjeto2.length) {
-      return false;
-    }
-
-  };
   const handleGuardarEntrenamiento = () =>{
     const entrenamiento = {
       nombre: nomEntrenamiento,
       tipo: tipoEntrenamiento,
       ejercicios: ejercicios
     };
-   
-
+    if(route.params.planes && !switchOnValue){
+      console.log('planes si');
+      navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento })
+    }else{
     if(route.params.editar){
       if(entrenamiento.nombre==route.params.item.nombre && entrenamiento.tipo == route.params.item.tipo && entrenamiento.ejercicios == route.params.item.ejercicios){
         console.log('sin cambios')
@@ -209,6 +203,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           navigation.goBack();
         }
       });
+    }
     }
     
   };

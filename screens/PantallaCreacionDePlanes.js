@@ -3,14 +3,17 @@ import { Pressable, StyleSheet, View, TextInput, Text, TouchableWithoutFeedback 
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
-import PantallaCreacionDePlanes3 from "./PantallaCreacionDePlanes3";
-const PantallaCreacionDePlanes = ({ visible, onClose}) => {
+import { useState, useEffect } from "react";
+import PantallaAnadirEntrenamientos from "./PantallaCreacionDePlanes3";
+const PantallaCreacionDePlanes = ({}) => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [editarEntrene, setEditarEntrene] = useState(false);
+  const [entrenamiento, setEntrenamiento] = useState([]);
+  const [listaEntrenamientos, setListaEntrenamientos] = useState([]);
+  const route = useRoute();
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -28,13 +31,21 @@ const PantallaCreacionDePlanes = ({ visible, onClose}) => {
 
   const [isanadirentrenamientoVisible, setIsanadirentrenamientoVisible] = useState(false);
 
-  const handleAbriranadirentrenamiento = () => {
+  const handleAbriranadirentrenamiento = (editar) => {
+    setEditarEntrene(editar);
     setIsanadirentrenamientoVisible(true);
   };
 
   const handleCerraranadirentrenamiento = () => {
     setIsanadirentrenamientoVisible(false);
   };
+  useEffect(() => {
+    console.log(route.params?.entrenamiento)
+    if(route.params?.entrenamiento){
+      setEntrenamiento(route.params.entrenamiento);
+    }
+  }, [route.params]);
+
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCreacionDePlanes}>
@@ -91,7 +102,7 @@ const PantallaCreacionDePlanes = ({ visible, onClose}) => {
           </Text>
         </View>
       </View>
-      <Pressable style={styles.default3} onPress={handleAbriranadirentrenamiento}>
+      <Pressable style={styles.default3} onPress={() => handleAbriranadirentrenamiento(false)}>
         <View style={styles.light}>
           <View style={styles.bgLight} />
         </View>
@@ -152,7 +163,7 @@ entrenamiento`}</Text>
         </View>
       </Pressable>
       {isanadirentrenamientoVisible && (
-        <PantallaCreacionDePlanes3 onClose={handleCerraranadirentrenamiento} />
+        <PantallaAnadirEntrenamientos onClose={handleCerraranadirentrenamiento} editar={editarEntrene} />
       )}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>

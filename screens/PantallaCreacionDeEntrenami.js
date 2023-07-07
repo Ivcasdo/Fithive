@@ -145,9 +145,10 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
             style={[styles.caption1, styles.captionPosition]}
           >{`Buscar `}</Text>
         </View>
-        {ejerciciosFiltrados.map((ejercicio) => (
+        {ejerciciosFiltrados.map((ejercicio, index) => (
           <TouchableOpacity
             style={{top:55,}}
+            key={index}
             onPress={() => {
               setEjercicioSeleccionado(ejercicio);
               setSeleccion(ejercicio.nombre);
