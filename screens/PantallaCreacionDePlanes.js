@@ -72,8 +72,20 @@ const PantallaCreacionDePlanes = ({}) => {
         return isEqual(entrenamientolista,entrenamiento);
       });
       if(!entrenamientoExistente){
-      
-        listaEntrenamientos.push(entrenamiento);
+        if(route.params.acambiar){
+          console.log('hola');
+          const entrenamientoIgual = listaEntrenamientos.find(entrenamiento => isEqual(entrenamiento, route.params.acambiar));
+          const listaActualizada = listaEntrenamientos.map((entrenamiento1) => {
+            if(isEqual(entrenamiento1, entrenamientoIgual)){
+              return entrenamiento;
+            }
+            return entrenamiento1;
+          });
+          setListaEntrenamientos(listaActualizada);
+        }else{
+          listaEntrenamientos.push(entrenamiento);
+        }
+        
         setEntrenamiento([]);
         
       }

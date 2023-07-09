@@ -3,13 +3,17 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
-
+import { useNavigation } from "@react-navigation/native";
 const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
   //pantalla editr entrenamientos desde planes
+  const navigation = useNavigation();
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-  const handleEditar = (editar, entrenamiento) => {};
+  const handleEditar = () => {
+    onClose();
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true, item: entrenamiento });
+  };
   return (
     <View style={styles.pantallaCreacionDePlanes2}>
       <View style={[styles.lightHamburger, styles.coverPosition]}>
@@ -25,7 +29,7 @@ const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
         </Pressable>
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
-        <Pressable style={[styles.dark, styles.darkLayout]}>
+        <Pressable style={[styles.dark, styles.darkLayout]}  onPress={handleEditar}>
           <View style={styles.dark1}>
             <LinearGradient
               style={[styles.bgPrimary, styles.darkIconPosition]}

@@ -145,65 +145,84 @@ const PantallaCreacionDeEntrenami4 = () => {
       ejercicios: ejercicios
     };
     if(route.params.planes && !switchOnValue){
-      console.log('planes si');
-      navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento })
-    }else{
-    if(route.params.editar){
-      if(entrenamiento.nombre==route.params.item.nombre && entrenamiento.tipo == route.params.item.tipo && entrenamiento.ejercicios == route.params.item.ejercicios){
-        console.log('sin cambios')
-        navigation.goBack();
+      if(isEqual(entrenamiento, route.params.item)){
+        navigation.navigate("PantallaCreacionDePlanes");
       }else{
-        console.log('cambia algo');
-        const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
-        entrenamientosRef.once('value', (snapshot) => {
-          snapshot.forEach((childSnapshot) => {
-            const entrene = childSnapshot.val();
-            
-            if(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo){
-              if(isEqual(entrene.ejercicios, route.params.item.ejercicios)){
-                if(nomEntrenamiento !== ''){
-                  entrenamientosRef.child(childSnapshot.key).update({ nombre: nomEntrenamiento });
-                }
-                if(tipoEntrenamiento !== ''){
-                  entrenamientosRef.child(childSnapshot.key).update({tipo: tipoEntrenamiento});
-                }
-                if(ejercicios !== []){
-                  entrenamientosRef.child(childSnapshot.key).update({ejercicios: ejercicios});
-                }
-                console.log('actualizado');
-                navigation.goBack();
-              }
-            } 
-          })
-        });
+        const acambiar = route.params.item;
+        if(route.params.editar){
+          navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
+        }else{
+          navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento  })
+        }
       }
     }else{
-      console.log('crear entrenamiento')
-      const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
-      entrenamientosRef.once('value', (snapshot) => {
-        if (snapshot.exists()) {
-          // El usuario ya tiene una lista de ejercicios
-          const entrenamientos = snapshot.val();
-    
-          // Agregar el nuevo ejercicio a la lista existente
-          const nuevoEntrenamientoRef = entrenamientosRef.push();
-          nuevoEntrenamientoRef.set(entrenamiento);
-    
-          // Mostrar por consola la lista de ejercicios actualizada
-          console.log('Lista de entrenamientos actualizada:', entrenamientos);
-        } else {
-          // El usuario no tiene una lista de ejercicios
-          // Crear la lista de ejercicios y agregar el nuevo ejercicio
-          
-          const nuevoEntrenamientoRef = entrenamientosRef.push();
-          nuevoEntrenamientoRef.set(entrenamiento); // Usamos 0 como clave inicial para crear una lista indexada
-    
-          // Mostrar por consola la nueva lista de ejercicios
-          console.log('Nueva lista de ejercicios creada:', [entrenamiento]);
+      if(route.params.editar){
+        if(entrenamiento.nombre==route.params.item.nombre && entrenamiento.tipo == route.params.item.tipo && entrenamiento.ejercicios == route.params.item.ejercicios){
+          console.log('sin cambios')
           navigation.goBack();
+        }else{
+          console.log('cambia algo');
+          const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+          entrenamientosRef.once('value', (snapshot) => {
+            snapshot.forEach((childSnapshot) => {
+              const entrene = childSnapshot.val();
+              console.log(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo);
+              if(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo){
+                
+                if(isEqual(entrene.ejercicios, route.params.item.ejercicios)){
+                  if(nomEntrenamiento !== ''){
+                    entrenamientosRef.child(childSnapshot.key).update({ nombre: nomEntrenamiento });
+                  }
+                  if(tipoEntrenamiento !== ''){
+                    entrenamientosRef.child(childSnapshot.key).update({tipo: tipoEntrenamiento});
+                  }
+                  if(ejercicios !== []){
+                    entrenamientosRef.child(childSnapshot.key).update({ejercicios: ejercicios});
+                  }
+                  console.log('actualizado');
+                  if(route.params.planes){
+                    const acambiar = route.params.item;
+                    navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
+                  }else{
+                    navigation.goBack();
+                  }
+                }
+              } 
+            })
+          });
         }
-      });
-    }
+      }else{
+        console.log('crear entrenamiento')
+        const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+        entrenamientosRef.once('value', (snapshot) => {
+          if (snapshot.exists()) {
+            // El usuario ya tiene una lista de ejercicios
+            const entrenamientos = snapshot.val();
+      
+            // Agregar el nuevo ejercicio a la lista existente
+            const nuevoEntrenamientoRef = entrenamientosRef.push();
+            nuevoEntrenamientoRef.set(entrenamiento);
+      
+            // Mostrar por consola la lista de ejercicios actualizada
+            console.log('Lista de entrenamientos actualizada:', entrenamientos);
+            if(route.params.planes){
+              navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento  })
+            }else{
+              navigation.goBack();
+            }
+          } else {
+            // El usuario no tiene una lista de ejercicios
+            // Crear la lista de ejercicios y agregar el nuevo ejercicio
+            
+            const nuevoEntrenamientoRef = entrenamientosRef.push();
+            nuevoEntrenamientoRef.set(entrenamiento); // Usamos 0 como clave inicial para crear una lista indexada
+      
+            // Mostrar por consola la nueva lista de ejercicios
+            console.log('Nueva lista de ejercicios creada:', [entrenamiento]);
+            navigation.goBack();
+          }
+        });
+      }
     }
     
   };
