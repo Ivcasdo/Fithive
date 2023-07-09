@@ -1,13 +1,18 @@
-import * as React from "react";
-import { View, StyleSheet, Text, Pressable, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, Pressable, TextInput,TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth, { firebase } from '@react-native-firebase/auth';
 const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
   //pantalla añadir buscar entrenamientos
   const navigation = useNavigation();
-  
+  const user = auth().currentUser;
+  const [listaEntrenamientos, setListaEntrenamientos] = useState([]);
+  const [entrenamientosFiltrados, setEntrenamientosFiltrados] = useState([]);
+  const [seleccion, setSeleccion] = useState('');
+  const [entrenamientoSeleccionado, setEntrenamientoSeleccionado] = useState([]);
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
@@ -15,6 +20,34 @@ const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
     onClose();
     navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true });
   };
+  const handleEntrenamientoBiblioteca = (entrenamiento) => {
+    setEntrenamientoSeleccionado(entrenamiento);
+    setSeleccion(entrenamiento.nombre);
+    onClose(entrenamiento);
+  };
+  useEffect(() => {
+    const entrenamientosRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entrenamientos`);
+    const handleSnapshot = (snapshot) => {
+      const entrenamientosData = snapshot.val();
+      if (entrenamientosData) {
+        const entrenamientosArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(entrenamientosData).forEach((key) => {
+          entrenamientosArray.push(entrenamientosData[key]);
+        });
+        setListaEntrenamientos(entrenamientosArray);
+      }
+    };
+    entrenamientosRef.on('value', handleSnapshot);
+    const EntrenamientosFiltrados = listaEntrenamientos.filter((entrenamiento) =>
+      entrenamiento.nombre.toLowerCase().includes(seleccion.toLowerCase())
+    );
+    setEntrenamientosFiltrados(EntrenamientosFiltrados);
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      entrenamientosRef.off('value', handleSnapshot);
+    };
+  }, [seleccion]);
   return (
     <View style={styles.pantallaCreacionDePlanes3}>
       <View style={[styles.lightHamburger, styles.spBody2MediumPosition]}>
@@ -71,27 +104,50 @@ const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
           </View>
         </View>
       </Pressable>
+      
       <View style={[styles.default, styles.darkPosition]}>
         <View style={[styles.stroke, styles.primaryPosition]}>
           <View style={[styles.bgPrimary1, styles.primaryPosition]} />
         </View>
         <TextInput
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
-          placeholder="Input caption"
+          placeholder="Buscar Biblioteca"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={seleccion}
+          onChangeText={(text) => setSeleccion(text)}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
             Buscar en biblioteca
           </Text>
         </View>
+        <View style={styles.filtroejercicios}>
+          {entrenamientosFiltrados.map((entrenamiento, index) => (
+              <TouchableOpacity
+                style={{padding:10,}}
+                key={index}
+                onPress={() => handleEntrenamientoBiblioteca(entrenamiento) }
+              >
+                <Text>{entrenamiento.nombre}</Text>
+              </TouchableOpacity>
+            ))}
+      </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  filtroejercicios:{
+    backgroundColor: 'white',
+    left:0,
+    top:56,
+    
+    position: 'absolute',
+    zIndex: 90,
+    width: '100%'
+  },
   spBody2MediumPosition: {
     left: 0,
     right: 0,

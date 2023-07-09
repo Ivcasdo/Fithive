@@ -1,18 +1,21 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, TextInput, Text, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, TextInput, Text, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import { useState, useEffect } from "react";
+import { isEqual } from "lodash";
 import PantallaAnadirEntrenamientos from "./PantallaCreacionDePlanes3";
+import PantallaEditarEntrenamiento from "./PantallaCreacionDePlanes2"
 const PantallaCreacionDePlanes = ({}) => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [editarEntrene, setEditarEntrene] = useState(false);
-  const [entrenamiento, setEntrenamiento] = useState([]);
-  const [listaEntrenamientos, setListaEntrenamientos] = useState([]);
+  const [entrenamiento, setEntrenamiento] = useState('');
+  const [EditEntrene, setEditEntrene] = useState('');
+  const [listaEntrenamientos, setListaEntrenamientos] = useState('');
   const route = useRoute();
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -25,26 +28,63 @@ const PantallaCreacionDePlanes = ({}) => {
       handleCloseSubmenu();
     }if(isanadirentrenamientoVisible){
       handleCerraranadirentrenamiento();
+    }if(isEditarEntrenamientoVisible){
+      handleCerrarEditarEntrenamiento();
     }
   };
 
-
+  const [isEditarEntrenamientoVisible, setIsEditarEntrenamientoVisible] = useState(false);
   const [isanadirentrenamientoVisible, setIsanadirentrenamientoVisible] = useState(false);
+
+  const handleAbrirEditarEntrenamiento = (editar, entrenamiento) => {
+    setEditarEntrene(editar);
+    setEditEntrene(entrenamiento);
+    setIsEditarEntrenamientoVisible(true);
+  };
+  const handleCerrarEditarEntrenamiento = () => {
+    setIsEditarEntrenamientoVisible(false);
+  };
 
   const handleAbriranadirentrenamiento = (editar) => {
     setEditarEntrene(editar);
     setIsanadirentrenamientoVisible(true);
   };
 
-  const handleCerraranadirentrenamiento = () => {
+  const handleCerraranadirentrenamiento = (entrenamiento) => {
+    setEntrenamiento(entrenamiento);
     setIsanadirentrenamientoVisible(false);
   };
+
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameItem, styles.frameLayout]} />
+    );
+  };
   useEffect(() => {
-    console.log(route.params?.entrenamiento)
+
     if(route.params?.entrenamiento){
       setEntrenamiento(route.params.entrenamiento);
     }
-  }, [route.params]);
+    if(entrenamiento!= ''){
+    if (listaEntrenamientos !== '') {
+
+      const entrenamientoExistente = listaEntrenamientos.some(entrenamientolista => {
+        return isEqual(entrenamientolista,entrenamiento);
+      });
+      if(!entrenamientoExistente){
+      
+        listaEntrenamientos.push(entrenamiento);
+        setEntrenamiento([]);
+        
+      }
+    }else{
+      setListaEntrenamientos([entrenamiento])
+      setEntrenamiento([]);
+    }
+  }
+
+    
+  }, [route.params, entrenamiento]);
 
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
@@ -115,24 +155,19 @@ entrenamiento`}</Text>
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildShadowBox]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.spSubheadingRegular3, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingTypo]}>
-            {" "}
-            Entrenamiento piernas
-          </Text>
-          <View
-            style={[styles.spSubheadingRegular4, styles.subheadingPosition]}
-          >
-            <Text style={[styles.subheading1, styles.subheadingPosition]}>
-              {" "}
-              Entrenamiento espalda
-            </Text>
-            <View style={[styles.frameItem, styles.frameLayout]} />
-          </View>
-        </View>
+        <FlatList
+          data={listaEntrenamientos}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View style= {{marginBottom: 5,top:0}}>
+              <Pressable onPress= { () => handleAbrirEditarEntrenamiento(true, item)}>
+              <Text style={[styles.subheading1, {top:3,left:5}]}>{item.nombre}</Text>
+                {index !== listaEntrenamientos.length && <FlatListItemseparator />}
+              </Pressable>
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
       </View>
       <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPlanesDeEntrenamiento")}>
         <View style={styles.light}>
@@ -165,6 +200,7 @@ entrenamiento`}</Text>
       {isanadirentrenamientoVisible && (
         <PantallaAnadirEntrenamientos onClose={handleCerraranadirentrenamiento} editar={editarEntrene} />
       )}
+      {isEditarEntrenamientoVisible && <PantallaEditarEntrenamiento onClose={handleCerrarEditarEntrenamiento} editar={editarEntrene} entrenamiento={EditEntrene}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -417,7 +453,7 @@ const styles = StyleSheet.create({
     top: "50%",
   },
   rectangleParent: {
-    top: 286,
+    top: 280,
     shadowColor: "rgba(0, 0, 0, 0.25)",
     left: 22,
     overflow: "hidden",

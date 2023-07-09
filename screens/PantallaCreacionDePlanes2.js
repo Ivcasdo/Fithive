@@ -4,19 +4,25 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
-const PantallaCreacionDePlanes2 = () => {
+const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
   //pantalla editr entrenamientos desde planes
+  const handleCerrarPantallaSuperpuesta = () => {
+    onClose();
+  };
+  const handleEditar = (editar, entrenamiento) => {};
   return (
     <View style={styles.pantallaCreacionDePlanes2}>
       <View style={[styles.lightHamburger, styles.coverPosition]}>
         <View style={styles.spTitleMedium}>
-          <Text style={styles.title}>Entrenamiento espalda</Text>
+          <Text style={styles.title}>{entrenamiento.nombre}</Text>
         </View>
-        <Image
-          style={[styles.closeIcon, styles.darkLayout]}
-          contentFit="cover"
-          source={require("../assets/close.png")}
-        />
+        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
+          <Image
+            style={[styles.closeIcon, styles.darkLayout]}
+            contentFit="cover"
+            source={require("../assets/close.png")}
+          />
+        </Pressable>
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
         <Pressable style={[styles.dark, styles.darkLayout]}>
@@ -199,10 +205,12 @@ const styles = StyleSheet.create({
     height: 72,
   },
   pantallaCreacionDePlanes2: {
-    backgroundColor: Color.lightColor,
-    flex: 1,
+    flex: 0.4,
     height: 203,
     width: "100%",
+    backgroundColor: Color.lightColor,
+    position: "absolute",
+    bottom: 0,
   },
 });
 
