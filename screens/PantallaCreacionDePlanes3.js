@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Pressable, TextInput,TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Pressable, TextInput,TouchableOpacity, ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
@@ -122,7 +122,9 @@ const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
             Buscar en biblioteca
           </Text>
         </View>
+        
         <View style={styles.filtroejercicios}>
+          
           {entrenamientosFiltrados.map((entrenamiento, index) => (
               <TouchableOpacity
                 style={{padding:10,}}
@@ -132,7 +134,9 @@ const PantallaCreacionDePlanes3 = ({ onClose, editar }) => {
                 <Text>{entrenamiento.nombre}</Text>
               </TouchableOpacity>
             ))}
-      </View>
+        
+        </View>
+        
       </View>
     </View>
   );
@@ -143,11 +147,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     left:0,
     top:56,
-    
+    maxHeight:90,
     position: 'absolute',
     zIndex: 90,
-    width: '100%'
+    width: '100%',
+    flex:1
   },
+
   spBody2MediumPosition: {
     left: 0,
     right: 0,

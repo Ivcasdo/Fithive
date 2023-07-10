@@ -26,6 +26,7 @@ const PantallaCreacionDeEntrenami4 = () => {
   const [nomEntrenamiento, setNomEntrenamiento] = useState('');
   const [tipoEntrenamiento, setTipoEntrenamiento] = useState('');
   const [datosCargados, setDatosCargados] = useState(false);
+
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -138,6 +139,7 @@ const PantallaCreacionDeEntrenami4 = () => {
     setIsPantallaEditarEjercicioVisible(false);
     setIsPantallaElegirCrearEjercicioVisible(false);
   };
+
   const handleGuardarEntrenamiento = () =>{
     const entrenamiento = {
       nombre: nomEntrenamiento,
@@ -166,9 +168,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           entrenamientosRef.once('value', (snapshot) => {
             snapshot.forEach((childSnapshot) => {
               const entrene = childSnapshot.val();
-              console.log(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo);
               if(entrene.nombre == route.params.item.nombre && entrene.tipo == route.params.item.tipo){
-                
                 if(isEqual(entrene.ejercicios, route.params.item.ejercicios)){
                   if(nomEntrenamiento !== ''){
                     entrenamientosRef.child(childSnapshot.key).update({ nombre: nomEntrenamiento });
@@ -180,6 +180,7 @@ const PantallaCreacionDeEntrenami4 = () => {
                     entrenamientosRef.child(childSnapshot.key).update({ejercicios: ejercicios});
                   }
                   console.log('actualizado');
+                  
                   if(route.params.planes){
                     const acambiar = route.params.item;
                     navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
@@ -187,9 +188,40 @@ const PantallaCreacionDeEntrenami4 = () => {
                     navigation.goBack();
                   }
                 }
-              } 
+              }
             })
           });
+          //aqui
+          entrenamientosRef.once('value')
+            .then((snapshot) => {
+              let entrenamientoEncontrado = null;
+              snapshot.forEach((childSnapshot) => {
+                const entrene = childSnapshot.val();
+                if (isEqual(entrene,route.params.item)) {
+                  entrenamientoEncontrado = entrene;
+                }
+              });
+              if (entrenamientoEncontrado) {
+                console.log('Entrenamiento encontrado:', entrenamientoEncontrado);
+              } else {
+                console.log('No se encontró el entrenamiento');
+                const nuevoEntrenamientoRef = entrenamientosRef.push();
+                nuevoEntrenamientoRef.set(entrenamiento);
+                if(route.params.planes){
+                  const acambiar = route.params.item;
+                  navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
+                }else{
+                  navigation.goBack();
+                }
+              }
+            })
+            .catch((error) => {
+              console.log('Error en la búsqueda:', error);
+            });
+
+            
+          
+
         }
       }else{
         console.log('crear entrenamiento')

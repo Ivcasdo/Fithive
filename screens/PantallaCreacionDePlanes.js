@@ -51,7 +51,9 @@ const PantallaCreacionDePlanes = ({}) => {
   };
 
   const handleCerraranadirentrenamiento = (entrenamiento) => {
-    setEntrenamiento(entrenamiento);
+    if(entrenamiento){
+      setEntrenamiento(entrenamiento);
+    }
     setIsanadirentrenamientoVisible(false);
   };
 
@@ -72,7 +74,7 @@ const PantallaCreacionDePlanes = ({}) => {
         return isEqual(entrenamientolista,entrenamiento);
       });
       if(!entrenamientoExistente){
-        if(route.params.acambiar){
+        if(route.params?.acambiar){
           console.log('hola');
           const entrenamientoIgual = listaEntrenamientos.find(entrenamiento => isEqual(entrenamiento, route.params.acambiar));
           const listaActualizada = listaEntrenamientos.map((entrenamiento1) => {
