@@ -4,36 +4,47 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
-  //pantalla editr entrenamientos desde planes
+import { isEqual } from "lodash";
+import auth, { firebase } from '@react-native-firebase/auth';
+const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
   const navigation = useNavigation();
+  const user = auth().currentUser;
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-  const handleEditar = () => {
+  const handleEditarPlan = () =>{
     onClose();
-    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true, item: entrenamiento });
-  };
-  const handleBorrar = () => {
-    console.log('borrar');
-    onClose(true, entrenamiento);
-  };
+    navigation.navigate("PantallaCreacionDePlanes", {editarPlanes: true, planEditar :planEditar})
+  }
+  const handleBorrarPlan = () =>{
+    const planesRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planesentrenamiento`);
+    planesRef.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const plan = childSnapshot.val();
+        console.log(isEqual(plan, planEditar));
+        if(isEqual(plan, planEditar)){
+          planesRef.child(childSnapshot.key).remove();
+        }
+      })
+    });
+    onClose();
+  }
   return (
-    <View style={styles.pantallaCreacionDePlanes2}>
+    <View style={styles.pantallaCreacionDePlanes4}>
       <View style={[styles.lightHamburger, styles.coverPosition]}>
         <View style={styles.spTitleMedium}>
-          <Text style={styles.title}>{entrenamiento.nombre}</Text>
+          <Text style={styles.title}>{planEditar.nombre}</Text>
         </View>
         <Pressable onPress={handleCerrarPantallaSuperpuesta}>
           <Image
-            style={[styles.closeIcon, styles.darkLayout]}
+            style={[styles.closeIcon, styles.dark2Layout]}
             contentFit="cover"
             source={require("../assets/close.png")}
           />
         </Pressable>
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
-        <Pressable style={[styles.dark, styles.darkLayout]}  onPress={handleEditar}>
+        <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleEditarPlan}>
           <View style={styles.dark1}>
             <LinearGradient
               style={[styles.bgPrimary, styles.darkIconPosition]}
@@ -47,7 +58,7 @@ const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
             </View>
           </View>
         </Pressable>
-        <Pressable style={[styles.dark2, styles.darkLayout]} onPress={handleBorrar}>
+        <Pressable style={[styles.dark2, styles.dark2Layout]} onPress={handleBorrarPlan}>
           <Image
             style={[styles.darkIcon, styles.darkIconPosition]}
             contentFit="cover"
@@ -60,6 +71,18 @@ const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
           </View>
         </Pressable>
       </View>
+      <Pressable style={[styles.dark3, styles.darkPosition]}>
+        <Image
+          style={[styles.darkIcon, styles.darkIconPosition]}
+          contentFit="cover"
+          source={require("../assets/-dark1.png")}
+        />
+        <View style={[styles.flatdefault1, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition1]}>
+            <Text style={[styles.body22, styles.bodyTypo]}>Activar Plan</Text>
+          </View>
+        </View>
+      </Pressable>
     </View>
   );
 };
@@ -70,7 +93,12 @@ const styles = StyleSheet.create({
     right: 0,
     position: "absolute",
   },
-  darkLayout: {
+  dark2Layout: {
+    height: 40,
+    position: "absolute",
+  },
+  darkPosition: {
+    left: 12,
     height: 40,
     position: "absolute",
   },
@@ -97,20 +125,20 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     textTransform: "uppercase",
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
     height: 24,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     left: 0,
     top: 0,
     position: "absolute",
   },
   title: {
-    fontSize: FontSize.size_xl,
+    fontSize: FontSize.spTitleMedium_size,
     lineHeight: 26,
     textAlign: "left",
     height: 24,
-    fontFamily: FontFamily.robotoMedium,
+    fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
     width: 216,
     color: Color.textColor,
@@ -119,10 +147,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   spTitleMedium: {
-    top: 16,
     right: 72,
     bottom: 16,
     left: 72,
+    top: 16,
     position: "absolute",
   },
   closeIcon: {
@@ -146,7 +174,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
     shadowOpacity: 1,
-    backgroundColor: Color.accentColor,
+    backgroundColor: Color.primaryColor,
   },
   dark1: {
     height: "100%",
@@ -165,7 +193,7 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     textTransform: "uppercase",
-    fontSize: FontSize.size_sm,
+    fontSize: FontSize.spBUTTON_size,
   },
   spBody2Medium: {
     left: 0,
@@ -179,8 +207,7 @@ const styles = StyleSheet.create({
   },
   dark: {
     right: 116,
-    left: 12,
-    bottom: 8,
+    top: 16,
   },
   darkIcon: {
     maxWidth: "100%",
@@ -190,12 +217,6 @@ const styles = StyleSheet.create({
   },
   body21: {
     width: 64,
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    textAlign: "center",
-    textTransform: "uppercase",
-    fontSize: FontSize.size_sm,
     color: Color.textColor,
   },
   flatdefault1: {
@@ -206,13 +227,27 @@ const styles = StyleSheet.create({
   dark2: {
     left: 253,
     width: 80,
-    bottom: 8,
+    top: 16,
   },
   cover: {
-    top: 63,
-    height: 72,
+    top: 104,
+    height: 99,
   },
-  pantallaCreacionDePlanes2: {
+  body22: {
+    width: 216,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontSize: FontSize.spBUTTON_size,
+    color: Color.textColor,
+  },
+  dark3: {
+    top: 64,
+    width: 232,
+  },
+  pantallaCreacionDePlanes4: {
     flex: 0.4,
     height: 203,
     width: "100%",
@@ -222,4 +257,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PantallaCreacionDePlanes2;
+export default PantallaCreacionDePlanes4;

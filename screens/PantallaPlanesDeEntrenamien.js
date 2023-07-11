@@ -1,15 +1,19 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
+import PantallaEditarPlanes from './PantallaEditarPlanes'
 const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [listaPlanes, setListaPlanes] = useState('');
+  const [planEditar, setPlanEditar] = useState('');
+  const user = auth().currentUser;
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -19,8 +23,45 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
+    }if(isEditarPlanesVisible){
+      handleCerrarEditarPlanes();
     }
   };
+  const [isEditarPlanesVisible, setIsEditarPlanesVisible] = useState(false);
+  const handleAbrirEditarPlanes = (plan) =>{
+    setPlanEditar(plan);
+    setIsEditarPlanesVisible(true);
+  };
+  const handleCerrarEditarPlanes = () =>{
+
+    setIsEditarPlanesVisible(false);
+  };
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.lineView, styles.frameLayout]} />
+    );
+  };
+  useEffect(() => {
+    const planesRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planesentrenamiento`);
+    const handleSnapshot = (snapshot) => {
+      const planesData = snapshot.val();
+      if (planesData) {
+        const planesArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(planesData).forEach((key) => {
+          planesArray.push(planesData[key]);
+        });
+        
+        setListaPlanes(planesArray);
+      }
+    };
+    planesRef.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      planesRef.off('value', handleSnapshot);
+    };
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaPlanesDeEntrenamien}>
@@ -33,38 +74,22 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.body21Position]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
         <View style={styles.frameChild2} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition4]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 5</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular1, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading1, styles.subheadingLayout]}> 3</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 4</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular3, styles.subheadingPosition5]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Plan 3
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular4, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Plan 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Plan 1
-          </Text>
-        </View>
+        <FlatList
+          data={listaPlanes}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <Pressable onPress={() => handleAbrirEditarPlanes(item)}>
+              <View style= {{marginBottom: 10,top:10,flexDirection: 'row'}}>
+                <Text style={[styles.subheading3, {left:5,}]}>{item.nombre}</Text>
+                <Text style={[styles.subheading3, {left:5,}]}>{item.semanas}</Text>
+                  {index !== listaPlanes.length && <FlatListItemseparator />}
+              </View>
+            </Pressable>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20, bottom:0, top:15,}}
+        />
+
         <View style={styles.spSubheadingRegularParent}>
           <View
             style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
@@ -111,6 +136,7 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
         </View>
       </Pressable>
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      {isEditarPlanesVisible && <PantallaEditarPlanes onClose={handleCerrarEditarPlanes} planEditar={planEditar}/>}
     </View>
     </TouchableWithoutFeedback>
   );
@@ -240,7 +266,7 @@ const styles = StyleSheet.create({
     top: 46,
   },
   lineView: {
-    top: 68,
+    top: 25,
   },
   frameChild1: {
     top: 90,

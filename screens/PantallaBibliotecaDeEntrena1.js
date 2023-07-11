@@ -92,12 +92,6 @@ const PantallaBibliotecaDeEntrena1 = () => {
           )}
           contentContainerStyle={{ position: 'absolute', zIndex: 1,paddingBottom:20, bottom:0, top:15}}
         />
-        
-  
- 
-        
-      
-       
         <View style={styles.spSubheadingRegularWrapper}>
           <View
             style={[styles.spSubheadingRegular3, styles.subheadingPosition1]}

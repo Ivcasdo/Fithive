@@ -7,16 +7,23 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import { useState, useEffect } from "react";
 import { isEqual } from "lodash";
+import auth, { firebase } from '@react-native-firebase/auth';
 import PantallaAnadirEntrenamientos from "./PantallaCreacionDePlanes3";
 import PantallaEditarEntrenamiento from "./PantallaCreacionDePlanes2"
 const PantallaCreacionDePlanes = ({}) => {
   const navigation = useNavigation();
+  const user = auth().currentUser;
+  const [datosCargados, setDatosCargados] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [editarEntrene, setEditarEntrene] = useState(false);
   const [entrenamiento, setEntrenamiento] = useState('');
   const [EditEntrene, setEditEntrene] = useState('');
   const [listaEntrenamientos, setListaEntrenamientos] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [tipo,setTipo] = useState('');
+  const [numSemana, setNumSemana] = useState('');
   const route = useRoute();
+
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -32,6 +39,16 @@ const PantallaCreacionDePlanes = ({}) => {
       handleCerrarEditarEntrenamiento();
     }
   };
+  const handleNombreChange = (text) =>{
+    setNombre(text);
+  }
+  const handleTipoChange = (text) =>{
+    setTipo(text);
+  }
+  const handleNumSemanaChange = (text) =>{
+    setNumSemana(text);
+  }
+
 
   const [isEditarEntrenamientoVisible, setIsEditarEntrenamientoVisible] = useState(false);
   const [isanadirentrenamientoVisible, setIsanadirentrenamientoVisible] = useState(false);
@@ -41,7 +58,15 @@ const PantallaCreacionDePlanes = ({}) => {
     setEditEntrene(entrenamiento);
     setIsEditarEntrenamientoVisible(true);
   };
-  const handleCerrarEditarEntrenamiento = () => {
+  const handleCerrarEditarEntrenamiento = (borrar, item) => {
+    if(borrar){
+      const nuevaListaEntrenamiento = listaEntrenamientos.filter(
+        entrenamiento => !isEqual(entrenamiento,item)
+        // Reemplaza 'nombre' y 'otraPropiedad' con las propiedades correspondientes en tu objeto ejercicio
+      );
+      console.log(nuevaListaEntrenamiento);
+      setListaEntrenamientos(nuevaListaEntrenamiento);
+    }
     setIsEditarEntrenamientoVisible(false);
   };
 
@@ -57,13 +82,74 @@ const PantallaCreacionDePlanes = ({}) => {
     setIsanadirentrenamientoVisible(false);
   };
 
+  const handleGuardarPlan = () => {
+    const newPlan = {
+      nombre: nombre,
+      tipo: tipo,
+      semanas: numSemana,
+      entrenamientos: listaEntrenamientos,
+    }
+    if (nombre === '' || tipo === '' || numSemana === '' || listaEntrenamientos === '') {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
+    if(route.params.editarPlanes){
+      if(isEqual(newPlan, route.params.planEditar)){
+        console.log('sin cambios')
+        navigation.goBack();
+      }else{
+        const planesRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planesentrenamiento`);
+        planesRef.once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const plan = childSnapshot.val();
+            if(isEqual(plan, route.params.planEditar)){
+              if(nombre != ''){
+                planesRef.child(childSnapshot.key).update({ nombre: nombre });
+              }
+              if(tipo != ''){
+                planesRef.child(childSnapshot.key).update({ tipo: tipo });
+              }
+              if(numSemana != ''){
+                planesRef.child(childSnapshot.key).update({ semanas: numSemana });
+              }
+              if(listaEntrenamientos !=''){
+                planesRef.child(childSnapshot.key).update({ entrenamientos: listaEntrenamientos });
+              }
+              console.log('actualizado');
+            }
+          })
+        });
+      }
+    }else{
+      const planesRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planesentrenamiento`);
+      planesRef.once('value', (snapshot) => {
+        if(snapshot.exists()){
+          const planes = snapshot.val();
+          const nuevoPlanRef = planesRef.push();
+          nuevoPlanRef.set(newPlan);
+          console.log('Lista de planes actualizada:', planes);
+        }else{
+          const nuevoPlanRef = planesRef.push();
+          nuevoPlanRef.set(newPlan);
+
+        }
+      });
+    }
+    navigation.navigate("PantallaPlanesDeEntrenamiento");
+  }
   const FlatListItemseparator = () => {
     return (
       <View style={[styles.frameItem, styles.frameLayout]} />
     );
   };
   useEffect(() => {
-
+    if(route.params.editarPlanes && !datosCargados){
+      setNombre(route.params.planEditar.nombre)
+      setTipo(route.params.planEditar.tipo);
+      setNumSemana(route.params.planEditar.semanas);
+      setListaEntrenamientos(route.params.planEditar.entrenamientos);
+      setDatosCargados(true);
+    }
     if(route.params?.entrenamiento){
       setEntrenamiento(route.params.entrenamiento);
     }
@@ -75,7 +161,6 @@ const PantallaCreacionDePlanes = ({}) => {
       });
       if(!entrenamientoExistente){
         if(route.params?.acambiar){
-          console.log('hola');
           const entrenamientoIgual = listaEntrenamientos.find(entrenamiento => isEqual(entrenamiento, route.params.acambiar));
           const listaActualizada = listaEntrenamientos.map((entrenamiento1) => {
             if(isEqual(entrenamiento1, entrenamientoIgual)){
@@ -96,8 +181,6 @@ const PantallaCreacionDePlanes = ({}) => {
       setEntrenamiento([]);
     }
   }
-
-    
   }, [route.params, entrenamiento]);
 
   return (
@@ -119,6 +202,8 @@ const PantallaCreacionDePlanes = ({}) => {
           placeholder="Input caption"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nombre}
+          onChangeText={handleNombreChange}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.captionTypo]}>Nombre</Text>
@@ -133,6 +218,8 @@ const PantallaCreacionDePlanes = ({}) => {
           placeholder="Input caption"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={tipo}
+          onChangeText={handleTipoChange}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.captionTypo]}>
@@ -149,6 +236,8 @@ const PantallaCreacionDePlanes = ({}) => {
           placeholder="Input caption"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={numSemana}
+          onChangeText={handleNumSemanaChange}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption5, styles.captionTypo]}>
@@ -183,7 +272,7 @@ entrenamiento`}</Text>
           contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
         />
       </View>
-      <Pressable style={[styles.accent, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPlanesDeEntrenamiento")}>
+      <Pressable style={[styles.accent, styles.darkPosition]} onPress={handleGuardarPlan}>
         <View style={styles.light}>
           <LinearGradient
             style={styles.bgAccent}

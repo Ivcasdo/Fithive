@@ -146,6 +146,10 @@ const PantallaCreacionDeEntrenami4 = () => {
       tipo: tipoEntrenamiento,
       ejercicios: ejercicios
     };
+    if (nombre === '' || tipo === '' || ejercicios === []) {
+      alert('Por favor, completa todos los campos');
+      return;
+    }
     if(route.params.planes && !switchOnValue){
       if(isEqual(entrenamiento, route.params.item)){
         navigation.navigate("PantallaCreacionDePlanes");
