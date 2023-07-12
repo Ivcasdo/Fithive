@@ -1,15 +1,19 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
-
-const PantallaRealizarEntrenamient = ({ visible, onClose}) => {
+import { useState, useEffect } from "react";
+import { isEqual } from "lodash";
+import auth, { firebase } from '@react-native-firebase/auth';
+const PantallaRealizarEntrenamient = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const user = auth().currentUser;
+  const route = useRoute();
+  const [ejercicios,setEjercicios] = useState([]);
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -22,93 +26,99 @@ const PantallaRealizarEntrenamient = ({ visible, onClose}) => {
       handleCloseSubmenu();
     }
   };
+  const handleGuardarEntrenamiento=() =>{
+    
+  };
+  useEffect(() => {
+    if (route.params?.entrenamiento) {
+      const ejerciciosEntrenamiento = route.params.entrenamiento.ejercicios.map((ejercicio) => {
+        const series = Array.from({ length: ejercicio.series }).map(() => ({
+          repeticiones: ejercicio.repeticiones,
+          peso: "",
+        }));
+  
+        return {
+          nombre: ejercicio.nombre,
+          tipo: ejercicio.tipo,
+          series: series,
+        };
+      });
+      setEjercicios(ejerciciosEntrenamiento);
+    }
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaRealizarEntrenamient}>
-    <Pressable onPress={handleOpenSubmenu}> 
-      <Image
-        style={styles.pantallaRealizarEntrenamientChild}
-        contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
-      />
-       </Pressable>
-      <View style={[styles.frameParent, styles.frameParentPosition]}>
-        <View style={[styles.captionParent, styles.captionLayout]}>
-          <Text style={[styles.caption, styles.captionTypo]}>Ejercicio 3</Text>
-          <TextInput
-            style={[styles.spSubheadingRegular, styles.subheadingTypo]}
-            placeholder="Num reps"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <TextInput
-            style={[styles.spSubheadingRegular1, styles.subheadingTypo]}
-            placeholder="Peso"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-        </View>
-        <View style={[styles.captionGroup, styles.captionLayout]}>
-          <Text style={[styles.caption, styles.captionTypo]}>Ejercicio 2</Text>
-          <TextInput
-            style={[styles.spSubheadingRegular, styles.subheadingTypo]}
-            placeholder="Num reps"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <TextInput
-            style={[styles.spSubheadingRegular1, styles.subheadingTypo]}
-            placeholder="Peso"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-        </View>
-        <View style={[styles.captionContainer, styles.captionLayout]}>
-          <Text style={[styles.caption2, styles.captionTypo]}>Ejercicio 1</Text>
-          <TextInput
-            style={[styles.spSubheadingRegular, styles.subheadingTypo]}
-            placeholder="Num reps"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-          <TextInput
-            style={[styles.spSubheadingRegular1, styles.subheadingTypo]}
-            placeholder="Peso"
-            keyboardType="default"
-            placeholderTextColor="rgba(0, 0, 0, 0.87)"
-          />
-        </View>
-      </View>
-      <Pressable style={[styles.iconicRightDark, styles.accentPosition]}>
-        <View style={styles.dark}>
-          <LinearGradient
-            style={styles.bgPrimary}
-            locations={[0, 1]}
-            colors={["#1a73e9", "#6c92f4"]}
-          />
-        </View>
+      <Pressable onPress={handleOpenSubmenu}> 
         <Image
-          style={styles.flatdefaultIcon}
+          style={styles.pantallaRealizarEntrenamientChild}
           contentFit="cover"
-          source={require("../assets/flatdefault.png")}
+          source={require("../assets/ellipse-1.png")}
         />
       </Pressable>
-      <View style={[styles.spTitleMediumWrapper, styles.titleLayout]}>
-        <View style={[styles.spTitleMedium, styles.titleLayout]}>
-          <Text style={[styles.title, styles.titleTypo]}>00:00</Text>
-        </View>
+      <View style={styles.frameParent}>
+        <FlatList
+          data={ejercicios}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={[styles.captionParent, styles.captionLayout]}>
+              <Text style={[styles.caption, styles.captionTypo]}>{item.nombre}</Text>
+              {item.series.map((serie, serieIndex) => (
+                <View key={serieIndex}style={{ marginTop: 20 }}>
+                  <TextInput
+                  style={[styles.spSubheadingRegular, styles.subheadingTypo]}
+                  placeholder="Num reps"
+                  keyboardType="default"
+                  placeholderTextColor="rgba(0, 0, 0, 0.87)"
+                  value={serie.repeticiones.toString()}
+                  onChangeText={(text) => {
+                    // Actualizar el valor de repeticiones para la serie actual
+                    item.series[serieIndex].repeticiones = parseInt(text) || 0;
+                  }}
+                />
+                <TextInput
+                  style={[styles.spSubheadingRegular1, styles.subheadingPosition1]}
+                  placeholder="Peso"
+                  keyboardType="default"
+                  placeholderTextColor="rgba(0, 0, 0, 0.87)"
+                  value={serie.peso}
+                  onChangeText={(text) => {
+                    // Actualizar el valor de peso para la serie actual
+                    item.series[serieIndex].peso = text;
+                  }}
+                />
+                </View>
+              ))}
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom: 0, top: 1 }}
+        />
       </View>
-      <Pressable style={[styles.accent, styles.accentPosition]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
-        <View style={styles.dark}>
+      <Pressable style={[styles.accent, styles.darkPosition]} onPress={handleGuardarEntrenamiento}>
+        <View style={styles.accent1}>
           <LinearGradient
-            style={styles.bgPrimary}
+            style={[styles.bgAccent, styles.bgAccentPosition]}
             locations={[0, 1]}
             colors={["#1dde7d", "#72dfc5"]}
           />
         </View>
-        <View style={[styles.flatdefault, styles.body2Layout]}>
-          <View style={[styles.spBody2Medium, styles.body2Layout]}>
-            <Text style={[styles.body2, styles.body2Layout]}>Guardar</Text>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={[styles.body2, styles.bodyTypo]}>Guardar</Text>
+          </View>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.dark, styles.darkPosition]}onPress={() => navigation.goBack()}>
+        <View style={styles.accent1}>
+          <LinearGradient
+            style={[styles.bgAccent, styles.bgAccentPosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
+          />
+        </View>
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
+            <Text style={[styles.body21, styles.bodyTypo]}>volver</Text>
           </View>
         </View>
       </Pressable>
@@ -119,55 +129,68 @@ const PantallaRealizarEntrenamient = ({ visible, onClose}) => {
 };
 
 const styles = StyleSheet.create({
-  frameParentPosition: {
-    left: 29,
-    overflow: "hidden",
-  },
   captionLayout: {
-    height: 42,
-    width: 321,
-    position: "absolute",
+    height: 85,
+    width: 317,
+    left: 0,
     overflow: "hidden",
   },
   captionTypo: {
-    height: 16,
+    width: 395,
     textAlign: "left",
-    color: Color.textColor,
     fontFamily: FontFamily.spCaptionRegular,
     lineHeight: 15,
+    left: 2,
+    color: Color.textColor,
     fontSize: FontSize.spCaptionRegular_size,
     top: 0,
-    left: 2,
     position: "absolute",
   },
   subheadingTypo: {
     fontSize: FontSize.size_base,
     opacity: 0.54,
     height: 20,
-    bottom: 0,
+    top: 0,
     fontFamily: FontFamily.spCaptionRegular,
     position: "absolute",
   },
-  accentPosition: {
-    height: 40,
-    top: 402,
+  subheadingPosition1: {
+    left: 126,
+    right: 139,
+  },
+  subheadingPosition: {
+    top: 44,
+    fontSize: FontSize.size_base,
+    opacity: 0.54,
+    height: 20,
+    fontFamily: FontFamily.spCaptionRegular,
     position: "absolute",
   },
-  titleLayout: {
-    height: 44,
-    width: 133,
+  darkPosition: {
+    top: 400,
     position: "absolute",
   },
-  titleTypo: {
+  bgAccentPosition: {
+    right: 0,
+    left: 0,
+  },
+  flatdefaultPosition: {
+    height: 24,
+    top: "50%",
+    marginTop: -12,
+    position: "absolute",
+  },
+  bodyTypo: {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
     textAlign: "center",
     fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
-    left: 0,
-    color: Color.textColor,
-    top: -4,
-  },
-  body2Layout: {
+    textTransform: "uppercase",
     height: 24,
+    top: 0,
+    left: 0,
     position: "absolute",
   },
   pantallaRealizarEntrenamientChild: {
@@ -178,47 +201,54 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   caption: {
-    width: 319,
+    height: 16,
   },
   spSubheadingRegular: {
-    right: 124,
+    right: 237,
     left: 2,
   },
   spSubheadingRegular1: {
-    left: 126,
-    right: 0,
+    fontSize: FontSize.size_base,
+    opacity: 0.54,
+    height: 20,
+    top: 0,
+    fontFamily: FontFamily.spCaptionRegular,
+    position: "absolute",
   },
-  captionParent: {
-    top: 106,
+  spSubheadingRegular2: {
+    right: 237,
     left: 2,
   },
-  captionGroup: {
-    top: 62,
-    left: 1,
+  spSubheadingRegular3: {
+    left: 126,
+    right: 139,
   },
-  caption2: {
-    width: 399,
-  },
-  captionContainer: {
-    left: 0,
+  captionParent: {
     top: 18,
+  },
+  caption1: {
+    height: 14,
+  },
+  captionGroup: {
+    top: 88,
   },
   frameParent: {
     top: 70,
+    left: 29,
     width: 289,
     height: 316,
     position: "absolute",
+    overflow: "hidden",
   },
-  bgPrimary: {
-    borderRadius: Border.br_80xl,
-    backgroundColor: Color.accentColor,
-    left: 0,
-    right: 0,
+  bgAccent: {
     bottom: 0,
+    borderRadius: Border.br_80xl,
+    backgroundColor: Color.primaryColor,
     top: 0,
+    right: 0,
     position: "absolute",
   },
-  dark: {
+  accent1: {
     height: "100%",
     top: "0%",
     right: "0%",
@@ -227,82 +257,40 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: "100%",
   },
-  flatdefaultIcon: {
-    height: "60%",
-    width: "79.22%",
-    top: "20%",
-    right: "10.39%",
-    bottom: "20%",
-    left: "10.39%",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    position: "absolute",
-    overflow: "hidden",
-  },
-  iconicRightDark: {
-    left: 178,
-    width: 40,
-  },
-  title: {
-    fontSize: 39,
-    lineHeight: 50,
-    height: 44,
-    width: 133,
-    position: "absolute",
-  },
-  spTitleMedium: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowRadius: 4,
-    elevation: 4,
-    shadowOpacity: 1,
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 1,
-    left: 0,
-    top: 0,
-    width: 133,
-  },
-  spTitleMediumWrapper: {
-    top: 400,
-    left: 29,
-    overflow: "hidden",
-  },
   body2: {
-    textTransform: "uppercase",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     width: 59,
+    color: Color.textColor,
+    fontSize: FontSize.spCaptionRegular_size,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
     textAlign: "center",
     fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
-    left: 0,
-    color: Color.textColor,
-    top: 3,
-    height: 24,
-    fontSize: FontSize.spCaptionRegular_size,
+    textTransform: "uppercase",
   },
   spBody2Medium: {
-    top: "50%",
-    marginTop: -12,
-    height: 24,
-    left: 0,
     right: 0,
+    left: 0,
   },
   flatdefault: {
     right: 8,
     left: 8,
-    top: "50%",
-    marginTop: -12,
-    height: 24,
   },
   accent: {
-    left: 241,
+    left: 33,
     width: 77,
+    height: 40,
+  },
+  body21: {
+    fontSize: FontSize.size_2xs,
+    color: Color.lightColor,
+    width: 57,
+  },
+  dark: {
+    left: 245,
+    width: 73,
+    height: 32,
   },
   pantallaRealizarEntrenamient: {
     backgroundColor: Color.lightColor,

@@ -146,7 +146,7 @@ const PantallaCreacionDeEntrenami4 = () => {
       tipo: tipoEntrenamiento,
       ejercicios: ejercicios
     };
-    if (nombre === '' || tipo === '' || ejercicios === []) {
+    if (nomEntrenamiento === '' || tipoEntrenamiento === '' || ejercicios === []) {
       alert('Por favor, completa todos los campos');
       return;
     }
@@ -156,7 +156,7 @@ const PantallaCreacionDeEntrenami4 = () => {
       }else{
         const acambiar = route.params.item;
         if(route.params.editar){
-          navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
+          navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar,editarPlanes: true,  planEditar: route.params.plan })
         }else{
           navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento  })
         }
@@ -187,7 +187,7 @@ const PantallaCreacionDeEntrenami4 = () => {
                   
                   if(route.params.planes){
                     const acambiar = route.params.item;
-                    navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar })
+                    navigation.navigate("PantallaCreacionDePlanes",{ entrenamiento: entrenamiento, acambiar: acambiar, editarPlanes: true, planEditar: route.params.plan  })
                   }else{
                     navigation.goBack();
                   }

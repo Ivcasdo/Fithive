@@ -22,6 +22,7 @@ const PantallaCreacionDePlanes = ({}) => {
   const [nombre, setNombre] = useState('');
   const [tipo,setTipo] = useState('');
   const [numSemana, setNumSemana] = useState('');
+  const [plan, setPlan] = useState('');
   const route = useRoute();
 
   const handleOpenSubmenu = () => {
@@ -143,44 +144,45 @@ const PantallaCreacionDePlanes = ({}) => {
     );
   };
   useEffect(() => {
-    if(route.params.editarPlanes && !datosCargados){
+    if(route.params?.editarPlanes && !datosCargados){
       setNombre(route.params.planEditar.nombre)
       setTipo(route.params.planEditar.tipo);
       setNumSemana(route.params.planEditar.semanas);
       setListaEntrenamientos(route.params.planEditar.entrenamientos);
       setDatosCargados(true);
+      setPlan(route.params.planEditar);
     }
     if(route.params?.entrenamiento){
       setEntrenamiento(route.params.entrenamiento);
     }
     if(entrenamiento!= ''){
-    if (listaEntrenamientos !== '') {
+      if (listaEntrenamientos !== '') {
 
-      const entrenamientoExistente = listaEntrenamientos.some(entrenamientolista => {
-        return isEqual(entrenamientolista,entrenamiento);
-      });
-      if(!entrenamientoExistente){
-        if(route.params?.acambiar){
-          const entrenamientoIgual = listaEntrenamientos.find(entrenamiento => isEqual(entrenamiento, route.params.acambiar));
-          const listaActualizada = listaEntrenamientos.map((entrenamiento1) => {
-            if(isEqual(entrenamiento1, entrenamientoIgual)){
-              return entrenamiento;
-            }
-            return entrenamiento1;
-          });
-          setListaEntrenamientos(listaActualizada);
-        }else{
-          listaEntrenamientos.push(entrenamiento);
+        const entrenamientoExistente = listaEntrenamientos.some(entrenamientolista => {
+          return isEqual(entrenamientolista,entrenamiento);
+        });
+        if(!entrenamientoExistente){
+          if(route.params?.acambiar){
+            const entrenamientoIgual = listaEntrenamientos.find(entrenamiento => isEqual(entrenamiento, route.params.acambiar));
+            const listaActualizada = listaEntrenamientos.map((entrenamiento1) => {
+              if(isEqual(entrenamiento1, entrenamientoIgual)){
+                return entrenamiento;
+              }
+              return entrenamiento1;
+            });
+            setListaEntrenamientos(listaActualizada);
+          }else{
+            listaEntrenamientos.push(entrenamiento);
+          }
+          
+          setEntrenamiento([]);
+          
         }
-        
+      }else{
+        setListaEntrenamientos([entrenamiento])
         setEntrenamiento([]);
-        
       }
-    }else{
-      setListaEntrenamientos([entrenamiento])
-      setEntrenamiento([]);
     }
-  }
   }, [route.params, entrenamiento]);
 
   return (
@@ -303,7 +305,7 @@ entrenamiento`}</Text>
       {isanadirentrenamientoVisible && (
         <PantallaAnadirEntrenamientos onClose={handleCerraranadirentrenamiento} editar={editarEntrene} />
       )}
-      {isEditarEntrenamientoVisible && <PantallaEditarEntrenamiento onClose={handleCerrarEditarEntrenamiento} editar={editarEntrene} entrenamiento={EditEntrene}/>}
+      {isEditarEntrenamientoVisible && <PantallaEditarEntrenamiento onClose={handleCerrarEditarEntrenamiento} editar={editarEntrene} entrenamiento={EditEntrene} plan={plan}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>

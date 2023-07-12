@@ -1,15 +1,20 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
 
-const PantallaInicioEntrenamiento = ({ visible, onClose}) => {
+const PantallaInicioEntrenamiento = () => {
   const navigation = useNavigation();
+  const user = auth().currentUser;
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [nombrePlan, setNombrePlan] = useState('');
+  const [entrenamientosSemana, setEntrenamientosSemana] = useState('');
+  const [numSemana, setNumSemana]= useState('');
 
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
@@ -22,6 +27,33 @@ const PantallaInicioEntrenamiento = ({ visible, onClose}) => {
       handleCloseSubmenu();
     }
   };
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameItem, styles.frameLayout]} />
+    );
+  };
+  useEffect(() => {
+    const planActivadoRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planActivado`);
+    const handleSnapshot = (snapshot) => {
+      snapshot.forEach((childSnapshot)=>{
+        const plan = childSnapshot.val();
+        setNombrePlan(plan.nombre);
+        setNumSemana(plan.semanaActual);
+        const entrena = plan.semanas[plan.semanaActual-1];
+        setEntrenamientosSemana(entrena);
+        if(entrena.length === 0 && plan.semanaActual<=plan.semanas.length){
+          planActivadoRef.child(childSnapshot.key).update({ semanaActual: plan.semanaActual+1 });
+        }
+      })
+    }
+    planActivadoRef.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      planActivadoRef.off('value', handleSnapshot);
+    };
+  },[]);
+
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicioEntrenamiento}>
@@ -32,25 +64,23 @@ const PantallaInicioEntrenamiento = ({ visible, onClose}) => {
         source={require("../assets/ellipse-1.png")}
       />
       </Pressable>
-      <Text style={styles.planDeEntrenamiento}>{`Plan 
-de entrenamiento  `}</Text>
-      <Text style={styles.semanaX}>Semana x</Text>
+      <Text style={styles.planDeEntrenamiento}>{nombrePlan}</Text>
+      <Text style={styles.semanaX}>Semana {numSemana}</Text>
       <View style={[styles.rectangleParent, styles.frameChildLayout]}>
         <View style={[styles.frameChild, styles.body23Position]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
-        <Pressable
-          style={[styles.spSubheadingRegular, styles.subheadingPosition]}
-        >
-          <Text style={styles.subheading}>Entrenamiento piernas</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.spSubheadingRegular1, styles.subheadingPosition]}
-        >
-          <Text style={styles.subheading}>Entrenamiento espalda</Text>
-        </Pressable>
+        <FlatList
+          data={entrenamientosSemana}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View style= {{marginBottom: 5,top:0}}>
+              <Pressable onPress={() => navigation.navigate("PantallaRealizarEntrenamiento", {entrenamiento: item, planes:true})}>
+              <Text style={styles.subheading}>{item.nombre}</Text>
+                {index !== entrenamientosSemana.length && <FlatListItemseparator />}
+              </Pressable>
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
       </View>
       <Pressable style={[styles.accent, styles.accentLayout]} onPress={() => navigation.navigate("PantallaBibliotecaDeEntrenamientos")}>
         <View style={styles.accent1}>
@@ -95,22 +125,7 @@ entrenamiento`}</Text>
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={() => navigation.navigate("PantallaRealizarEntrenamiento")}>
-        <View style={styles.accent1}>
-          <LinearGradient
-            style={[styles.bgAccent, styles.bgAccentPosition]}
-            locations={[0, 1]}
-            colors={["#1a73e9", "#6c92f4"]}
-          />
-        </View>
-        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
-          <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-            <Text style={[styles.body23, styles.bodyTypo]}>
-              Empezar entrenamiento
-            </Text>
-          </View>
-        </View>
-      </Pressable>
+      
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -201,7 +216,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   semanaX: {
-    top: 95,
+    top: 72,
     left: 221,
     textAlign: "center",
     color: Color.black,
@@ -224,7 +239,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   frameItem: {
-    top: 22,
+    top: 25,
   },
   frameInner: {
     top: 45,
@@ -238,16 +253,16 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: FontSize.size_base,
     lineHeight: 21,
-    width: 248,
+    width: 300,
     alignItems: "center",
     display: "flex",
     color: Color.textColor,
     height: 24,
-    left: 0,
+    left: 5,
     top: 0,
     textAlign: "left",
     fontFamily: FontFamily.spCaptionRegular,
-    position: "absolute",
+
   },
   spSubheadingRegular: {
     marginTop: -81,

@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
+const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento,plan}) => {
   //pantalla editr entrenamientos desde planes
   const navigation = useNavigation();
   const handleCerrarPantallaSuperpuesta = () => {
@@ -12,7 +12,7 @@ const PantallaCreacionDePlanes2 = ({onClose, editar,entrenamiento}) => {
   };
   const handleEditar = () => {
     onClose();
-    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true, item: entrenamiento });
+    navigation.navigate("PantallaCreacionDeEntrenamientos", {editar: editar, planes: true, item: entrenamiento, plan: plan});
   };
   const handleBorrar = () => {
     console.log('borrar');

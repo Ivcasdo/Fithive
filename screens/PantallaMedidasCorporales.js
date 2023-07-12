@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth, { firebase } from '@react-native-firebase/auth';
 import Submenu from "./PantallaMenu";
 import PantallaMedidasCorporales2 from "./PantallaMedidasCorporales2";
 const PantallaMedidasCorporales = () => {
-  const navigation = useNavigation();
-
+  const user = auth().currentUser;
+  const [listaMedidas, setListaMedidas] = useState(false);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [editarMedida, setEditarMedida] = useState(false);
+  const [medidaEditar, setMedidaEditar] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -25,12 +27,42 @@ const PantallaMedidasCorporales = () => {
     }
   };
   const [isPantallaMedidasCorporales2Visible, setIsPantallaMedidasCorporales2Visible] = useState(false);
-  const handleAbrirPantallaMedidasCorporales2 = () => {
+  const handleAbrirPantallaMedidasCorporales2 = (editar,medida) => {
+    setEditarMedida(editar);
+    setMedidaEditar(medida);
     setIsPantallaMedidasCorporales2Visible(true);
   };
   const handleCerrarPantallaMedidasCorporales2 = () => {
     setIsPantallaMedidasCorporales2Visible(false);
   };
+
+  const FlatListItemseparator = () => {
+    return (
+      <View style={styles.frameInner} />
+    );
+  };
+  
+  useEffect(() => {
+    const medidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/medidasCorporales`);
+    const handleSnapshot = (snapshot) => {
+      const medidasData = snapshot.val();
+      if (medidasData) {
+        const medidasArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(medidasData).forEach((key) => {
+          medidasArray.push(medidasData[key]);
+        });
+        console.log(medidasArray);
+        setListaMedidas(medidasArray);
+      }
+    };
+    medidasRef.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      medidasRef.off('value', handleSnapshot);
+    };
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaMedidasCorporales}>
@@ -44,10 +76,6 @@ const PantallaMedidasCorporales = () => {
       <View style={[styles.frameParent, styles.parentLayout]}>
         <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
           <View style={[styles.frameChild, styles.frameChildShadowBox]} />
-          <View style={[styles.frameItem, styles.frameLayout]} />
-          <View style={styles.frameInner} />
-          <View style={[styles.lineView, styles.frameLayout]} />
-          <View style={[styles.frameChild1, styles.frameLayout]} />
           <View style={[styles.frameChild2, styles.frameChildLayout]} />
           <View style={[styles.frameChild3, styles.frameChildLayout]} />
           <View style={[styles.frameChild4, styles.frameChildLayout]} />
@@ -83,131 +111,51 @@ const PantallaMedidasCorporales = () => {
               </Text>
             </View>
           </View>
-          <View
-            style={[
-              styles.spSubheadingRegularWrapper,
-              styles.subheadingLayout6,
-            ]}
-          >
-            <View
-              style={[styles.spSubheadingRegular4, styles.subheadingPosition]}
-            >
-              <Text style={[styles.subheading4, styles.subheadingFlexBox]}>
-                20%
-              </Text>
+          <FlatList
+          data={listaMedidas}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View style={{marginBottom: 4}}>
+            <Pressable onPress={()=> handleAbrirPantallaMedidasCorporales2(true, item)}>
+              <View style= {{marginBottom: 5,top:0,flexDirection: 'row'}}>
+                <View style={[styles.spSubheadingRegularFrame, styles.body2Layout]}>
+                  <View style={[styles.spSubheadingRegular6, styles.subheadingPosition]}>
+                    <Text style={[styles.subheading6, styles.subheadingLayout3]}>
+                      {item.peso}kg
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.frameView, styles.subheadingWrapperLayout]}>
+                  <View style={[styles.spSubheadingRegular7,styles.subheadingWrapperLayout,]}>
+                    <Text style={[styles.subheading7, styles.subheadingWrapperLayout]}>
+                      {item.cintura}cm
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.spSubheadingRegularWrapper,styles.subheadingLayout6,]}>
+                  <View style={[styles.spSubheadingRegular4, styles.subheadingPosition]}>
+                    <Text style={[styles.subheading4, styles.subheadingFlexBox]}>
+                      {item.indiceGrasa}
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.spSubheadingRegularContainer,styles.subheadingLayout4,]}>
+                  <View style={[styles.spSubheadingRegular4, styles.subheadingPosition]}>
+                    <Text style={[styles.subheading5, styles.subheadingTypo]}>
+                      {item.fecha}
+                    </Text>
+                  </View>
+                </View>
+                  {index !== listaMedidas.length && <FlatListItemseparator />}
+              </View>
+            </Pressable>
             </View>
-          </View>
-          <View
-            style={[
-              styles.spSubheadingRegularContainer,
-              styles.subheadingLayout4,
-            ]}
-          >
-            <View
-              style={[styles.spSubheadingRegular4, styles.subheadingPosition]}
-            >
-              <Text style={[styles.subheading5, styles.subheadingTypo]}>
-                03/01/23
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.spSubheadingRegularFrame, styles.body2Layout]}>
-            <View
-              style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
-            >
-              <Text style={[styles.subheading6, styles.subheadingLayout3]}>
-                70kg
-              </Text>
-            </View>
-          </View>
-          <View style={[styles.frameView, styles.subheadingWrapperLayout]}>
-            <View
-              style={[
-                styles.spSubheadingRegular7,
-                styles.subheadingWrapperLayout,
-              ]}
-            >
-              <Text
-                style={[styles.subheading7, styles.subheadingWrapperLayout]}
-              >
-                100cm
-              </Text>
-            </View>
-          </View>
-          <View
-            style={[
-              styles.spSubheadingRegularWrapper1,
-              styles.subheadingLayout1,
-            ]}
-          >
-            <View
-              style={[
-                styles.spSubheadingRegular7,
-                styles.subheadingWrapperLayout,
-              ]}
-            >
-              <Text style={[styles.subheading8, styles.subheadingLayout1]}>
-                20%
-              </Text>
-            </View>
-          </View>
-          <View
-            style={[
-              styles.spSubheadingRegularWrapper2,
-              styles.subheadingLayout,
-            ]}
-          >
-            <View
-              style={[
-                styles.spSubheadingRegular7,
-                styles.subheadingWrapperLayout,
-              ]}
-            >
-              <Text style={[styles.subheading9, styles.subheadingLayout]}>
-                03/01/23
-              </Text>
-            </View>
-          </View>
-          <View
-            style={[
-              styles.spSubheadingRegularWrapper3,
-              styles.subheadingWrapperBg,
-            ]}
-          >
-            <View
-              style={[
-                styles.spSubheadingRegular7,
-                styles.subheadingWrapperLayout,
-              ]}
-            >
-              <Text
-                style={[styles.subheading10, styles.subheadingWrapperLayout]}
-              >
-                70kg
-              </Text>
-            </View>
-          </View>
-          <View
-            style={[
-              styles.spSubheadingRegularWrapper4,
-              styles.subheadingWrapperBg,
-            ]}
-          >
-            <View
-              style={[
-                styles.spSubheadingRegular7,
-                styles.subheadingWrapperLayout,
-              ]}
-            >
-              <Text
-                style={[styles.subheading7, styles.subheadingWrapperLayout]}
-              >
-                100cm
-              </Text>
-            </View>
-          </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
+          
         </View>
-        <Pressable style={[styles.accent, styles.accentPosition]} onPress={handleAbrirPantallaMedidasCorporales2}>
+        <Pressable style={[styles.accent, styles.accentPosition]} onPress={()=> handleAbrirPantallaMedidasCorporales2(false)}>
           <View style={styles.accent1}>
             <LinearGradient
               style={[styles.bgAccent, styles.subheadingPosition]}
@@ -225,7 +173,7 @@ const PantallaMedidasCorporales = () => {
         </Pressable>
       </View>
       <Text style={styles.medidasCorporales}>Medidas corporales</Text>
-      {isPantallaMedidasCorporales2Visible && <PantallaMedidasCorporales2 onClose={handleCerrarPantallaMedidasCorporales2} />}
+      {isPantallaMedidasCorporales2Visible && <PantallaMedidasCorporales2 onClose={handleCerrarPantallaMedidasCorporales2} editarmedida={editarMedida} medidaEditar={medidaEditar}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -304,7 +252,7 @@ const styles = StyleSheet.create({
   },
   subheadingLayout6: {
     width: 81,
-    position: "absolute",
+
   },
   subheadingPosition: {
     right: 0,
@@ -319,7 +267,6 @@ const styles = StyleSheet.create({
   },
   subheadingLayout4: {
     width: 38,
-    position: "absolute",
   },
   subheadingTypo: {
     lineHeight: 10,
@@ -335,7 +282,7 @@ const styles = StyleSheet.create({
   },
   body2Layout: {
     height: 22,
-    position: "absolute",
+
   },
   subheadingLayout3: {
     width: 40,
@@ -343,7 +290,7 @@ const styles = StyleSheet.create({
   },
   subheadingWrapperLayout: {
     height: 21,
-    position: "absolute",
+ 
   },
   subheadingLayout1: {
     width: 80,
@@ -474,10 +421,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   spSubheadingRegularWrapper: {
-    top: 22,
+    top: 24,
     height: 23,
     overflow: "hidden",
-    left: 94,
+    left: 0,
   },
   subheading5: {
     width: 38,
@@ -487,8 +434,8 @@ const styles = StyleSheet.create({
   spSubheadingRegularContainer: {
     height: 23,
     overflow: "hidden",
-    left: 175,
-    top: 23,
+    left: 2,
+    top: 28,
   },
   subheading6: {
     justifyContent: "center",
@@ -505,14 +452,14 @@ const styles = StyleSheet.create({
   },
   spSubheadingRegular6: {
     marginTop: -11,
-    height: 24,
+    height: 0,
     top: "50%",
     position: "absolute",
   },
   spSubheadingRegularFrame: {
     width: 40,
     left: 0,
-    top: 23,
+    top: 24,
     overflow: "hidden",
   },
   subheading7: {
@@ -539,7 +486,7 @@ const styles = StyleSheet.create({
     top: 24,
     width: 52,
     height: 21,
-    left: 41,
+    left: 0,
     overflow: "hidden",
   },
   subheading8: {

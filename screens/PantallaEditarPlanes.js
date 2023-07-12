@@ -21,13 +21,57 @@ const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
     planesRef.once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const plan = childSnapshot.val();
-        console.log(isEqual(plan, planEditar));
+        
         if(isEqual(plan, planEditar)){
           planesRef.child(childSnapshot.key).remove();
         }
       })
     });
     onClose();
+  }
+  const handleIniciarPlan = () =>{
+    const planActivadoRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planActivado`);
+    const planesRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planesentrenamiento`);
+    planesRef.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const plan = childSnapshot.val();
+        if(isEqual(plan, planEditar) && !plan.activado){
+          planesRef.child(childSnapshot.key).update({
+            activado: true
+          });
+          const arraySemanas = [];
+          for(let i = 0; i< plan.semanas; i++ ){
+            arraySemanas.push(plan.entrenamientos);
+          }
+          
+          const planActivado = {
+            nombre: planEditar.nombre,
+            tipo: planEditar.tipo,
+            semanas: arraySemanas,
+            semanaActual: 1,
+          };
+          planActivadoRef.once('value',(snapshot)=>{
+            if(snapshot.exists()){
+              snapshot.forEach((childSnapshot)=>{
+                childSnapshot.ref.remove();
+              })
+            }
+            const nuevoPlanRef = planActivadoRef.push();
+            nuevoPlanRef.set(planActivado);
+          });
+        }else{
+          if(plan.activado){
+            
+          }else{
+            planesRef.child(childSnapshot.key).update({
+              activado: false
+            });
+          }
+        }
+      })
+    });
+    onClose();
+    navigation.navigate("PantallaInicioEntrenamiento");
   }
   return (
     <View style={styles.pantallaCreacionDePlanes4}>
@@ -71,7 +115,7 @@ const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
           </View>
         </Pressable>
       </View>
-      <Pressable style={[styles.dark3, styles.darkPosition]}>
+      <Pressable style={[styles.dark3, styles.darkPosition]} onPress={handleIniciarPlan}>
         <Image
           style={[styles.darkIcon, styles.darkIconPosition]}
           contentFit="cover"

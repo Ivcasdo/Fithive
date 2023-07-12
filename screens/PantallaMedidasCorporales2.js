@@ -1,16 +1,105 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, FontSize, FontFamily, Color } from "../GlobalStyles";
+import auth, { firebase } from '@react-native-firebase/auth';
+import { isEqual } from "lodash";
 
-const PantallaMedidasCorporales2 = ({ onClose }) => {
-  const handleCerrarPantallaSuperpuesta = () => {
+const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
+
+  const user = auth().currentUser;
+  const [peso, setPeso] = useState('');
+  const [altura, setAltura] = useState('');
+  const [cintura, setCintura] = useState('');
+  const handleChangePeso = (text) =>{
+    setPeso(text);
+  };
+  const handleChangeAltura = (text) =>{
+    setAltura(text);
+  };
+  const handleChangeCintura = (text) =>{
+    setCintura(text);
+  };
+  const handleGuardarMedida= () =>{
+    const today = new Date();
+    // Obtener los valores de día, mes y año
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript comienzan desde 0
+    const year = String(today.getFullYear()).slice(-2); // Obtener los últimos dos dígitos del año
+
+    const formattedDate = `${day}/${month}/${year}`;
+    let indiceGrasas = '';
+    if(altura != '' && cintura !=''){
+     indiceGrasas= cintura/(altura* Math.sqrt(altura)-18);
+     indiceGrasas= (indiceGrasas*100).toFixed(2)
+    }
+    const medida = {
+      peso: peso,
+      fecha: formattedDate,
+      cintura: cintura,
+      indiceGrasa: `${indiceGrasas}%`,
+    };
+    if(editarmedida){
+      if(isEqual(medida,medidaEditar)){
+        console.log('sin cambios');
+        onClose();
+      }else{
+        const medidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/medidasCorporales`);
+        medidasRef.once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const medid = childSnapshot.val();
+            if(isEqual(medid,medidaEditar)){
+              if(peso!=''){
+                medidasRef.child(childSnapshot.key).update({peso: peso});
+              }
+              if(cintura!=''){
+                medidasRef.child(childSnapshot.key).update({cintura: cintura});
+              }
+              if(indiceGrasas!=''){
+                medidasRef.child(childSnapshot.key).update({indiceGrasa: indiceGrasas});
+              }
+            }
+          })
+        });
+      }
+    }else{
+      const medidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/medidasCorporales`);
+      medidasRef.once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const nuevaMedidaRef = medidasRef.push();
+          nuevaMedidaRef.set(medida);
+        }else{
+          const nuevaMedidaRef = medidasRef.push();
+          nuevaMedidaRef.set(medida);
+        }
+      });
+    }
     onClose();
   };
+  const handleBorrarMedida = () =>{
+    const medidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/medidasCorporales`);
+    medidasRef.once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const medida = childSnapshot.val();
+        
+        if(isEqual(medida, medidaEditar)){
+          medidasRef.child(childSnapshot.key).remove();
+        }
+      })
+    });
+    onClose();
+  };
+  useEffect(() => {
+    if(editarmedida){
+      setAltura(medidaEditar.altura);
+      setCintura(medidaEditar.cintura);
+      setPeso(medidaEditar.peso);
+    }
+  },[]);
   return (
     <View style={styles.pantallaMedidasCorporales2}>
-      <View style={styles.lightHamburger}>
+      <View style={[styles.lightHamburger, styles.default2Layout]}>
         <View style={styles.light}>
           <View style={[styles.bgLight, styles.dark3Position]} />
         </View>
@@ -18,13 +107,11 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
           <Text style={styles.title}>{`Medidas Corporales
 `}</Text>
         </View>
-        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
         <Image
           style={styles.closeIcon}
           contentFit="cover"
           source={require("../assets/close.png")}
         />
-        </Pressable>
       </View>
       <View style={[styles.cover, styles.coverPosition]}>
         <View style={[styles.default, styles.defaultPosition]}>
@@ -36,6 +123,8 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
             placeholder="70 kg"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={peso}
+            onChangeText={handleChangePeso}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={[styles.caption1, styles.captionPosition]}>Peso</Text>
@@ -47,9 +136,29 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
           </View>
           <TextInput
             style={[styles.spSubheadingRegular, styles.coverPosition]}
+            placeholder="170 cm"
+            keyboardType="default"
+            placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={altura}
+            onChangeText={handleChangeAltura}
+          />
+          <View style={[styles.caption, styles.captionPosition]}>
+            <Text style={[styles.caption1, styles.captionPosition]}>
+              Altura
+            </Text>
+          </View>
+        </View>
+        <View style={[styles.default2, styles.default2Layout]}>
+          <View style={[styles.stroke, styles.dark3Position]}>
+            <View style={[styles.bgPrimary, styles.dark3Position]} />
+          </View>
+          <TextInput
+            style={[styles.spSubheadingRegular, styles.coverPosition]}
             placeholder="100 cm"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={cintura}
+            onChangeText={handleChangeCintura}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={[styles.caption1, styles.captionPosition]}>
@@ -58,10 +167,10 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+      <Pressable style={[styles.dark, styles.darkPosition]}onPress={handleGuardarMedida}>
         <View style={styles.light}>
           <LinearGradient
-            style={[styles.bgPrimary2, styles.bgOutlinePosition]}
+            style={[styles.bgPrimary3, styles.bgOutlinePosition]}
             locations={[0, 1]}
             colors={["#1a73e9", "#6c92f4"]}
           />
@@ -72,7 +181,8 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark2, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+      {editarmedida && (
+      <Pressable style={[styles.dark2, styles.darkPosition]}onPress={handleBorrarMedida}>
         <View style={[styles.dark3, styles.dark3Position]}>
           <View style={styles.bgOutlinePosition} />
         </View>
@@ -82,11 +192,16 @@ const PantallaMedidasCorporales2 = ({ onClose }) => {
           </View>
         </View>
       </Pressable>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  default2Layout: {
+    height: 56,
+    position: "absolute",
+  },
   dark3Position: {
     bottom: 0,
     left: 0,
@@ -96,10 +211,10 @@ const styles = StyleSheet.create({
   coverPosition: {
     left: 0,
     right: 0,
-    position: "absolute",
   },
   defaultPosition: {
-    top: -3,
+    left: 29,
+    right: 222,
     height: 56,
     position: "absolute",
   },
@@ -147,7 +262,6 @@ const styles = StyleSheet.create({
   },
   bgLight: {
     top: 0,
-    bottom: 0,
     backgroundColor: Color.lightColor,
   },
   light: {
@@ -187,16 +301,13 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   lightHamburger: {
-    height: 56,
     left: 0,
     right: 0,
     top: 0,
-    position: "absolute",
   },
   bgPrimary: {
     backgroundColor: Color.textColor,
     top: 0,
-    bottom: 0,
   },
   stroke: {
     height: 1,
@@ -208,6 +319,7 @@ const styles = StyleSheet.create({
     opacity: 0.54,
     fontSize: FontSize.size_base,
     fontFamily: FontFamily.robotoRegular,
+    position: "absolute",
   },
   caption1: {
     fontSize: FontSize.size_xs,
@@ -225,18 +337,22 @@ const styles = StyleSheet.create({
     right: 0,
   },
   default: {
-    right: 222,
-    left: 29,
+    top: -3,
   },
   default1: {
+    top: 49,
+  },
+  default2: {
     right: 65,
     left: 186,
+    top: -3,
   },
   cover: {
-    top: 67,
-    height: 84,
+    top: 48,
+    height: 105,
+    position: "absolute",
   },
-  bgPrimary2: {
+  bgPrimary3: {
     shadowColor: "rgba(38, 50, 56, 0.08)",
     shadowOffset: {
       width: 0,
@@ -268,7 +384,6 @@ const styles = StyleSheet.create({
   dark3: {
     opacity: 0.32,
     top: 0,
-    bottom: 0,
   },
   body21: {
     width: 56,

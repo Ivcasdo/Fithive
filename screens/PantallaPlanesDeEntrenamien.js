@@ -107,7 +107,7 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
           </View>
         </View>
       </View>
-      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaCreacionDePlanes")}>
+      <Pressable style={styles.accent} onPress={() => navigation.navigate("PantallaCreacionDePlanes", {editarPlanes:false})}>
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.body21Position]}
