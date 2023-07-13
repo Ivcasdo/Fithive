@@ -15,6 +15,16 @@ const PantallaRealizarEntrenamient = () => {
   const route = useRoute();
   const [ejercicios,setEjercicios] = useState([]);
 
+
+  const handleInputChange = (text, ejercicioIndex, serieIndex, property) => {
+    const updatedEjercicios = [...ejercicios];
+    updatedEjercicios[ejercicioIndex].series[serieIndex] = {
+      ...updatedEjercicios[ejercicioIndex].series[serieIndex],
+      [property]: text
+    };
+    setEjercicios(updatedEjercicios);
+  };
+
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -27,13 +37,72 @@ const PantallaRealizarEntrenamient = () => {
     }
   };
   const handleGuardarEntrenamiento=() =>{
+    const today = new Date();
+    // Obtener los valores de día, mes y año
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript comienzan desde 0
+    const year = String(today.getFullYear()).slice(-2); // Obtener los últimos dos dígitos del año
+
+    const formattedDate = `${day}/${month}/${year}`;
+    const entrenamientoEntr = {
+      ejercicios: ejercicios,
+      nombre: route.params.entrenamiento.nombre,
+      planEntrenamiento: route.params.planActivado.nombre,
+      tipo: route.params.entrenamiento.tipo,
+    }
+
+    const entradaCalendario = {
+      fecha: formattedDate,
+      entrenamientos: [entrenamientoEntr],
+    }
+    console.log(entradaCalendario);
     
+    const planRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planActivado`);
+    if(route.params.planes){
+      planRef.once('value', (snapshot) => {
+        snapshot.forEach((childsnapshot) =>{
+          const plan = childsnapshot.val();
+          if(isEqual(plan,route.params.planActivado)){
+            const entrenamientosSemana = plan.semanas[plan.semanaActual-1]
+            
+            const nuevoArrayEntrenamientos = entrenamientosSemana.filter((item) => !isEqual(item, route.params.entrenamiento));
+            
+            const semanaActualRef = planRef.child(`${childsnapshot.key}/semanas/${plan.semanaActual - 1}`);
+            semanaActualRef.set(nuevoArrayEntrenamientos.length);
+            console.log(nuevoArrayEntrenamientos.length ===0);
+            if(nuevoArrayEntrenamientos.length === 0){
+              planRef.child(childsnapshot.key).update({ semanaActual: plan.semanaActual+1 });
+            }
+          }
+        })
+      })
+    }
+    const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+    entradasCalendarioRef.once('value', (snapshot) => {
+      if(snapshot.exists()){
+        snapshot.forEach((childsnapshot)=>{
+          const entradaCalendar = childsnapshot.val();
+          if(isEqual(entradaCalendar.fecha,formattedDate)){
+            const entrenamientosEntrada = entradaCalendar.entrenamientos;
+            entrenamientosEntrada.push(entrenamientoEntr);
+            entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: entrenamientosEntrada});
+          }else{
+            const nuevaEntradaRef = entradasCalendarioRef.push();
+            nuevaEntradaRef.set(entradaCalendario);
+          }
+        })
+      }else{
+        const nuevaEntradaRef = entradasCalendarioRef.push();
+        nuevaEntradaRef.set(entradaCalendario);
+      }
+    })
+    navigation.goBack();
   };
   useEffect(() => {
     if (route.params?.entrenamiento) {
       const ejerciciosEntrenamiento = route.params.entrenamiento.ejercicios.map((ejercicio) => {
         const series = Array.from({ length: ejercicio.series }).map(() => ({
-          repeticiones: ejercicio.repeticiones,
+          repeticiones: "",
           peso: "",
         }));
   
@@ -60,7 +129,7 @@ const PantallaRealizarEntrenamient = () => {
         <FlatList
           data={ejercicios}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
+          renderItem={({ item,index }) => (
             <View style={[styles.captionParent, styles.captionLayout]}>
               <Text style={[styles.caption, styles.captionTypo]}>{item.nombre}</Text>
               {item.series.map((serie, serieIndex) => (
@@ -70,22 +139,16 @@ const PantallaRealizarEntrenamient = () => {
                   placeholder="Num reps"
                   keyboardType="default"
                   placeholderTextColor="rgba(0, 0, 0, 0.87)"
-                  value={serie.repeticiones.toString()}
-                  onChangeText={(text) => {
-                    // Actualizar el valor de repeticiones para la serie actual
-                    item.series[serieIndex].repeticiones = parseInt(text) || 0;
-                  }}
+                  value={ejercicios[index].series[serieIndex].repeticiones}
+                  onChangeText={(text) => handleInputChange(text, index, serieIndex, 'repeticiones')}
                 />
                 <TextInput
                   style={[styles.spSubheadingRegular1, styles.subheadingPosition1]}
                   placeholder="Peso"
                   keyboardType="default"
                   placeholderTextColor="rgba(0, 0, 0, 0.87)"
-                  value={serie.peso}
-                  onChangeText={(text) => {
-                    // Actualizar el valor de peso para la serie actual
-                    item.series[serieIndex].peso = text;
-                  }}
+                  value={ejercicios[index].series[serieIndex].peso}
+                  onChangeText={(text) => handleInputChange(text, index, serieIndex, 'peso')}
                 />
                 </View>
               ))}

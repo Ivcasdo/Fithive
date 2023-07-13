@@ -35,6 +35,8 @@ const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
     planesRef.once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
         const plan = childSnapshot.val();
+        console.log(isEqual(plan, planEditar));
+
         if(isEqual(plan, planEditar) && !plan.activado){
           planesRef.child(childSnapshot.key).update({
             activado: true
@@ -60,15 +62,14 @@ const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
             nuevoPlanRef.set(planActivado);
           });
         }else{
-          if(plan.activado){
-            
-          }else{
+          if(!isEqual(plan, planEditar) && plan.activado){
             planesRef.child(childSnapshot.key).update({
               activado: false
             });
           }
         }
-      })
+      });
+      
     });
     onClose();
     navigation.navigate("PantallaInicioEntrenamiento");

@@ -15,7 +15,7 @@ const PantallaInicioEntrenamiento = () => {
   const [nombrePlan, setNombrePlan] = useState('');
   const [entrenamientosSemana, setEntrenamientosSemana] = useState('');
   const [numSemana, setNumSemana]= useState('');
-
+  const [planActivado, setPlanActivado] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -33,18 +33,22 @@ const PantallaInicioEntrenamiento = () => {
     );
   };
   useEffect(() => {
+    setNombrePlan('Elige un plan');
     const planActivadoRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planActivado`);
+    console.log(planActivadoRef);
     const handleSnapshot = (snapshot) => {
-      snapshot.forEach((childSnapshot)=>{
-        const plan = childSnapshot.val();
-        setNombrePlan(plan.nombre);
-        setNumSemana(plan.semanaActual);
-        const entrena = plan.semanas[plan.semanaActual-1];
-        setEntrenamientosSemana(entrena);
-        if(entrena.length === 0 && plan.semanaActual<=plan.semanas.length){
-          planActivadoRef.child(childSnapshot.key).update({ semanaActual: plan.semanaActual+1 });
-        }
-      })
+      if(snapshot.exists()){
+        snapshot.forEach((childSnapshot)=>{
+          const plan = childSnapshot.val();
+          setPlanActivado(plan);
+          setNombrePlan(plan.nombre);
+          setNumSemana(plan.semanaActual);
+          const entrena = plan.semanas[plan.semanaActual-1];
+          setEntrenamientosSemana(entrena);
+        })
+      }else{
+        setNombrePlan('Elige un plan')
+      }
     }
     planActivadoRef.on('value', handleSnapshot);
   
@@ -73,7 +77,7 @@ const PantallaInicioEntrenamiento = () => {
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index}) => (
             <View style= {{marginBottom: 5,top:0}}>
-              <Pressable onPress={() => navigation.navigate("PantallaRealizarEntrenamiento", {entrenamiento: item, planes:true})}>
+              <Pressable onPress={() => navigation.navigate("PantallaRealizarEntrenamiento", {entrenamiento: item, planes:true, planActivado: planActivado })}>
               <Text style={styles.subheading}>{item.nombre}</Text>
                 {index !== entrenamientosSemana.length && <FlatListItemseparator />}
               </Pressable>
