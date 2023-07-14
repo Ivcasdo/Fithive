@@ -1,13 +1,29 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
 const PantallaEditarIngredientes2 = ({ onClose }) => {
+  const [nomAlimento, setNomAlimento] = useState('');
+  const [calAlimento, setCalAlimento] = useState('')
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+  const handleChangeNomAlimento = (text) =>{
+    setNomAlimento(text);
+  };
+  const handleChangeCalAlimento = (text) =>{
+    setCalAlimento(text);
+  };
+  const handleGuardarAlimento = () =>{
+    const alimento = {
+      nombre: nomAlimento,
+      calorias: calAlimento,
+    };
+    onClose(alimento);
+  };
+
   return (
     <View style={styles.pantallaEditarIngredientes2}>
       <View style={styles.lightHamburger}>
@@ -57,6 +73,8 @@ const PantallaEditarIngredientes2 = ({ onClose }) => {
           placeholder="152 kcal"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={calAlimento}
+          onChangeText={handleChangeCalAlimento}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>
@@ -73,12 +91,14 @@ const PantallaEditarIngredientes2 = ({ onClose }) => {
           placeholder="Ejemplo"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nomAlimento}
+          onChangeText={handleChangeNomAlimento}
         />
         <View style={[styles.caption, styles.captionPosition]}>
           <Text style={[styles.caption1, styles.captionPosition]}>Nombre</Text>
         </View>
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleGuardarAlimento}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgPrimary2, styles.primaryPosition]}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback } from "react-native";
+import React, { useState,useEffect } from "react";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList} from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
@@ -10,7 +10,9 @@ import PantallaEditarIngredientes2 from "./PantallaEditarIngredientes2";
 const PantallaCrearComida = () => {
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const navigation = useNavigation();
-
+  const [totalKcal, setTotalKcal] = useState('');
+  const [nombreComida, setNombreComida] = useState('');
+  const [listaIngredientes, setListaIngredientes] = useState([]);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
   const handleOpenSubmenu = () => {
@@ -18,6 +20,9 @@ const PantallaCrearComida = () => {
   };
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
+  };
+  const handleChangeNombreComida = (text) => {
+    setNombreComida(text);
   };
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
@@ -30,9 +35,28 @@ const PantallaCrearComida = () => {
   const handleAbrirPantallaEditarIngredientes2 = () => {
     setIsPantallaEditarIngredientes2Visible(true);
   };
-  const handleCerrarPantallaEditarIngredientes2 = () => {
+  const handleCerrarPantallaEditarIngredientes2 = (alimento) => {
+    if(alimento){
+      const nuevaListaIngredientes = [...listaIngredientes, alimento];
+      setListaIngredientes(nuevaListaIngredientes);
+    }
+    console.log(listaIngredientes);
     setIsPantallaEditarIngredientes2Visible(false);
   };
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameInner, styles.frameLayout]} />
+    );
+  };
+
+  useEffect(() => {
+    const totalCal = listaIngredientes.reduce((total, alimento) => {
+      return total + parseInt(alimento.calorias);
+    }, 0);
+    console.log(totalCal);
+    setTotalKcal(totalCal);
+    
+  }, [listaIngredientes])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCrearComida}>
@@ -45,41 +69,24 @@ const PantallaCrearComida = () => {
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildShadowBox]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
         <View style={styles.frameChild2} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition3]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 34</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular1, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading1, styles.subheadingLayout]}>
-            {" "}
-            300
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 400</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular3, styles.subheadingPosition3]}>
-          <Text style={[styles.subheading3, styles.subheadingFlexBox]}>
-            {" "}
-            Ejemplo 3
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular4, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading4, styles.subheadingFlexBox]}>
-            {" "}
-            Ejemplo 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading3, styles.subheadingFlexBox]}>
-            {" "}
-            Ejemplo
-          </Text>
-        </View>
+        <FlatList
+          data={listaIngredientes}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <View style= {{marginBottom: 5,top:0, flexDirection: 'row'}}>
+              <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
+                <Text style={[styles.subheading, styles.subheadingLayout]}>{item.nombre}</Text>
+              </View>
+              <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
+                <Text style={[styles.subheading3, styles.subheadingFlexBox]}>{item.calorias}</Text>
+              </View>
+              {index !== listaIngredientes.length && <FlatListItemseparator />}
+            </View>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
+       
         <View style={[styles.spSubheadingRegularParent, styles.frameLayout]}>
           <View
             style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
@@ -138,6 +145,8 @@ const PantallaCrearComida = () => {
           placeholder="Ejemplo"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value= {nombreComida}
+          onChangeText={handleChangeNombreComida}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.caption1Typo]}>Nombre</Text>
@@ -147,7 +156,7 @@ const PantallaCrearComida = () => {
         <Text style={[styles.caption1, styles.caption1Typo]}>Ingredientes</Text>
       </View>
       <View style={[styles.spTitleMedium, styles.titleLayout]}>
-        <Text style={[styles.title, styles.titleLayout]}>734 kcal</Text>
+        <Text style={[styles.title, styles.titleLayout]}>{totalKcal} kcal</Text>
       </View>
       <View style={styles.secLevelSwitch}>
         <View style={[styles.light, styles.lightPosition]}>
@@ -205,7 +214,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_sm,
     height: 24,
     top: 0,
-    position: "absolute",
+
   },
   subheadingPosition2: {
     backgroundColor: Color.lightgray,
@@ -215,10 +224,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheadingPosition1: {
-    marginTop: -114,
+    marginTop: 0,
     height: 24,
-    top: "50%",
-    position: "absolute",
+    top: "10%",
+    left: 5
   },
   subheadingFlexBox: {
     alignItems: "center",
@@ -353,7 +362,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    left: -5,
+    left: 0,
   },
   spSubheadingRegular: {
     left: 154,
@@ -367,11 +376,11 @@ const styles = StyleSheet.create({
     left: 149,
   },
   spSubheadingRegular2: {
-    left: 154,
-    right: 0,
+    left: 0,
+
   },
   subheading3: {
-    width: 88,
+    width: 150,
     textAlign: "left",
     color: Color.textColor,
     alignItems: "center",
@@ -380,8 +389,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.spCaptionRegular,
     lineHeight: 18,
     fontSize: FontSize.size_sm,
-    left: 0,
-    position: "absolute",
+    left:60,
+
   },
   spSubheadingRegular3: {
     right: 150,
@@ -405,8 +414,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   spSubheadingRegular5: {
-    right: 150,
-    left: 0,
+
   },
   subheading6: {
     lineHeight: 21,

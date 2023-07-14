@@ -1,13 +1,30 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-
+import { Picker } from '@react-native-picker/picker';
 const PantallaAjusteObjetivos = ({ onClose }) => {
+  const [edad, setEdad] = useState('');
+  const [peso, setPeso] = useState('');
+  const [altura, setAltura] = useState('');
+  const [genero, setGenero] = useState('');
+  const [nivelActividad, setNivelActividad] = useState('');
+  const [objetivo, setObjetivo] = useState('');
+
+  const handleChangeEdad = (text) =>{
+    setEdad(text);
+  }
+  const handleChangePeso = (text) =>{
+    setPeso(text);
+  }
+  const handleChangeAltura = (text) =>{
+    setAltura(text);
+  }
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
+
   return (
     <View style={styles.pantallaAjusteObjetivos}>
       <View style={[styles.dialog, styles.dialogShadowBox]}>
@@ -60,6 +77,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
           placeholder=" 77 kg"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value= {peso}
+          onChangeText={handleChangePeso}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.captionTypo]}>{`Peso `}</Text>
@@ -74,6 +93,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
           placeholder="22"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value= {edad}
+          onChangeText={handleChangeEdad}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.captionTypo]}>Edad</Text>
@@ -88,6 +109,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
           placeholder=" 180 cm"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value= {altura}
+          onChangeText={handleChangeAltura}
         />
         <View style={styles.caption}>
           <Text style={[styles.caption1, styles.captionTypo]}>Altura</Text>
@@ -146,19 +169,18 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
         </View>
       </Pressable>
       <Pressable style={[styles.dropdown2, styles.dropdown2Layout]}>
-        <View style={[styles.stroke, styles.lightPosition]}>
+      <View style={[styles.stroke, styles.lightPosition]}>
           <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
         </View>
         <View style={styles.spSubheadingRegular3}>
-          <Text style={[styles.subheading2, styles.dropdown2Layout]}>
-            Masculino
-          </Text>
+          <Picker
+            selectedValue={genero}
+            onValueChange={(itemValue) => setGenero(itemValue)}
+          >
+            <Picker.Item label="Masculino" value="masculino" />
+            <Picker.Item label="Femenino" value="femenino" />
+          </Picker>
         </View>
-        <Image
-          style={styles.dropdownIcon}
-          contentFit="cover"
-          source={require("../assets/dropdown1.png")}
-        />
         <View style={styles.caption}>
           <Text style={[styles.caption11, styles.dropdown2Layout]}>Genero</Text>
         </View>
