@@ -1,125 +1,88 @@
 import * as React from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
-const PantallaEditarIngredientes = () => {
+const PantallaEditarIngredientes = ({onClose,onAbrirEditarAlimento, alimentoEditar}) => {
+  const handleCerrarPantallaSuperpuesta = () => {
+    onClose();
+  };
+  const handleEditarAlimento= () =>{
+    onAbrirEditarAlimento(true);
+  }
+  const handleBorrar = () => {
+    onClose(true, alimentoEditar);
+  }
   return (
     <View style={styles.pantallaEditarIngredientes}>
-      <View style={[styles.firstLevel, styles.firstLevelPosition]}>
-        <View style={[styles.dialog, styles.dialogShadowBox]}>
-          <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.lightPosition]} />
-          </View>
+      <View style={[styles.lightHamburger, styles.spBody2MediumPosition]}>
+        <View style={styles.spTitleMedium}>
+          <Text style={styles.title}>{alimentoEditar.nombre}</Text>
         </View>
-        <View style={[styles.lightHamburger, styles.lightPosition]}>
-          <View style={styles.dialogPosition}>
-            <View style={[styles.bgLight, styles.lightPosition]} />
-          </View>
-          <View style={styles.spTitleMedium}>
-            <Text style={styles.title}>Ejemplo 2</Text>
-          </View>
+        <Pressable onPress={handleCerrarPantallaSuperpuesta}>
           <Image
-            style={[styles.closeIcon, styles.searchLayout]}
+            style={styles.closeIcon}
             contentFit="cover"
             source={require("../assets/close.png")}
           />
-          <View style={[styles.search, styles.searchLayout]}>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.lightPosition]} />
-            </View>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
-            </View>
-          </View>
-          <View style={[styles.bookmarkPlusOutline, styles.searchLayout]}>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsButton, styles.lightPosition]} />
-            </View>
-            <View style={styles.dialogPosition}>
-              <View style={[styles.iconsColorizer1, styles.dialogPosition]} />
-            </View>
-          </View>
-          <Image
-            style={[styles.logoSampleIcon, styles.flatdefault1Position]}
-            contentFit="cover"
-            source={require("../assets/logo-sample.png")}
-          />
-        </View>
-        <Pressable style={[styles.dark, styles.darkPosition]}>
-          <Image
-            style={[styles.darkIcon, styles.lightPosition]}
-            contentFit="cover"
-            source={require("../assets/-dark1.png")}
-          />
-          <View style={styles.flatdefault}>
-            <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
-              <Text style={[styles.body2, styles.bodyTypo]}>borrar</Text>
-            </View>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.dark1, styles.darkPosition]}>
-          <View style={styles.dialogPosition}>
-            <LinearGradient
-              style={[styles.bgPrimary, styles.lightPosition]}
-              locations={[0, 1]}
-              colors={["#1a73e9", "#6c92f4"]}
-            />
-          </View>
-          <View style={[styles.flatdefault1, styles.flatdefault1Position]}>
-            <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
-              <Text style={[styles.body21, styles.bodyTypo]}>Editar</Text>
-            </View>
-          </View>
         </Pressable>
       </View>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleBorrar}>
+        <Image
+          style={[styles.darkIcon, styles.darkIconPosition]}
+          contentFit="cover"
+          source={require("../assets/-dark.png")}
+        />
+        <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
+          <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
+            <Text style={[styles.body2, styles.bodyTypo]}>borrar</Text>
+          </View>
+        </View>
+      </Pressable>
+      <Pressable style={[styles.dark1, styles.darkPosition]}onPress={handleEditarAlimento}>
+        <View style={styles.dark2}>
+          <LinearGradient
+            style={[styles.bgPrimary, styles.darkIconPosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
+          />
+        </View>
+        <View style={[styles.flatdefault1, styles.flatdefault1Position]}>
+          <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
+            <Text style={[styles.body21, styles.bodyTypo]}>Editar</Text>
+          </View>
+        </View>
+      </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  firstLevelPosition: {
+  spBody2MediumPosition: {
     left: 0,
     right: 0,
   },
-  dialogShadowBox: {
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 16,
-    },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
-  },
-  lightPosition: {
-    top: 0,
-    left: 0,
-    right: 0,
-    position: "absolute",
-  },
-  searchLayout: {
+  darkPosition: {
+    top: 76,
     height: 40,
-    width: 40,
-    top: 8,
     position: "absolute",
   },
-  dialogPosition: {
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
+  darkIconPosition: {
+    bottom: 0,
+    left: 0,
+    right: 0,
+    top: 0,
     position: "absolute",
-    width: "100%",
+  },
+  flatdefaultPosition: {
+    right: 8,
+    left: 8,
   },
   flatdefault1Position: {
     top: "50%",
     marginTop: -12,
-    position: "absolute",
-  },
-  darkPosition: {
-    bottom: 349,
-    height: 40,
+    height: 24,
     position: "absolute",
   },
   bodyTypo: {
@@ -128,41 +91,25 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     textTransform: "uppercase",
-    fontSize: FontSize.spBUTTON_size,
+    fontSize: FontSize.size_sm,
     height: 24,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
     left: 0,
+    top: 0,
     position: "absolute",
-  },
-  bgLight: {
-    bottom: 0,
-    backgroundColor: Color.lightColor,
-  },
-  dialog: {
-    shadowRadius: 16,
-    elevation: 16,
-    display: "none",
-    left: "0%",
-    bottom: "0%",
-    right: "0%",
-    top: "0%",
-    height: "100%",
-    position: "absolute",
-    width: "100%",
   },
   title: {
-    fontSize: FontSize.spTitleMedium_size,
+    fontSize: FontSize.size_xl,
     lineHeight: 26,
     textAlign: "left",
     width: 216,
     height: 24,
-    color: Color.textColor,
-    fontFamily: FontFamily.spBUTTON,
+    fontFamily: FontFamily.robotoMedium,
     fontWeight: "500",
-    top: 0,
+    color: Color.textColor,
     left: 0,
+    top: 0,
     position: "absolute",
   },
   spTitleMedium: {
@@ -173,56 +120,42 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   closeIcon: {
+    width: 40,
+    height: 40,
     left: 8,
-  },
-  iconsButton: {
-    borderRadius: Border.br_11xs,
-    display: "none",
-    bottom: 0,
-    backgroundColor: Color.lightColor,
-  },
-  iconsColorizer1: {
-    backgroundColor: Color.grayColor,
-  },
-  search: {
-    right: 56,
-    display: "none",
-  },
-  bookmarkPlusOutline: {
-    right: 8,
-    display: "none",
-  },
-  logoSampleIcon: {
-    marginLeft: -59,
-    left: "50%",
-    width: 117,
-    height: 29,
-    display: "none",
+    top: 8,
+    position: "absolute",
   },
   lightHamburger: {
     height: 56,
+    top: 0,
+    right: 0,
+    position: "absolute",
   },
   darkIcon: {
     maxWidth: "100%",
+    overflow: "hidden",
     maxHeight: "100%",
     opacity: 0.32,
-    bottom: 0,
-    overflow: "hidden",
   },
   body2: {
     width: 56,
     color: Color.textColor,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    textAlign: "center",
+    textTransform: "uppercase",
+    fontSize: FontSize.size_sm,
   },
   spBody2Medium: {
-    height: 24,
     left: 0,
     right: 0,
   },
   flatdefault: {
     bottom: 8,
-    right: 8,
-    left: 8,
     top: 8,
+    right: 8,
     position: "absolute",
   },
   dark: {
@@ -231,16 +164,24 @@ const styles = StyleSheet.create({
   },
   bgPrimary: {
     borderRadius: Border.br_7xs,
-    shadowRadius: 4,
-    elevation: 4,
-    backgroundColor: Color.accentColor,
-    shadowOpacity: 1,
+    shadowColor: "rgba(38, 50, 56, 0.08)",
     shadowOffset: {
       width: 0,
-      height: 16,
+      height: 2,
     },
-    shadowColor: "rgba(38, 50, 56, 0.08)",
-    bottom: 0,
+    shadowRadius: 4,
+    elevation: 4,
+    shadowOpacity: 1,
+    backgroundColor: Color.accentColor,
+  },
+  dark2: {
+    height: "100%",
+    top: "0%",
+    right: "0%",
+    bottom: "0%",
+    left: "0%",
+    position: "absolute",
+    width: "100%",
   },
   body21: {
     color: Color.lightColor,
@@ -249,24 +190,18 @@ const styles = StyleSheet.create({
   flatdefault1: {
     right: 8,
     left: 8,
-    height: 24,
   },
   dark1: {
     right: 202,
     left: 30,
   },
-  firstLevel: {
-    height: 465,
-    bottom: 0,
-    position: "absolute",
-    backgroundColor: Color.lightColor,
-  },
   pantallaEditarIngredientes: {
-    flex: 1,
-    height: 800,
-    overflow: "hidden",
+    flex: 0.35,
+    height: 204,
     width: "100%",
     backgroundColor: Color.lightColor,
+    position: "absolute",
+    bottom: 0,
   },
 });
 

@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 
-const PantallaEditarIngredientes2 = ({ onClose }) => {
+const PantallaEditarIngredientes2 = ({ onClose,alimentoEditar }) => {
   const [nomAlimento, setNomAlimento] = useState('');
   const [calAlimento, setCalAlimento] = useState('')
   const handleCerrarPantallaSuperpuesta = () => {
@@ -23,7 +23,15 @@ const PantallaEditarIngredientes2 = ({ onClose }) => {
     };
     onClose(alimento);
   };
-
+  useEffect(()=>{
+    if(alimentoEditar){
+      setNomAlimento(alimentoEditar.nombre);
+      setCalAlimento(alimentoEditar.calorias);
+    }else{
+      setNomAlimento('');
+      setCalAlimento('');
+    }
+  },[])
   return (
     <View style={styles.pantallaEditarIngredientes2}>
       <View style={styles.lightHamburger}>

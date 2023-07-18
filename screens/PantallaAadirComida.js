@@ -11,7 +11,7 @@ const PantallaAadirComida = ({ onClose }) => {
     onClose();
   };
   const handleBoton1 = () => {
-    navigation.navigate("PantallaCrearComida");
+    navigation.navigate("PantallaCrearComida", {editar: false});
     onClose();
   }
   const handleBoton2 = () => {

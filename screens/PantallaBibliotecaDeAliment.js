@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import React, { useState,useEffect } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import auth, { firebase } from '@react-native-firebase/auth';
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
+import PantallaEditarAlimentos from "./PantallaEditarAlimentos";
 const PantallaBibliotecaDeAliment = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [comidaEditar, setComidaEditar] = useState('');
+  const [listaComida, setListaComida] = useState([]);
+  const user = auth().currentUser;
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -18,9 +22,44 @@ const PantallaBibliotecaDeAliment = () => {
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
+    }if(isPantallaEditarAlimentosVisible){
+      handleCerrarPantallaEditarAlimentos();
     }
   };
-
+  const [isPantallaEditarAlimentosVisible, setIspantallaEditarAlimentosVisible] = useState(false);
+  const handleAbrirPantallaEditarAlimentos= (item) =>{
+    setComidaEditar(item);
+    setIspantallaEditarAlimentosVisible(true);
+  }
+  const handleCerrarPantallaEditarAlimentos = () => {
+    setIspantallaEditarAlimentosVisible(false);
+  }
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameItem, styles.frameLayout]} />
+    );
+  };
+  useEffect(()=>{
+    const comidaReF = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/comidas`);
+    const handleSnapshot = (snapshot) => {
+      const comidaData = snapshot.val();
+      if (comidaData) {
+        const comidaArray = [];
+        // Convertir los ejercicios en un array y actualizar el estado
+        Object.keys(comidaData).forEach((key) => {
+          comidaArray.push(comidaData[key]);
+        });
+        console.log(comidaArray);
+        setListaComida(comidaArray);
+      }
+    }
+    comidaReF.on('value', handleSnapshot);
+  
+    // Limpiar la suscripción al desmontar el componente
+    return () => {
+      comidaReF.off('value', handleSnapshot);
+    };
+  },[])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaBibliotecaDeAliment}>
@@ -33,41 +72,27 @@ const PantallaBibliotecaDeAliment = () => {
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.bgAccentPosition]} />
-        <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.frameChild1, styles.frameLayout]} />
         <View style={styles.frameChild2} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition4]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 521</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular1, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading1, styles.subheadingLayout]}>
-            {" "}
-            600
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingLayout]}> 400</Text>
-        </View>
-        <View style={[styles.spSubheadingRegular3, styles.subheadingPosition4]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Comida 3
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular4, styles.subheadingPosition2]}>
-          <Text style={[styles.subheading4, styles.subheadingPosition3]}>
-            {" "}
-            Comida 2
-          </Text>
-        </View>
-        <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading3, styles.subheadingPosition3]}>
-            {" "}
-            Comida 1
-          </Text>
-        </View>
+        
+        <FlatList
+          data={listaComida}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <Pressable  onPress={() => handleAbrirPantallaEditarAlimentos(item)}>
+              <View style= {{marginBottom: 13,top:25, flexDirection: 'row',}}>
+                <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
+                  <Text style={[styles.subheading, styles.subheadingLayout]}>{item.calorias}</Text>
+                </View>
+                <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
+                  <Text style={[styles.subheading3, styles.subheadingPosition3]}>{' '}{item.nombre}</Text>
+                </View>
+                {index !== listaComida.length && <FlatListItemseparator />}
+              </View>
+            </Pressable>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
+        
         <View style={styles.spSubheadingRegularParent}>
           <View
             style={[styles.spSubheadingRegular6, styles.subheadingPosition]}
@@ -85,7 +110,7 @@ const PantallaBibliotecaDeAliment = () => {
           </View>
         </View>
       </View>
-      <Pressable style={[styles.accent, styles.accentPosition]} onPress={() => navigation.navigate("PantallaCrearComida")} >
+      <Pressable style={[styles.accent, styles.accentPosition]} onPress={() => navigation.navigate("PantallaCrearComida",{editar:false})} >
         <View style={styles.accent1}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -113,13 +138,53 @@ const PantallaBibliotecaDeAliment = () => {
           </View>
         </View>
       </Pressable>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={()=>navigation.goBack()}>
+        <View style={styles.accent1}>
+          <LinearGradient
+            style={[styles.bgAccent, styles.bgAccentPosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
+          />
+        </View>
+        <View style={[styles.flatdefault1, styles.flatdefault1Position]}>
+          <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
+            <Text style={styles.body22}>volver</Text>
+          </View>
+        </View>
+      </Pressable>
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      {isPantallaEditarAlimentosVisible && <PantallaEditarAlimentos onClose={handleCerrarPantallaEditarAlimentos} comidaEditar={comidaEditar}/>}
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  body22: {
+    fontSize: FontSize.size_2xs,
+    color: Color.lightColor,
+    width: 57,
+    justifyContent: "center",
+    textAlign: "center",
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
+    textTransform: "uppercase",
+    alignItems: "center",
+    display: "flex",
+    height: 24,
+    left: 0,
+    top: 3,
+    position: "absolute",
+  },
+  dark: {
+    top: 377,
+    width: 73,
+    height: 32,
+  },
+  darkPosition: {
+    left: 266,
+    position: "absolute",
+  },
   frameChildShadowBox: {
     height: 276,
     shadowOpacity: 1,
@@ -142,7 +207,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(95, 95, 95, 0.19)",
     borderStyle: "solid",
     left: 0,
-    position: "absolute",
+
   },
   subheadingPosition4: {
     height: 24,
@@ -171,10 +236,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheadingPosition1: {
-    marginTop: -114,
+    marginTop: 0,
     height: 24,
-    top: "50%",
-    position: "absolute",
+    top: 0,
+    
   },
   subheadingPosition3: {
     alignItems: "center",
@@ -272,7 +337,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheading: {
-    left: -5,
+    left: 0,
   },
   spSubheadingRegular: {
     left: 154,
@@ -290,7 +355,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
   subheading3: {
-    width: 88,
+    width: 200,
     lineHeight: 18,
     fontSize: FontSize.spBUTTON_size,
     alignItems: "center",

@@ -1,62 +1,158 @@
 import React, { useState,useEffect } from "react";
-import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList} from "react-native";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList,TouchableOpacity} from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useRoute } from "@react-navigation/native";
+import { isEqual } from 'lodash';
+import auth, { firebase } from '@react-native-firebase/auth';
 import Submenu from "./PantallaMenu";
 import PantallaEditarIngredientes2 from "./PantallaEditarIngredientes2";
-const PantallaCrearComida = () => {
+import PantallaEditarIngredientes from "./PantallaEditarIngredientes";
+const PantallaCrearComida = ({}) => {
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const navigation = useNavigation();
+  const route = useRoute();
+  const user = auth().currentUser;
   const [totalKcal, setTotalKcal] = useState('');
   const [nombreComida, setNombreComida] = useState('');
   const [listaIngredientes, setListaIngredientes] = useState([]);
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [alimentoEditar, setAlimentoEditar] = useState('');
+  const [datosCargados, setDatosCargados] = useState(false);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
   };
-  const handleChangeNombreComida = (text) => {
-    setNombreComida(text);
-  };
+ 
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
     }if(isPantallaEditarIngredientes2Visible){
       handleCerrarPantallaEditarIngredientes2();
+    }if(isPantallaEditarIngredientesVisible){
+      handleCerrarPantallaEditarIngredientes();
     }
+  };
+
+  const handleChangeNombreComida = (text) => {
+    setNombreComida(text);
   };
   const [isPantallaEditarIngredientes2Visible, setIsPantallaEditarIngredientes2Visible] = useState(false);
   const handleAbrirPantallaEditarIngredientes2 = () => {
     setIsPantallaEditarIngredientes2Visible(true);
+    if(isPantallaEditarIngredientesVisible){
+
+      setIsPantallaEditarIngredientesVisible(false);
+    }
   };
   const handleCerrarPantallaEditarIngredientes2 = (alimento) => {
-    if(alimento){
-      const nuevaListaIngredientes = [...listaIngredientes, alimento];
+    if (alimento) {
+      // Verificar si el alimento ya existe en la lista
+      const existeAlimento = listaIngredientes.some(item => isEqual(item, alimentoEditar));
+      console.log(existeAlimento)
+      if (existeAlimento) {
+        // Si el alimento ya existe, actualizar su valor en la lista
+        const nuevaListaIngredientes = listaIngredientes.map(item =>
+          isEqual(item, alimentoEditar) ? alimento : item
+        );
+        console.log(nuevaListaIngredientes);
+        setListaIngredientes(nuevaListaIngredientes);
+      } else {
+        // Si el alimento no existe, agregarlo a la lista
+        const nuevaListaIngredientes = [...listaIngredientes, alimento];
+        setListaIngredientes(nuevaListaIngredientes);
+      }
+    }
+    setAlimentoEditar('');
+    setIsPantallaEditarIngredientes2Visible(false);
+  };
+const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisible] = useState(false);
+  const handleAbrirPantallaEditarIngredientes = (alimento) => {
+
+    setAlimentoEditar(alimento);
+    setIsPantallaEditarIngredientesVisible(true);
+  };
+  const handleCerrarPantallaEditarIngredientes = (borrar, alimento) => {
+    if(borrar){
+      const nuevaListaIngredientes = listaIngredientes.filter(item => !isEqual(item, alimento));
       setListaIngredientes(nuevaListaIngredientes);
     }
-    console.log(listaIngredientes);
-    setIsPantallaEditarIngredientes2Visible(false);
+    setIsPantallaEditarIngredientesVisible(false);
+  };
+
+  const handleGuardarComida = () =>{
+    const comida = {
+      nombre: nombreComida,
+      calorias: totalKcal,
+      ingredientes: listaIngredientes,
+    }
+    if(nombreComida===''||listaIngredientes===[]){
+      alert('Porfavor completa todos los campos')
+    }
+    if(!route.params.editar){
+      const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/comidas`);
+      comidasRef.once('value', (snapshot) => {
+        if(snapshot.exists()){
+          const nuevacomidaref= comidasRef.push();
+          nuevacomidaref.set(comida)
+
+        }else{
+          const nuevacomidaref= comidasRef.push();
+          nuevacomidaref.set(comida);
+        };
+      });
+      navigation.goBack();
+    }else{
+      if(isEqual(comida,route.params.comidaEditar)){
+        console.log('no cambia nada')
+        navigation.goBack();
+      }else{
+        const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/comidas`);
+        comidasRef.once('value', (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            const comi = childSnapshot.val();
+            if(isEqual(comi,route.params.comidaEditar)){
+              if(nombreComida != ''){
+                comidasRef.child(childSnapshot.key).update({nombre:nombreComida});
+              }
+              if(totalKcal != ''){
+                comidasRef.child(childSnapshot.key).update({calorias:totalKcal});
+              }
+              if(listaIngredientes != []){
+                comidasRef.child(childSnapshot.key).update({ingredientes:listaIngredientes});
+              }
+              console.log('actualizado');
+              navigation.goBack();
+            }
+
+          })})
+      }
+    }
+    
   };
   const FlatListItemseparator = () => {
     return (
-      <View style={[styles.frameInner, styles.frameLayout]} />
+      <View style={[styles.frameInner, styles.frameLayout1, ]} />
     );
   };
 
   useEffect(() => {
+    if(route.params.editar && !datosCargados){
+      setListaIngredientes(route.params.comidaEditar.ingredientes);
+      setNombreComida(route.params.comidaEditar.nombre);
+      setDatosCargados(true);
+    }
     const totalCal = listaIngredientes.reduce((total, alimento) => {
       return total + parseInt(alimento.calorias);
     }, 0);
-    console.log(totalCal);
+
     setTotalKcal(totalCal);
     
-  }, [listaIngredientes])
+  }, [listaIngredientes,route.params])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaCrearComida}>
@@ -74,15 +170,17 @@ const PantallaCrearComida = () => {
           data={listaIngredientes}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index}) => (
-            <View style= {{marginBottom: 5,top:0, flexDirection: 'row'}}>
-              <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
-                <Text style={[styles.subheading, styles.subheadingLayout]}>{item.nombre}</Text>
+            <Pressable  onPress={() => handleAbrirPantallaEditarIngredientes(item)}>
+              <View style= {{marginBottom: 22,top:22, flexDirection: 'row', position:'relative'}}>
+                <View style={[styles.spSubheadingRegular2, styles.subheadingPosition1]}>
+                  <Text style={[styles.subheading, styles.subheadingLayout]}>{item.nombre}</Text>
+                </View>
+                <View style={[styles.subheadingPosition1]}>
+                  <Text style={[styles.subheading3, styles.subheadingFlexBox]}>{item.calorias}</Text>
+                </View>
+                {index !== listaIngredientes.length && <FlatListItemseparator />}
               </View>
-              <View style={[styles.spSubheadingRegular5, styles.subheadingPosition1]}>
-                <Text style={[styles.subheading3, styles.subheadingFlexBox]}>{item.calorias}</Text>
-              </View>
-              {index !== listaIngredientes.length && <FlatListItemseparator />}
-            </View>
+            </Pressable>
           )}
           contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
         />
@@ -120,7 +218,7 @@ const PantallaCrearComida = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.accent2} onPress={() => navigation.goBack()}>
+      <Pressable style={styles.accent2} onPress={handleGuardarComida}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.strokePosition]}
@@ -131,7 +229,7 @@ const PantallaCrearComida = () => {
         <View style={[styles.flatdefault1, styles.flatdefault1Position2]}>
           <View style={[styles.spBody2Medium, styles.flatdefault1Position2]}>
             <Text style={[styles.body21, styles.bodyLayout]}>
-              Añadir al dia
+              Añadir a la biblioteca
             </Text>
           </View>
         </View>
@@ -164,7 +262,7 @@ const PantallaCrearComida = () => {
         </View>
         <View style={styles.spSubheadingRegular9}>
           <Text style={[styles.subheading8, styles.caption1Typo]}>
-            Añadir a biblioteca
+            Añadir al dia
           </Text>
           <RNPSwitch
             style={[styles.switchon, styles.bodyLayout]}
@@ -174,14 +272,60 @@ const PantallaCrearComida = () => {
           />
         </View>
       </View>
-      {isPantallaEditarIngredientes2Visible && <PantallaEditarIngredientes2 onClose={handleCerrarPantallaEditarIngredientes2} />}
+      <Pressable style={[styles.dark, styles.darkPosition]}onPress={()=> navigation.goBack()}>
+        <View style={styles.lightPosition}>
+          <LinearGradient
+            style={[styles.bgAccent, styles.strokePosition]}
+            locations={[0, 1]}
+            colors={["#1a73e9", "#6c92f4"]}
+          />
+        </View>
+        <View style={[styles.flatdefault1, styles.flatdefault1Position]}>
+          <View style={[styles.spBody2Medium, styles.flatdefault1Position]}>
+            <Text style={[styles.body22, styles.bodyFlexBox]}>volver</Text>
+          </View>
+        </View>
+      </Pressable>
+      {isPantallaEditarIngredientes2Visible && <PantallaEditarIngredientes2 onClose={handleCerrarPantallaEditarIngredientes2} alimentoEditar={alimentoEditar} />}
+      {isPantallaEditarIngredientesVisible && <PantallaEditarIngredientes onClose={handleCerrarPantallaEditarIngredientes} onAbrirEditarAlimento={handleAbrirPantallaEditarIngredientes2} alimentoEditar={alimentoEditar}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  bodyFlexBox: {
+    justifyContent: "center",
+    textAlign: "center",
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
+    alignItems: "center",
+    display: "flex",
+  },
+  body22: {
+    fontSize: FontSize.size_2xs,
+    color: Color.lightColor,
+    width: 57,
+    textTransform: "uppercase",
+    textAlign: "center",
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
+    height: 24,
+    position: "absolute",
+    left: 0,
+    top: 3,
+  },
+  dark: {
+    top: 457,
+    width: 73,
+    height: 32,
+  },
+  darkPosition: {
+    left: 267,
+    position: "absolute",
+  },
   frameChildShadowBox: {
     height: 276,
     shadowOpacity: 1,
@@ -194,6 +338,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   frameLayout: {
+    width: 300,
+    position: "absolute",
+  },
+  frameLayout1: {
     width: 300,
     position: "absolute",
   },
@@ -212,7 +360,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.spCaptionRegular,
     lineHeight: 18,
     fontSize: FontSize.size_sm,
-    height: 24,
+    height: 20,
     top: 0,
 
   },
@@ -225,8 +373,8 @@ const styles = StyleSheet.create({
   },
   subheadingPosition1: {
     marginTop: 0,
-    height: 24,
-    top: "10%",
+    height: 10,
+
     left: 5
   },
   subheadingFlexBox: {
@@ -263,7 +411,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   flatdefault1Position2: {
-    marginTop: -12,
+    marginTop: -14,
     height: 24,
     top: "55%",
     position: "absolute",
@@ -325,7 +473,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   frameInner: {
-    top: 46,
+    top: 0,
     height: 1,
     borderTopWidth: 1,
     width: 300,
@@ -412,9 +560,6 @@ const styles = StyleSheet.create({
   spSubheadingRegular4: {
     right: 89,
     left: 0,
-  },
-  spSubheadingRegular5: {
-
   },
   subheading6: {
     lineHeight: 21,
@@ -596,8 +741,8 @@ const styles = StyleSheet.create({
     height: 24,
   },
   switchon: {
-    marginTop: -11,
-    right: -33,
+    marginTop: -15,
+    right: -10,
     width: 37,
     height: 22,
     top: "50%",
