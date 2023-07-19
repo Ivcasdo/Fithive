@@ -30,6 +30,10 @@ const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
     });
     onClose();
   };
+  const handleEmpezarEntrenamiento = () =>{
+    navigation.navigate('PantallaRealizarEntrenamiento', {entrenamiento:item});
+    onClose();
+  };
   return (
     <View style={styles.pantallaBibliotecaDeEntrena}>
       <View style={styles.firstLevel}>
@@ -46,7 +50,7 @@ const PantallaBibliotecaDeEntrena = ({onClose, item, editar}) => {
           </Pressable>
         </View>
         <View style={[styles.cover, styles.coverPosition]}>
-          <Pressable style={[styles.dark, styles.darkLayout1]}>
+          <Pressable style={[styles.dark, styles.darkLayout1]} onPress={handleEmpezarEntrenamiento}>
             <View style={styles.dark1}>
               <LinearGradient
                 style={[styles.bgPrimary, styles.darkIconPosition]}

@@ -124,20 +124,7 @@ const PantallaBibliotecaDeAliment = () => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={styles.accent2} onPress={() => navigation.goBack()}>
-        <View style={styles.accent1}>
-          <LinearGradient
-            style={[styles.bgAccent, styles.bgAccentPosition]}
-            locations={[0, 1]}
-            colors={["#1dde7d", "#72dfc5"]}
-          />
-        </View>
-        <View style={[styles.flatdefault1, styles.flatdefault1Position2]}>
-          <View style={[styles.spBody2Medium, styles.flatdefault1Position2]}>
-            <Text style={[styles.body21, styles.bodyTypo]}>Añadir al dia</Text>
-          </View>
-        </View>
-      </Pressable>
+      
       <Pressable style={[styles.dark, styles.darkPosition]} onPress={()=>navigation.goBack()}>
         <View style={styles.accent1}>
           <LinearGradient

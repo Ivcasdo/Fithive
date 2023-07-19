@@ -44,10 +44,12 @@ const PantallaRealizarEntrenamient = () => {
     const year = String(today.getFullYear()).slice(-2); // Obtener los últimos dos dígitos del año
 
     const formattedDate = `${day}/${month}/${year}`;
+    const planEntrenamientoDefault = route.params.planes ? route.params.planActivado.nombre : "ningun plan";
+
     const entrenamientoEntr = {
       ejercicios: ejercicios,
       nombre: route.params.entrenamiento.nombre,
-      planEntrenamiento: route.params.planActivado.nombre,
+      planEntrenamiento: planEntrenamientoDefault,
       tipo: route.params.entrenamiento.tipo,
     }
 
@@ -84,8 +86,12 @@ const PantallaRealizarEntrenamient = () => {
           const entradaCalendar = childsnapshot.val();
           if(isEqual(entradaCalendar.fecha,formattedDate)){
             const entrenamientosEntrada = entradaCalendar.entrenamientos;
-            entrenamientosEntrada.push(entrenamientoEntr);
-            entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: entrenamientosEntrada});
+            if(entrenamientosEntrada.exists()){
+              entrenamientosEntrada.push(entrenamientoEntr);
+              entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: entrenamientosEntrada});
+            }else{
+              entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: [entrenamientosEntrada]});
+            }
           }else{
             const nuevaEntradaRef = entradasCalendarioRef.push();
             nuevaEntradaRef.set(entradaCalendario);
