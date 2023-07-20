@@ -42,26 +42,33 @@ const PantallaEditarAlimentos = ({onClose, comidaEditar}) => {
       fecha: formattedDate,
       comidas: [comidaEditar],
     }
+
     entradasRef.once('value', (snapshot) => {
       if(snapshot.exists()){
+        let isDateFound = false;
         snapshot.forEach((childsnapshot)=>{
           const entrada = childsnapshot.val();
-          if(isEqual(entrada.fecha,formattedDate)){
+          console.log('fecha igual:', entrada.fecha === formattedDate);
+          if(entrada.fecha === formattedDate){
+            isDateFound = true;
             const alimentos = entrada.comidas;
-            if(alimentos.exists()){
+            if(Array.isArray(alimentos) && alimentos.length > 0){
               alimentos.push(comidaEditar);
               entradasRef.child(childsnapshot.key).update({comidas: alimentos});
             }else{
               entradasRef.child(childsnapshot.key).update({ comidas: [comidaEditar] });
             }
-          }else{
-            const nuevaEntradaRef = entradasRef.push();
-            nuevaEntradaRef.set(entradaCalendar)
           }
-        })
+        });
+        if (!isDateFound) {
+          const nuevaEntradaRef = entradasRef.push();
+          nuevaEntradaRef.set(entradaCalendar);
+        }
       }else{
+        console.log('aqui3')
         const nuevaEntradaRef = entradasRef.push();
-        nuevaEntradaRef.set(entradaCalendar)
+        nuevaEntradaRef.set(entradaCalendar);
+
       }
 
     });

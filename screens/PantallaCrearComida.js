@@ -94,6 +94,51 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
       alert('Porfavor completa todos los campos')
     }
     if(!route.params.editar){
+      if(switchOnValue){
+        const entradasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+        const today = new Date();
+        // Obtener los valores de día, mes y año
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript comienzan desde 0
+        const year = String(today.getFullYear()).slice(-2); // Obtener los últimos dos dígitos del año
+
+        const formattedDate = `${day}/${month}/${year}`;
+        const entradaCalendar = {
+          fecha: formattedDate,
+          comidas: [comida],
+        }
+
+        entradasRef.once('value', (snapshot) => {
+          if(snapshot.exists()){
+            let isDateFound = false;
+            snapshot.forEach((childsnapshot)=>{
+              const entrada = childsnapshot.val();
+              console.log('fecha igual:', entrada.fecha === formattedDate);
+              if(entrada.fecha === formattedDate){
+                isDateFound = true;
+                const alimentos = entrada.comidas;
+                if(Array.isArray(alimentos) && alimentos.length > 0){
+                  alimentos.push(comida);
+                  entradasRef.child(childsnapshot.key).update({comidas: alimentos});
+                }else{
+                  entradasRef.child(childsnapshot.key).update({ comidas: [comida] });
+                }
+              }
+            });
+            if (!isDateFound) {
+              const nuevaEntradaRef = entradasRef.push();
+              nuevaEntradaRef.set(entradaCalendar);
+            }
+          }else{
+            console.log('aqui3')
+            const nuevaEntradaRef = entradasRef.push();
+            nuevaEntradaRef.set(entradaCalendar);
+
+          }
+
+        });
+
+      }
       const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/comidas`);
       comidasRef.once('value', (snapshot) => {
         if(snapshot.exists()){
@@ -107,6 +152,7 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
       });
       navigation.goBack();
     }else{
+      
       if(isEqual(comida,route.params.comidaEditar)){
         console.log('no cambia nada')
         navigation.goBack();

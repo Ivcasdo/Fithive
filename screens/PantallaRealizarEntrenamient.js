@@ -57,7 +57,6 @@ const PantallaRealizarEntrenamient = () => {
       fecha: formattedDate,
       entrenamientos: [entrenamientoEntr],
     }
-    console.log(entradaCalendario);
     
     const planRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/planActivado`);
     if(route.params.planes){
@@ -71,7 +70,7 @@ const PantallaRealizarEntrenamient = () => {
             
             const semanaActualRef = planRef.child(`${childsnapshot.key}/semanas/${plan.semanaActual - 1}`);
             semanaActualRef.set(nuevoArrayEntrenamientos.length);
-            console.log(nuevoArrayEntrenamientos.length ===0);
+            
             if(nuevoArrayEntrenamientos.length === 0){
               planRef.child(childsnapshot.key).update({ semanaActual: plan.semanaActual+1 });
             }
@@ -82,21 +81,25 @@ const PantallaRealizarEntrenamient = () => {
     const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
     entradasCalendarioRef.once('value', (snapshot) => {
       if(snapshot.exists()){
+        let isDateFound = false;
         snapshot.forEach((childsnapshot)=>{
           const entradaCalendar = childsnapshot.val();
-          if(isEqual(entradaCalendar.fecha,formattedDate)){
+          if(entradaCalendar.fecha===formattedDate){
+            isDateFound = true;
             const entrenamientosEntrada = entradaCalendar.entrenamientos;
-            if(entrenamientosEntrada.exists()){
+            console.log(Array.isArray(entrenamientosEntrada)&& entrenamientosEntrada.length >0);
+            if(Array.isArray(entrenamientosEntrada)&& entrenamientosEntrada.length >0){
               entrenamientosEntrada.push(entrenamientoEntr);
               entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: entrenamientosEntrada});
             }else{
-              entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: [entrenamientosEntrada]});
+              entradasCalendarioRef.child(childsnapshot.key).update({entrenamientos: [entrenamientoEntr]});
             }
-          }else{
-            const nuevaEntradaRef = entradasCalendarioRef.push();
-            nuevaEntradaRef.set(entradaCalendario);
           }
-        })
+        });
+        if (!isDateFound) {
+          const nuevaEntradaRef = entradasCalendarioRef.push();
+          nuevaEntradaRef.set(entradaCalendario);
+        }
       }else{
         const nuevaEntradaRef = entradasCalendarioRef.push();
         nuevaEntradaRef.set(entradaCalendario);
