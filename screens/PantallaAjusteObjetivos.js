@@ -1,17 +1,23 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput, Pressable } from "react-native";
+import { View, StyleSheet, Text, TextInput, Pressable,TouchableOpacity,ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
-import { Picker } from '@react-native-picker/picker';
+import auth, { firebase } from '@react-native-firebase/auth';
 const PantallaAjusteObjetivos = ({ onClose }) => {
+  const user = auth().currentUser;
   const [edad, setEdad] = useState('');
   const [peso, setPeso] = useState('');
   const [altura, setAltura] = useState('');
-  const [genero, setGenero] = useState('');
-  const [nivelActividad, setNivelActividad] = useState('');
-  const [objetivo, setObjetivo] = useState('');
-
+  const [genero, setGenero] = useState('Masculino');
+  const [nivelActividad, setNivelActividad] = useState('Moderado');
+  const [objetivo, setObjetivo] = useState('Mantener Peso');
+  const opcionesGenero = ['Masculino','Femenino'];
+  const opcionesObjetivo = ['Bajar peso','Subir peso', 'Mantener peso'];
+  const opcionesActividad = ['Muy alto', 'Alto', 'Moderado', 'Bajo', 'Muy bajo'];
+  const [showOptions, setShowOptions] = useState(false);
+  const [showOptions2, setShowOptions2] = useState(false);
+  const [showOptions3, setShowOptions3] = useState(false);
   const handleChangeEdad = (text) =>{
     setEdad(text);
   }
@@ -24,7 +30,61 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
   };
-
+  const handlePress = () => {
+    setShowOptions(!showOptions);
+  };
+  const handlePress2 = () => {
+    setShowOptions2(!showOptions2);
+  };
+  const handlePress3 = () => {
+    setShowOptions3(!showOptions3);
+  };
+  const handleGuardarObjetivo = () =>{
+    let objetivoCalorias = '';
+    if(genero==='Masculino'){
+      objetivoCalorias = 66+(13.7*peso)+(5*altura)-(6.7*edad);
+    }else{
+      objetivoCalorias = 655+(9.6*peso)+(1.8*altura)-(4.7*edad);
+    }
+    switch(nivelActividad){
+      case 'Muy alto':
+        objetivoCalorias = objetivoCalorias * 1.2;
+        break;
+      case 'Alto':
+        objetivoCalorias = objetivoCalorias * 1.375;
+        break;
+      case 'Moderado':
+        objetivoCalorias = objetivoCalorias * 1.55;
+        break;
+      case 'Bajo':
+        objetivoCalorias = objetivoCalorias * 1.72;
+        break;
+      case 'Muy bajo':
+        objetivoCalorias = objetivoCalorias * 1.9;
+        break;
+      default:
+        objetivoCalorias = objetivoCalorias;
+        break;
+    }
+    switch(objetivo){
+      case 'Bajar peso':
+        objetivoCalorias= objetivoCalorias-500;
+        break;
+      case 'Mantener Peso':
+        objetivoCalorias= objetivoCalorias*1;
+        break;
+      case 'Subir Peso':
+        objetivoCalorias= objetivoCalorias+500;
+        break;
+      default:
+        objetivoCalorias = objetivoCalorias;
+        break
+    }
+    objetivoCalorias = Math.round(objetivoCalorias)
+    const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
+    caloriasRef.set(objetivoCalorias);
+    onClose();
+  }
   return (
     <View style={styles.pantallaAjusteObjetivos}>
       <View style={[styles.dialog, styles.dialogShadowBox]}>
@@ -116,7 +176,7 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
           <Text style={[styles.caption1, styles.captionTypo]}>Altura</Text>
         </View>
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleCerrarPantallaSuperpuesta}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleGuardarObjetivo}>
         <View style={[styles.colorsbgCard, styles.dialogPosition]}>
           <LinearGradient
             style={[styles.bgPrimary3, styles.lightPosition]}
@@ -130,66 +190,125 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dropdown, styles.dropdownLayout]}>
+      <Pressable style={[styles.dropdown, styles.dropdownLayout]} onPress={handlePress3}>
         <View style={[styles.stroke, styles.lightPosition]}>
           <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
         </View>
         <View style={styles.spSubheadingRegular3}>
           <Text style={[styles.subheading, styles.subheadingTypo]}>
-            Bajar de peso
+            {objetivo}
           </Text>
         </View>
-        <Image
-          style={styles.dropdownIcon}
-          contentFit="cover"
-          source={require("../assets/dropdown1.png")}
-        />
+          <Image
+            style={styles.dropdownIcon}
+            contentFit="cover"
+            source={require("../assets/dropdown1.png")}
+          />
         <View style={styles.caption}>
           <Text style={[styles.caption7, styles.dropdownLayout]}>Objetivo</Text>
         </View>
+        {showOptions3 && (
+          <ScrollView style={styles.filtroObjetivos}>
+            {opcionesObjetivo.map((objetivo, index) => (
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                key={index}
+                onPress={() => {
+                  setObjetivo(objetivo);
+                  setShowOptions3(false); // Oculta las opciones cuando se selecciona una opción
+                }}
+              >
+                <Text>{objetivo}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
       </Pressable>
-      <Pressable style={[styles.dropdown1, styles.caption9Layout]}>
+      <Pressable style={[styles.dropdown1, styles.caption9Layout]} onPress={handlePress2}>
         <View style={[styles.stroke, styles.lightPosition]}>
           <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
         </View>
         <View style={styles.spSubheadingRegular3}>
           <Text style={[styles.subheading1, styles.caption9Layout]}>
-            Muy activo
+            {nivelActividad}
           </Text>
         </View>
-        <Image
-          style={styles.dropdownIcon}
-          contentFit="cover"
-          source={require("../assets/dropdown1.png")}
-        />
+          <Image
+            style={styles.dropdownIcon}
+            contentFit="cover"
+            source={require("../assets/dropdown1.png")}
+          />
         <View style={styles.caption}>
           <Text style={[styles.caption9, styles.caption9Layout]}>
             Nivel de actividad
           </Text>
         </View>
+        {showOptions2 && (
+          <ScrollView style={styles.filtroObjetivos}>
+            {opcionesActividad.map((actividad, index) => (
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                key={index}
+                onPress={() => {
+                  setNivelActividad(actividad);
+                  setShowOptions2(false); // Oculta las opciones cuando se selecciona una opción
+                }}
+              >
+                <Text>{actividad}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
       </Pressable>
-      <Pressable style={[styles.dropdown2, styles.dropdown2Layout]}>
-      <View style={[styles.stroke, styles.lightPosition]}>
+      <Pressable style={[styles.dropdown2, styles.dropdown2Layout]} onPress={handlePress}>
+        <View style={[styles.stroke, styles.lightPosition]}>
           <View style={[styles.bgPrimary4, styles.bgPrimary4Bg]} />
         </View>
         <View style={styles.spSubheadingRegular3}>
-          <Picker
-            selectedValue={genero}
-            onValueChange={(itemValue) => setGenero(itemValue)}
-          >
-            <Picker.Item label="Masculino" value="masculino" />
-            <Picker.Item label="Femenino" value="femenino" />
-          </Picker>
+          <Text style={[styles.subheading2, styles.dropdown2Layout]}>
+            {genero}
+          </Text>
         </View>
+          <Image
+            style={styles.dropdownIcon}
+            contentFit="cover"
+            source={require("../assets/dropdown1.png")}
+          />
         <View style={styles.caption}>
           <Text style={[styles.caption11, styles.dropdown2Layout]}>Genero</Text>
         </View>
+        {showOptions && (
+          <View style={styles.filtroObjetivos}>
+            {opcionesGenero.map((generos, index) => (
+              <TouchableOpacity
+                style={{ padding: 10 }}
+                key={index}
+                onPress={() => {
+                  setGenero(generos);
+                  setShowOptions(false); // Oculta las opciones cuando se selecciona una opción
+                }}
+              >
+                <Text>{generos}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
       </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  filtroObjetivos:{
+    backgroundColor: 'white',
+    left:0,
+    top:56,
+    maxHeight:90,
+    position: 'absolute',
+    zIndex: 90,
+    width: '100%',
+    flex:1
+  },
   dialogShadowBox: {
     shadowOpacity: 1,
     shadowOffset: {
@@ -469,6 +588,7 @@ const styles = StyleSheet.create({
     height: 32,
     bottom: 0,
     right: 0,
+    top:17,
     position: "absolute",
   },
   caption7: {

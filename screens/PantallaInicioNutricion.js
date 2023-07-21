@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Pressable, StyleSheet, View, Text,TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,10 +7,14 @@ import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import PantallaAjusteObjetivos from "./PantallaAjusteObjetivos";
 import PantallaAadirComida from "./PantallaAadirComida";
+import auth, { firebase } from '@react-native-firebase/auth';
 const PantallaInicioNutricion = () => {
+  const user = auth().currentUser;
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [objetivoCalorias, setObjetivoCalorias] = useState('');
+  const [fechaSeleccionada, setFechaSeleccionada] = useState('');
+  const [fechaFormato, setFechaFormato] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -42,15 +46,88 @@ const PantallaInicioNutricion = () => {
   const handleCerrarPantallaAadircomida = () => {
     setIsPantallaAadircomidaVisible(false);
   };
+
+  const handleAvanzarDia = () => {
+    const fechaActual = new Date();
+    const fechaSeleccionadaDate = new Date(fechaFormato);
+    console.log(fechaActual, fechaSeleccionadaDate)
+    // Comparamos la fecha actual con la fecha seleccionada
+    if (fechaFormato.getDate() == fechaActual.getDate() && fechaFormato.getMonth() == fechaActual.getMonth() && fechaFormato.getFullYear() == fechaActual.getFullYear()) {
+      // No hacemos nada si la fecha seleccionada es igual o posterior a la fecha actual
+      return;
+    }
+    fechaSeleccionadaDate.setDate(fechaSeleccionadaDate.getDate() + 1);
+    const day = fechaSeleccionadaDate.getDate();
+    const monthIndex = fechaSeleccionadaDate.getMonth();
+    const year = fechaSeleccionadaDate.getFullYear();
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const monthName = monthNames[monthIndex];
+    const formattedDate = `${day} ${monthName} ${year}`;
+    setFechaSeleccionada(formattedDate);
+    setFechaFormato(fechaSeleccionadaDate);
+  };
+  
+  const handleRetrocederDia = () => {
+    const fechaActual = new Date(fechaFormato);
+    console.log(fechaActual);
+    fechaActual.setDate(fechaActual.getDate() - 1);
+    const day = fechaActual.getDate();
+    const monthIndex = fechaActual.getMonth();
+    const year = fechaActual.getFullYear();
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const monthName = monthNames[monthIndex];
+    const formattedDate = `${day} ${monthName} ${year}`;
+    setFechaFormato(fechaActual);
+    setFechaSeleccionada(formattedDate);
+  };
+  useEffect(() =>{
+    // Obtener la fecha actual
+    const today = new Date();
+    setFechaFormato(today);
+    // Obtener el día del mes
+    const day = today.getDate();
+
+    // Obtener el nombre del mes
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const monthIndex = today.getMonth();
+    const monthName = monthNames[monthIndex];
+
+    // Obtener el año
+    const year = today.getFullYear();
+
+    // Formatear la fecha en el formato deseado
+    const formattedDate = `${day} ${monthName} ${year}`;
+
+    // Establecer el estado de fechaSeleccionada con el valor formateado
+    setFechaSeleccionada(formattedDate);
+    const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
+    const handleSnapshot = (snapshot) => {
+      const caloriasData = snapshot.val();
+      setObjetivoCalorias(caloriasData);
+    }
+    caloriasRef.on('value', handleSnapshot);
+    return () => {
+      caloriasRef.off('value', handleSnapshot);
+    }
+  },[])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicioNutricion}>
       <Pressable onPress={handleOpenSubmenu}>
-      <Image
-        style={styles.pantallaInicioNutricionChild}
-        contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
-      />
+        <Image
+          style={styles.pantallaInicioNutricionChild}
+          contentFit="cover"
+          source={require("../assets/ellipse-1.png")}
+        />
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildPosition]} />
@@ -73,17 +150,21 @@ const PantallaInicioNutricion = () => {
           </View>
         </View>
         <View style={styles.month}>
+          <Pressable onPress={handleRetrocederDia}>
           <Image
             style={[styles.arrowIcon, styles.iconLayout]}
             contentFit="cover"
             source={require("../assets/arrow.png")}
           />
-          <Text style={styles.febrero2021}>3 Febrero 2021</Text>
+          </Pressable>
+          <Text style={styles.febrero2021}>{fechaSeleccionada}</Text>
+          <Pressable onPress={handleAvanzarDia}>
           <Image
             style={[styles.arrowIcon, styles.iconLayout]}
             contentFit="cover"
             source={require("../assets/arrow1.png")}
           />
+          </Pressable>
         </View>
       </View>
       <Pressable style={[styles.accent, styles.accentLayout]} onPress={handleAbrirPantallaAjusteObjetivos}>
@@ -125,7 +206,7 @@ const PantallaInicioNutricion = () => {
         />
         <View style={styles.caloriasParent}>
           <Text style={[styles.calorias2, styles.objetivoTypo]}>
-            1900 calorias
+            {objetivoCalorias} calorias
           </Text>
           <Text style={[styles.objetivo, styles.objetivoTypo]}>objetivo:</Text>
           <Image
