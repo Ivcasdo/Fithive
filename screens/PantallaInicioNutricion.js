@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, View, Text,TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, View, Text,TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -8,6 +8,8 @@ import Submenu from "./PantallaMenu";
 import PantallaAjusteObjetivos from "./PantallaAjusteObjetivos";
 import PantallaAadirComida from "./PantallaAadirComida";
 import auth, { firebase } from '@react-native-firebase/auth';
+import { isEqual } from "lodash";
+import ProgressCircle from 'react-native-progress-circle'
 const PantallaInicioNutricion = () => {
   const user = auth().currentUser;
   const navigation = useNavigation();
@@ -15,6 +17,10 @@ const PantallaInicioNutricion = () => {
   const [objetivoCalorias, setObjetivoCalorias] = useState('');
   const [fechaSeleccionada, setFechaSeleccionada] = useState('');
   const [fechaFormato, setFechaFormato] = useState('');
+  const [listaComidas, setListaComidas] = useState([]);
+  const [isFirstRun, setIsFirstRun] = useState(true);
+  const [caloriasRestantes, setCaloriasRestantes] = useState('');
+  const[porcentajeProg, setPorcentajeProg] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -50,7 +56,6 @@ const PantallaInicioNutricion = () => {
   const handleAvanzarDia = () => {
     const fechaActual = new Date();
     const fechaSeleccionadaDate = new Date(fechaFormato);
-    console.log(fechaActual, fechaSeleccionadaDate)
     // Comparamos la fecha actual con la fecha seleccionada
     if (fechaFormato.getDate() == fechaActual.getDate() && fechaFormato.getMonth() == fechaActual.getMonth() && fechaFormato.getFullYear() == fechaActual.getFullYear()) {
       // No hacemos nada si la fecha seleccionada es igual o posterior a la fecha actual
@@ -72,7 +77,6 @@ const PantallaInicioNutricion = () => {
   
   const handleRetrocederDia = () => {
     const fechaActual = new Date(fechaFormato);
-    console.log(fechaActual);
     fechaActual.setDate(fechaActual.getDate() - 1);
     const day = fechaActual.getDate();
     const monthIndex = fechaActual.getMonth();
@@ -86,29 +90,73 @@ const PantallaInicioNutricion = () => {
     setFechaFormato(fechaActual);
     setFechaSeleccionada(formattedDate);
   };
+
+  const FlatListItemseparator = () => {
+    return (
+      <View style={[styles.frameItem, styles.frameLayout]} />
+    );
+  };
+
   useEffect(() =>{
-    // Obtener la fecha actual
+    const getFormattedDate = (date) => {
+      const day = date.getDate();
+      const monthNames = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      const monthIndex = date.getMonth();
+      const monthName = monthNames[monthIndex];
+      const year = date.getFullYear();
+      return `${day} ${monthName} ${year}`;
+    };
     const today = new Date();
-    setFechaFormato(today);
-    // Obtener el día del mes
-    const day = today.getDate();
+    const formattedToday = getFormattedDate(today);
+    if(isFirstRun){
+      setFechaFormato(today);
+      setFechaSeleccionada(formattedToday);
+    }
+    setIsFirstRun(false);
+    const formatDate = (inputDate) =>{
+      const dateObj = new Date(inputDate);
+      // Obtener el día, el mes y el año del objeto Date
+      const day = dateObj.getDate().toString().padStart(2, '0');
+      const monthIndex = String(dateObj.getMonth() + 1).toString().padStart(2,'0');
+      const year = dateObj.getFullYear().toString().slice(-2);
+      
+      // Obtener el nombre del mes
+      
+      // Formatear la fecha en el formato deseado
+      const formattedDate = `${day}/${monthIndex}/${year}`;
 
-    // Obtener el nombre del mes
-    const monthNames = [
-      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ];
-    const monthIndex = today.getMonth();
-    const monthName = monthNames[monthIndex];
+      return formattedDate;
+    }
+    const fechaFormateada = formatDate(fechaFormato);
+    let caloriasrest =0;
+    const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+    const updateListaComidas = (formattedDate) => {
+    comidasRef.once('value', (snapshot) => {
+        const listaDeComidas = [];
+        snapshot.forEach((childsnapshot) => {
+          const entrada = childsnapshot.val();
+          
+          if (entrada && entrada.comidas && isEqual(entrada.fecha, formattedDate)) {
+            listaDeComidas.push(...entrada.comidas);
 
-    // Obtener el año
-    const year = today.getFullYear();
+          }
+        });
+        const caloriasTotal =listaDeComidas.reduce((total, comida) => total + comida.calorias, 0);
+        caloriasrest = objetivoCalorias-caloriasTotal;
+        setCaloriasRestantes(caloriasrest);
+        setListaComidas(listaDeComidas);
+      });
+    };
+    const progresoCalorias = (((objetivoCalorias - caloriasRestantes) / objetivoCalorias) * 100).toFixed(2);
 
-    // Formatear la fecha en el formato deseado
-    const formattedDate = `${day} ${monthName} ${year}`;
+    const progresoNumerico = parseFloat(progresoCalorias);
+    console.log(progresoNumerico);
+    setPorcentajeProg(progresoNumerico);
 
-    // Establecer el estado de fechaSeleccionada con el valor formateado
-    setFechaSeleccionada(formattedDate);
+    updateListaComidas(fechaFormateada);
     const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
     const handleSnapshot = (snapshot) => {
       const caloriasData = snapshot.val();
@@ -118,7 +166,7 @@ const PantallaInicioNutricion = () => {
     return () => {
       caloriasRef.off('value', handleSnapshot);
     }
-  },[])
+  },[caloriasRestantes,fechaSeleccionada])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicioNutricion}>
@@ -132,23 +180,26 @@ const PantallaInicioNutricion = () => {
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
         <View style={[styles.frameChild, styles.frameChildPosition]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
-        <View style={[styles.frameInner, styles.frameLayout]} />
-        <View style={[styles.lineView, styles.frameLayout]} />
-        <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
-          <Text style={[styles.subheading, styles.subheadingTypo]}>
-            {" "}
-            Comida ejemplo 1
-          </Text>
-          <View
-            style={[styles.spSubheadingRegular1, styles.subheadingPosition]}
-          >
-            <Text style={[styles.subheading1, styles.subheadingPosition]}>
-              {" "}
-              Comida ejemplo 2
-            </Text>
-            <View style={[styles.frameItem, styles.frameLayout]} />
-          </View>
-        </View>
+        <FlatList
+          data={listaComidas}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index}) => (
+            <Pressable  onPress={() => handleAbrirPantallaEditarIngredientes(item)}>
+              <View style= {{marginBottom: 5,top:25,position:'relative'}}>
+                <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
+                  <Text style={[styles.subheading, styles.subheadingTypo]}>
+                    {" "}
+                    {item.nombre}
+                  </Text>
+                </View>
+                {index !== listaComidas.length && <FlatListItemseparator />}
+              </View>
+            </Pressable>
+          )}
+          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+        />
+        
+        
         <View style={styles.month}>
           <Pressable onPress={handleRetrocederDia}>
           <Image
@@ -199,11 +250,19 @@ const PantallaInicioNutricion = () => {
       </Pressable>
       <View style={styles.calorias}>
         <Text style={[styles.calorias1, styles.comidasTypo]}>Calorias</Text>
-        <Image
-          style={styles.progresoDiarioIcon}
-          contentFit="cover"
-          source={require("../assets/progreso-diario.png")}
-        />
+        <View style= {styles.progresoDiarioIcon}>
+          <ProgressCircle
+              percent={porcentajeProg}
+              radius={40}
+              borderWidth={6}
+              color="#3399FF"
+              shadowColor="#999"
+              bgColor="#fff"
+              
+          >
+              <Text style={{ fontSize: 15 }}>{caloriasRestantes}</Text>
+          </ProgressCircle>
+        </View>
         <View style={styles.caloriasParent}>
           <Text style={[styles.calorias2, styles.objetivoTypo]}>
             {objetivoCalorias} calorias
@@ -266,7 +325,7 @@ const styles = StyleSheet.create({
   subheadingPosition1: {
     height: 28,
     left: 0,
-    position: "absolute",
+
   },
   subheadingTypo: {
     display: "flex",
@@ -378,11 +437,10 @@ const styles = StyleSheet.create({
     top: 105,
   },
   subheading: {
-    width: 275,
+    width: 300,
     alignItems: "center",
     height: 28,
     left: 0,
-    position: "absolute",
   },
   subheading1: {
     alignItems: "center",
@@ -402,9 +460,9 @@ const styles = StyleSheet.create({
     top: "50%",
   },
   spSubheadingRegular: {
-    marginTop: -72.5,
+    marginTop: 0,
     right: 26,
-    top: "50%",
+    top: "0%",
   },
   arrowIcon: {
     borderRadius: Border.br_81xl,
@@ -417,7 +475,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   month: {
-    top: 4,
+    top: 2,
     width: 291,
     flexDirection: "row",
     justifyContent: "space-between",
