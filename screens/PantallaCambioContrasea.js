@@ -1,12 +1,41 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-
+import auth, { firebase } from '@react-native-firebase/auth';
+import { isEqual } from "lodash";
 const PantallaCambioContrasea = () => {
+  const user = auth().currentUser;
   const navigation = useNavigation();
+  const [password, setPassword] = useState('');
+  const [confirmarPass, setConfirmarPass] = useState('');
+  const [nuevaPassword, setNuevaPassword] = useState('');
+
+  const handleCambioPassword = (text) =>{
+    setPassword(text);
+  }
+  const handleCambioConfirmarPassword = (text) =>{
+    setConfirmarPass(text);
+  }
+  const handleCambioNuevaPassword = (text) =>{
+    setNuevaPassword(text);
+  }
+  const handleCambiarContrasenia = async() =>{
+    try {
+      const email = user.email;
+      const credential = auth.EmailAuthProvider.credential(email, password);
+      if(isEqual(nuevaPassword,confirmarPass)){
+        await user.reauthenticateWithCredential(credential);
+        await user.updatePassword(nuevaPassword);
+      }
+      console.log('Contraseña cambiada exitosamente');
+      navigation.navigate("PantallaPerfilDeUsuario")
+    } catch (error) {
+      alert('Error al cambiar la contraseña:', error.message);
+    }
+  };
   return (
     <View style={styles.pantallaCambioContrasea}>
       <Image
@@ -22,6 +51,8 @@ const PantallaCambioContrasea = () => {
             placeholder="Password"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={nuevaPassword}
+            onChangeText={handleCambioNuevaPassword}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
@@ -42,6 +73,8 @@ const PantallaCambioContrasea = () => {
             placeholder="Password"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={password}
+            onChangeText={handleCambioPassword}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
@@ -62,6 +95,8 @@ const PantallaCambioContrasea = () => {
             placeholder="Confirm password"
             keyboardType="default"
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
+            value={confirmarPass}
+            onChangeText={handleCambioConfirmarPassword}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
@@ -83,7 +118,7 @@ const PantallaCambioContrasea = () => {
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition1]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark1, styles.darkPosition1]} onPress={handleCambiarContrasenia}>
         <LinearGradient
           style={[styles.dark2, styles.darkPosition]}
           locations={[0, 1]}

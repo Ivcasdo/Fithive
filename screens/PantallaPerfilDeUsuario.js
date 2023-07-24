@@ -9,14 +9,14 @@ import {
 import { Image } from "expo-image";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
-import auth from '@react-native-firebase/auth';
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import auth, { firebase } from '@react-native-firebase/auth';
 const PantallaPerfilDeUsuario = () => {
   const navigation = useNavigation();
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const user = auth().currentUser;
+  const [nombreUsuario,setNombreUsuario] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -32,6 +32,16 @@ const PantallaPerfilDeUsuario = () => {
     auth().signOut().then(() => console.log('User signed out!'));
     navigation.navigate("PantallaIniciarSesion")
   }
+  useEffect(()=>{
+    const nombreUsRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/nombre`);
+    const handleNombreUsuarioChange = (snapshot) => {
+      setNombreUsuario(snapshot.val());
+    };
+    nombreUsRef.on('value', handleNombreUsuarioChange);
+    return () => {
+      nombreUsRef.off('value', handleNombreUsuarioChange);
+    };
+  },[])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaPerfilDeUsuario}>
@@ -63,7 +73,7 @@ const PantallaPerfilDeUsuario = () => {
         </View>
       </Pressable>
       <View style={styles.spBody2Medium}>
-        <Text style={[styles.body2, styles.body2FlexBox]}>Ejemplo nombre</Text>
+        <Text style={[styles.body2, styles.body2FlexBox]}>{nombreUsuario}</Text>
       </View>
       <View
         style={[
@@ -131,36 +141,8 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault4, styles.firstPosition]} onPress={() => navigation.navigate("PantallaPersonalizacion")}>
-          <View style={[styles.light, styles.lightFlexBox]}>
-            <View style={[styles.bgLight1, styles.lightLayout]} />
-          </View>
-          <Image
-            style={[styles.chevronRightIcon, styles.chevronRightIconLayout]}
-            contentFit="cover"
-            source={require("../assets/chevronright.png")}
-          />
-          <View style={[styles.spSubheadingRegular, styles.lightFlexBox]}>
-            <Text style={[styles.subheading, styles.body2FlexBox]}>
-              Personalizacion
-            </Text>
-          </View>
-        </Pressable>
-        <Pressable style={[styles.firstLevelDefault5, styles.firstPosition]} onPress={() => navigation.navigate("PantallaNotificaciones")}>
-          <View style={[styles.light, styles.lightFlexBox]}>
-            <View style={[styles.bgLight1, styles.lightLayout]} />
-          </View>
-          <Image
-            style={[styles.chevronRightIcon, styles.chevronRightIconLayout]}
-            contentFit="cover"
-            source={require("../assets/chevronright.png")}
-          />
-          <View style={[styles.spSubheadingRegular, styles.lightFlexBox]}>
-            <Text
-              style={[styles.subheading, styles.body2FlexBox]}
-            >{`Notificaciones `}</Text>
-          </View>
-        </Pressable>
+       
+        
         <Pressable style={[styles.dark, styles.darkLayout]} onPress={handleLogout}>
           <Image
             style={[styles.darkIcon, styles.darkLayout]}

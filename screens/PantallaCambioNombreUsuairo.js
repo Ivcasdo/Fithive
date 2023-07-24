@@ -1,59 +1,113 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { Pressable, StyleSheet, View, Text, TextInput } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth, { firebase } from '@react-native-firebase/auth';
 
 const PantallaCambioNombreUsuairo = () => {
+  const user = auth().currentUser;
   const navigation = useNavigation();
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const handleCambioNombre = (text) =>{
+    setNombreUsuario(text);
+  }
+  const handleCambioPassword = (text) =>{
+    setPassword(text);
+  }
+  const handleGuardarNombre = async() =>{
+    try {
+      const email = user.email;
+      const credential = auth.EmailAuthProvider.credential(email, password);
+      if(nombreUsuario != ''){
+        await user.reauthenticateWithCredential(credential);
+        const nombreUsRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/nombre`);
+        nombreUsRef.set(nombreUsuario);
+      }else{
+        alert('Rellene todos los campos');
+      }
+      navigation.navigate("PantallaPerfilDeUsuario")
+    } catch (error) {
+      alert('Error al cambiar el nombre de usuario:', error.message);
+    }
+  }
   return (
     <View style={styles.pantallaCambioNombreUsuairo}>
       <Image
-        style={styles.pantallaCambioNombreUsuairoChild}
+        style={[
+          styles.pantallaCambioNombreUsuairoChild,
+          styles.permIdentityIconLayout,
+        ]}
         contentFit="cover"
         source={require("../assets/ellipse-1.png")}
       />
-      <Pressable style={[styles.dark, styles.darkLayout]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={styles.dark} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
-          style={[styles.darkIcon, styles.primaryPosition]}
+          style={[styles.darkIcon, styles.strokePosition]}
           contentFit="cover"
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.dark1Position]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={styles.dark1} onPress={handleGuardarNombre}>
         <View style={styles.dark2}>
           <LinearGradient
-            style={[styles.bgPrimary, styles.primaryPosition]}
+            style={[styles.bgPrimary, styles.strokePosition]}
             locations={[0, 1]}
             colors={["#1a73e9", "#6c92f4"]}
           />
         </View>
         <View style={[styles.flatdefault, styles.body2Layout]}>
           <View style={[styles.spBody2Medium, styles.body2Layout]}>
-            <Text style={[styles.body2, styles.body2Layout]}>Guardar</Text>
+            <Text style={[styles.body2, styles.body2FlexBox]}>Guardar</Text>
           </View>
         </View>
       </Pressable>
-      <View style={[styles.default, styles.dark1Position]}>
+      <View style={[styles.default, styles.defaultPosition]}>
         <View style={[styles.stroke, styles.strokePosition]}>
-          <View style={[styles.bgPrimary1, styles.primaryPosition]} />
+          <View style={[styles.bgPrimary1, styles.stroke1Position]} />
         </View>
         <TextInput
-          style={styles.spSubheadingRegular}
+          style={[styles.spSubheadingRegular, styles.subheadingPosition]}
           placeholder="First name"
           keyboardType="default"
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={nombreUsuario}
+          onChangeText={handleCambioNombre}
         />
         <Image
-          style={[styles.permIdentityIcon, styles.strokePosition]}
+          style={[styles.permIdentityIcon, styles.permIdentityIconLayout]}
           contentFit="cover"
           source={require("../assets/perm-identity.png")}
         />
-        <View style={[styles.caption, styles.captionPosition]}>
-          <Text style={[styles.caption1, styles.captionPosition]}>
+        <View style={styles.caption}>
+          <Text style={[styles.caption1, styles.captionLayout]}>
             Nuevo nombre de usuario
           </Text>
+        </View>
+      </View>
+      <View style={[styles.default1, styles.defaultPosition]}>
+        <View style={[styles.stroke1, styles.stroke1Position]} />
+        <TextInput
+          style={[styles.spSubheadingRegular1, styles.subheadingPosition]}
+          placeholder="Password"
+          keyboardType="default"
+          placeholderTextColor="rgba(0, 0, 0, 0.87)"
+          value={password}
+          onChangeText={handleCambioPassword}
+        />
+        <View style={[styles.caption2, styles.captionPosition]}>
+          <Text style={styles.captionLayout}>Default name</Text>
+        </View>
+        <Image
+          style={[styles.permIdentityIcon, styles.permIdentityIconLayout]}
+          contentFit="cover"
+          source={require("../assets/lock.png")}
+        />
+        <View style={styles.captionPosition}>
+          <Text style={styles.captionLayout}>Confirmar contraseña</Text>
         </View>
       </View>
     </View>
@@ -61,51 +115,80 @@ const PantallaCambioNombreUsuairo = () => {
 };
 
 const styles = StyleSheet.create({
-  darkLayout: {
-    height: 40,
-    top: 203,
+  permIdentityIconLayout: {
+    width: 32,
+    position: "absolute",
   },
-  primaryPosition: {
+  strokePosition: {
     bottom: 0,
     left: 0,
-  },
-  dark1Position: {
-    left: 19,
+    right: 0,
     position: "absolute",
   },
   body2Layout: {
     height: 24,
     position: "absolute",
   },
-  strokePosition: {
-    opacity: 0.4,
+  body2FlexBox: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  defaultPosition: {
+    height: 56,
+    right: 13,
+    left: 19,
+    position: "absolute",
+  },
+  stroke1Position: {
+    backgroundColor: Color.textColor,
+    left: 0,
+    bottom: 0,
     right: 0,
     position: "absolute",
   },
-  captionPosition: {
-    height: 16,
+  subheadingPosition: {
+    fontSize: FontSize.size_base,
+    fontFamily: FontFamily.spCaptionRegular,
+    opacity: 0.54,
+    bottom: 6,
     left: 0,
+    right: 0,
+    position: "absolute",
+  },
+  captionLayout: {
+    width: 328,
+    textAlign: "left",
+    color: Color.textColor,
+    lineHeight: 15,
+    fontSize: FontSize.spCaptionRegular_size,
+    height: 16,
+    fontFamily: FontFamily.spCaptionRegular,
+  },
+  captionPosition: {
+    bottom: 32,
+    justifyContent: "center",
+    alignItems: "center",
+    left: 0,
+    right: 0,
     position: "absolute",
   },
   pantallaCambioNombreUsuairoChild: {
     top: 18,
     left: 13,
     height: 31,
-    width: 32,
-    position: "absolute",
   },
   darkIcon: {
     maxWidth: "100%",
     maxHeight: "100%",
     left: 0,
-    right: 0,
     top: 0,
-    position: "absolute",
     overflow: "hidden",
   },
   dark: {
     right: 105,
     width: 72,
+    height: 40,
+    top: 203,
     position: "absolute",
   },
   bgPrimary: {
@@ -118,11 +201,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
     shadowOpacity: 1,
-    backgroundColor: Color.accentColor,
+    backgroundColor: Color.primaryColor,
     left: 0,
-    right: 0,
     top: 0,
-    position: "absolute",
   },
   dark2: {
     height: "100%",
@@ -141,9 +222,9 @@ const styles = StyleSheet.create({
     color: Color.lightColor,
     textAlign: "center",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     width: 112,
+    height: 24,
+    position: "absolute",
     left: 0,
     top: 0,
   },
@@ -163,53 +244,56 @@ const styles = StyleSheet.create({
   },
   dark1: {
     width: 128,
+    left: 19,
     height: 40,
     top: 203,
+    position: "absolute",
   },
   bgPrimary1: {
-    backgroundColor: Color.textColor,
-    left: 0,
-    right: 0,
     top: 0,
-    position: "absolute",
   },
   stroke: {
     height: 1,
+    opacity: 0.4,
     left: 0,
-    bottom: 0,
   },
   spSubheadingRegular: {
-    bottom: 6,
     height: 20,
-    opacity: 0.54,
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.spCaptionRegular,
-    left: 0,
-    right: 0,
-    position: "absolute",
   },
   permIdentityIcon: {
     bottom: 1,
     height: 32,
-    width: 32,
+    opacity: 0.4,
+    right: 0,
   },
   caption1: {
-    fontSize: FontSize.spCaptionRegular_size,
-    lineHeight: 15,
-    color: Color.textColor,
-    textAlign: "left",
-    width: 328,
-    fontFamily: FontFamily.spCaptionRegular,
+    left: 0,
     top: 0,
+    position: "absolute",
   },
   caption: {
+    height: 16,
     bottom: 32,
+    left: 0,
     right: 0,
+    position: "absolute",
   },
   default: {
     top: 80,
-    right: 13,
-    height: 56,
+  },
+  stroke1: {
+    top: 55,
+    opacity: 0.4,
+  },
+  spSubheadingRegular1: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  caption2: {
+    display: "none",
+  },
+  default1: {
+    top: 136,
   },
   pantallaCambioNombreUsuairo: {
     backgroundColor: Color.lightColor,
