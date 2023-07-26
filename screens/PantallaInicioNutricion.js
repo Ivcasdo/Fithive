@@ -20,7 +20,7 @@ const PantallaInicioNutricion = () => {
   const [listaComidas, setListaComidas] = useState([]);
   const [isFirstRun, setIsFirstRun] = useState(true);
   const [caloriasRestantes, setCaloriasRestantes] = useState('');
-  const[porcentajeProg, setPorcentajeProg] = useState('');
+  const[porcentajeProg, setPorcentajeProg] = useState(0);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -132,21 +132,26 @@ const PantallaInicioNutricion = () => {
     }
     const fechaFormateada = formatDate(fechaFormato);
     let caloriasrest =0;
+    let entradaexiste = false;
     const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
     const updateListaComidas = (formattedDate) => {
     comidasRef.once('value', (snapshot) => {
         const listaDeComidas = [];
         snapshot.forEach((childsnapshot) => {
           const entrada = childsnapshot.val();
-          
           if (entrada && entrada.comidas && isEqual(entrada.fecha, formattedDate)) {
             listaDeComidas.push(...entrada.comidas);
-
+            entradaexiste= true;
           }
         });
         const caloriasTotal =listaDeComidas.reduce((total, comida) => total + comida.calorias, 0);
         caloriasrest = objetivoCalorias-caloriasTotal;
-        setCaloriasRestantes(caloriasrest);
+        if(entradaexiste){
+          setCaloriasRestantes(caloriasrest);
+        }else{
+          setCaloriasRestantes(0);
+        }
+        
         setListaComidas(listaDeComidas);
       });
     };
@@ -154,8 +159,11 @@ const PantallaInicioNutricion = () => {
 
     const progresoNumerico = parseFloat(progresoCalorias);
     console.log(progresoNumerico);
-    setPorcentajeProg(progresoNumerico);
-
+    if(entradaexiste){
+      setPorcentajeProg(progresoNumerico);
+    }else{
+      setPorcentajeProg(0);
+    }
     updateListaComidas(fechaFormateada);
     const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
     const handleSnapshot = (snapshot) => {
@@ -184,7 +192,7 @@ const PantallaInicioNutricion = () => {
           data={listaComidas}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item, index}) => (
-            <Pressable  onPress={() => handleAbrirPantallaEditarIngredientes(item)}>
+            <Pressable>
               <View style= {{marginBottom: 5,top:25,position:'relative'}}>
                 <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
                   <Text style={[styles.subheading, styles.subheadingTypo]}>

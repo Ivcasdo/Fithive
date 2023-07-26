@@ -1,14 +1,26 @@
-import React, { useState } from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback } from "react-native";
+import React, { useState,useEffect } from "react";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,TouchableOpacity,ScrollView } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, Color, FontSize } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import auth, { firebase } from '@react-native-firebase/auth';
+import { isEqual } from "lodash";
 import Submenu from "./PantallaMenu";
 const PantallaEstadisticas = () => {
   const navigation = useNavigation();
-
+  const user = auth().currentUser;
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-
+  const [datosCargados, setDatosCargados] = useState(false);
+  const [tipoDatos, setTipoDatos] = useState('Ejercicios');
+  const [seleccionar, setSeleccionar] = useState('');
+  const [showOptions, setShowOptions] = useState(false);
+  const [showOptions2, setShowOptions2] = useState(false);
+  const [listaEjercicios, setListaEjercicios] = useState([]);
+  const [listaDatosSeleccionada, setlistaDatosSeleccionada] = useState([]);
+  const [muestraDatos, setMuestraDatos] = useState([]);
+  const elegirDatos = ['Ejercicios', 'Medidas'];
+  const opcionesMedidas = ['Peso', 'cintura', 'indice de grasa'];
+  
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -20,6 +32,121 @@ const PantallaEstadisticas = () => {
       handleCloseSubmenu();
     }
   };
+  const handlePress = () => {
+    setShowOptions(!showOptions);
+  };
+  const handlePress2 = () => {
+    setShowOptions2(!showOptions2);
+  };
+  const handleMostrarDatos = (dato) =>{
+    setSeleccionar(dato);
+    setShowOptions2(false);
+    const listaDatos = [];
+    if(tipoDatos === 'Medidas'){
+      const muestraRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/medidasCorporales`);
+      muestraRef.once('value', (snapshot) =>{
+        if(snapshot.exists){
+          snapshot.forEach((childsnapshot)=>{
+            const medida = childsnapshot.val();
+            if(dato==='Peso'){
+              const muestra = {
+                valor: medida.peso,
+                fecha: medida.fecha,
+              }
+              listaDatos.push(muestra);
+              
+            }
+            if(dato==='cintura'){
+              const muestra = {
+                valor: medida.cintura,
+                fecha: medida.fecha,
+              }
+              listaDatos.push(muestra);
+              
+            }
+            if(dato==='indice de grasa'){
+              const muestra = {
+                valor: medida.indiceGrasa,
+                fecha: medida.fecha,
+              }
+              listaDatos.push(muestra);
+              
+            }
+            
+          })
+          setMuestraDatos(listaDatos);
+        }
+      })
+      
+    }else{
+      const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+      entradasCalendarioRef.once('value',(snapshot)=>{
+        if(snapshot.exists()){
+          snapshot.forEach((childsnapshot)=>{
+            const entrada = childsnapshot.val();
+            entrada.entrenamientos.forEach((entrenamiento)=>{
+              entrenamiento.ejercicios.forEach((ejercicio)=>{
+                const ejercicioNombre = ejercicio.nombre;
+                if(ejercicioNombre === dato){
+                  let maxPeso = 0;
+                  ejercicio.series.forEach((serie)=>{
+                    const pesoSerie = serie.peso;
+                    if(pesoSerie>maxPeso){
+                      maxPeso =pesoSerie;
+                    }
+                  })
+                  const muestra = {
+                    peso: maxPeso,
+                    fecha: entrada.fecha
+                  };
+                  listaDatos.push(muestra);
+                }
+              })
+            })
+          })
+          setMuestraDatos(listaDatos);
+        }
+      })
+    }
+    
+  }
+  useEffect(()=>{
+    const arrayEjercicios= [];
+    
+    const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+    entradasCalendarioRef.once('value', (snapshot)=>{
+        
+      snapshot.forEach((childsnapshot)=>{
+        const entrada= childsnapshot.val();
+        if (entrada.entrenamientos) {
+          entrada.entrenamientos.forEach((entrenamiento) => {
+            entrenamiento.ejercicios.forEach((ejercicio) => {
+              const ejercicioNombre = ejercicio.nombre;
+              // Verificamos que el nombre del ejercicio no esté ya en el arrayEjercicios
+              const existeEjercicio = arrayEjercicios.some((e) =>
+                e === ejercicioNombre
+              );
+              
+              if (!existeEjercicio) {
+                arrayEjercicios.push(ejercicioNombre);
+              }
+            });
+          });
+        }
+      })
+      
+      setListaEjercicios(arrayEjercicios);
+    });
+      
+    
+    if(tipoDatos === 'Ejercicios'){
+      setlistaDatosSeleccionada(arrayEjercicios);
+      setSeleccionar('');
+    }else{
+      setlistaDatosSeleccionada(opcionesMedidas);
+      setSeleccionar('');
+    }
+  },[tipoDatos])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaEstadisticas}>
@@ -70,17 +197,15 @@ const PantallaEstadisticas = () => {
           />
         </View>
       </View>
-      <View style={[styles.dropdown, styles.dropdownLayout]}>
+      <Pressable style={[styles.dropdown, styles.dropdownLayout, { zIndex: 100 }]}  onPress={handlePress}>
         <View style={[styles.stroke, styles.strokePosition]}>
           <View style={[styles.bgPrimary, styles.strokePosition]} />
         </View>
-        <Pressable
-          style={[styles.spSubheadingRegular, styles.subheadingPosition]}
-        >
+        <View style={[styles.spSubheadingRegular, styles.subheadingPosition]}>
           <Text style={[styles.subheading, styles.caption1Typo]}>
-            Ejercicios
+            {tipoDatos}
           </Text>
-        </Pressable>
+        </View>
         <Image
           style={[styles.dropdownIcon, styles.strokePosition]}
           contentFit="cover"
@@ -91,18 +216,32 @@ const PantallaEstadisticas = () => {
             Tipo de datos
           </Text>
         </View>
-      </View>
-      <View style={[styles.dropdown1, styles.dropdownLayout]}>
+        {showOptions &&(
+            <View style={[styles.filtroObjetivos]}>
+              {elegirDatos.map((dato, index) => (
+                <TouchableOpacity
+                  style={{ padding: 10 }}
+                  key={index}
+                  onPress={() => {
+                    setTipoDatos(dato);
+                    setShowOptions(false); // Oculta las opciones cuando se selecciona una opción
+                  }}
+                >
+                  <Text>{dato}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+        )}
+      </Pressable>
+      <Pressable style={[styles.dropdown1, styles.dropdownLayout]} onPress={handlePress2}>
         <View style={[styles.stroke, styles.strokePosition]}>
           <View style={[styles.bgPrimary, styles.strokePosition]} />
         </View>
-        <Pressable
-          style={[styles.spSubheadingRegular, styles.subheadingPosition]}
-        >
+        <View style={[styles.spSubheadingRegular, styles.subheadingPosition]}>
           <Text style={[styles.subheading, styles.caption1Typo]}>
-            Press banca
+            {seleccionar}
           </Text>
-        </Pressable>
+        </View>
         <Image
           style={[styles.dropdownIcon, styles.strokePosition]}
           contentFit="cover"
@@ -113,7 +252,20 @@ const PantallaEstadisticas = () => {
             Selecciona ejercicio/medidad
           </Text>
         </View>
-      </View>
+        {showOptions2 &&(
+            <View style={[styles.filtroObjetivos]}>
+              {listaDatosSeleccionada.map((dato, index) => (
+                <TouchableOpacity
+                  style={{ padding: 10 }}
+                  key={index}
+                  onPress={() => handleMostrarDatos(dato)}
+                >
+                  <Text>{dato}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+        )}
+      </Pressable>
       <Text style={[styles.estadisticas, styles.textTypo]}>Estadisticas</Text>
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
@@ -123,6 +275,16 @@ const PantallaEstadisticas = () => {
 };
 
 const styles = StyleSheet.create({
+  filtroObjetivos:{
+    backgroundColor: 'white',
+    left:0,
+    top:50,
+    maxHeight:90,
+    position: 'absolute',
+    zIndex: 999,
+    width: '100%',
+    flex:1
+  },
   textPosition: {
     top: 0,
     left: 0,

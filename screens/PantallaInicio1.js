@@ -1,24 +1,28 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
-import { useState } from "react";
-import moment from 'moment';
+import { useState,useEffect, useRef  } from "react";
 import CalendarPicker from 'react-native-calendar-picker';
-import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
-
-const PantallaInicio1 = ({ visible, onClose}) => {
+import auth, { firebase } from '@react-native-firebase/auth';
+import moment from 'moment';
+import ProgressCircle from 'react-native-progress-circle'
+const PantallaInicio1 = () => {
   const navigation = useNavigation();
-  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
   const user = auth().currentUser;
-  const userRef = database().ref(`users/${user.uid}`);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState(new Date());
   const [entrenamientos, setEntrenamientos] = useState([]);
-
+  const [caloriasTotales, setCaloriasTotales] = useState('');
+  const [caloriasRestantes, setCaloriasRestantes] = useState('');
+  const [datosCargados, setDatosCargados] = useState(false);
+  const [togglecomida, setToggleComida] = useState(false);
+  const [porcentajeComidas, setPorcentajeComidas] = useState(0);
+  const calendarRef = useRef(null);
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -30,36 +34,90 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       handleCloseSubmenu();
     }
   };
- 
-  const obtenerEntrenamientos = async () => {
-      if (selectedDate) {
-        try {
-          const entradasSnapshot = await database()
-            .ref('users/${user.uid}/entradasCalendario')
-            .orderByChild('fecha')
-            .equalTo(selectedDate)
-            .once('value');
-  
-          const entrenamientosList = [];
-          entradasSnapshot.forEach((entradaSnapshot) => {
-            const entrada = entradaSnapshot.val();
-            if (entrada.entrenamientos) {
-              const entradaEntrenamientos = Object.values(entrada.entrenamientos);
-              entrenamientosList.push(...entradaEntrenamientos);
-            }
-          });
-  
-          setEntrenamientos(entrenamientosList);
-        } catch (error) {
-          console.error('Error al obtener los entrenamientos', error);
-        }
-      }
-    };
+  const handleCambiarVista = () =>{
+    setToggleComida(!togglecomida);
+  }
+  const handleIrA = () =>{
+    if(!togglecomida){
+      navigation.navigate("PantallaInicioEntrenamiento");
+    }else{
+      navigation.navigate('PantallaInicioNutricion');
+    }
+  }
   const handleDayPress = (day) => {
-    const selectedDay = moment(day.dateString).format('YYYY-MM-DD');
-    setSelectedDate(selectedDay);
+    const selectedDate = moment(day).format('DD/MM/YY');
+    setSelectedDate(selectedDate);
+    setSelectedDay(day);
+    const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+      entradasCalendarioRef.once('value', (snapshot) =>{
+        if(snapshot.exists()){
+          let entradaexiste = false;
+          snapshot.forEach((childsnapshot)=>{
+            const entrada = childsnapshot.val();
+            if(entrada.fecha ===selectedDate){
+              entradaexiste = true;
+              if(entrada.entrenamientos){
+                
+                setEntrenamientos(entrada.entrenamientos);
+              }
+              if(entrada.comidas){
+                const caloriasTotal =entrada.comidas.reduce((total, comida) => total + comida.calorias, 0);
+                const caloriasRest = caloriasTotales-caloriasTotal;
+                const porcentaje = (((caloriasTotales - caloriasRest) / caloriasTotales) * 100).toFixed(2);
+                const progresoNumerico = parseFloat(porcentaje);
+                setPorcentajeComidas(progresoNumerico);
+                setCaloriasRestantes(caloriasRest);
+              }else{
+                setPorcentajeComidas(0);
+                setCaloriasRestantes('');
+              }
+            }
+          })
+          if(!entradaexiste){
+            setPorcentajeComidas(0);
+            setCaloriasRestantes('');
+          }
+        }
+      })
+    calendarRef.current.forceUpdate();
     // Aquí puedes actualizar los datos de la lista según el día seleccionado
   };
+  useEffect(() =>{
+    if(!datosCargados){
+      const formattedDate = moment().format('DD/MM/YY');
+      const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
+      caloriasRef.once('value', (snapshot) =>{
+        if(snapshot.exists){
+          setCaloriasTotales(snapshot.val());
+        }
+      })
+      const entradasCalendarioRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+      entradasCalendarioRef.once('value', (snapshot) =>{
+        if(snapshot.exists()){
+          snapshot.forEach((childsnapshot)=>{
+            const entrada = childsnapshot.val();
+            if(entrada.fecha ===formattedDate){
+              if(entrada.entrenamientos){
+                console.log(entrada.entrenamientos);
+                setEntrenamientos(entrada,entrenamientos);
+              }
+              if(entrada.comidas){
+                const caloriasTotal =entrada.comidas.reduce((total, comida) => total + comida.calorias, 0);
+                const caloriasRest = caloriasTotales-caloriasTotal;
+                console.log(caloriasRest);
+                setCaloriasRestantes(caloriasRest);
+              }else{
+                setCaloriasRestantes(caloriasTotales);
+              }
+            }
+          })
+        }
+      })
+      setSelectedDate(formattedDate);
+      setDatosCargados(true);
+    }
+
+  }, [])
   return (
     <TouchableWithoutFeedback onPress={handleScreenPress}>
     <View style={styles.pantallaInicio1}>
@@ -74,9 +132,10 @@ const PantallaInicio1 = ({ visible, onClose}) => {
       <View style={[styles.calendar, styles.calendarPosition1]}>
         <View style={[styles.dates, styles.rowFlexBox]}>
           <CalendarPicker
+            ref={calendarRef}
             startFromMonday= {true}
             onDateChange={handleDayPress}
-            selectedStartDate={selectedDate}
+            selectedStartDate={selectedDay}
             selectedDayColor="#1dde7d"
             selectedDayTextColor="#ffffff"
             weekdays={['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']}
@@ -106,42 +165,59 @@ const PantallaInicio1 = ({ visible, onClose}) => {
           />
         </View>
       </View>
+      {togglecomida === false && (
       <View style={styles.entrenamiento}>
         <Text style={[styles.entrenamiento1, styles.february2021FlexBox]}>
           Entrenamiento
         </Text>
         <View style={styles.entrenamiento1Parent}>
-          <View style={[styles.entrenamiento11, styles.entrenamientoPosition]}>
-            <Image
-              style={styles.lineIcon}
-              contentFit="cover"
-              source={require("../assets/line.png")}
-            />
-            <View style={[styles.light, styles.lightPosition]}>
-              <View style={styles.lightShadowBox} />
-            </View>
-            <View style={styles.spSubheadingRegular}>
-              <Text
-                style={styles.subheading}
-              >{`Piernas                       `}</Text>
-            </View>
+          <FlatList
+            data={entrenamientos}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index}) => (
+              <View style={[styles.entrenamiento11, styles.entrenamientoPosition]}>
+                <View style={styles.spSubheadingRegular}>
+                  <Text style={styles.subheading}>{item.nombre}</Text>
+                </View>
+              </View>
+            )}
+            contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+          />
+        </View>
+      </View>)}
+      {togglecomida === true && (
+      <View style={styles.entrenamiento}>
+        <Text style={[styles.entrenamiento1, styles.february2021FlexBox]}>
+          Calorias
+        </Text>
+        <View style={styles.entrenamiento1Parent}>
+          <View style= {styles.progresoDiarioIcon}>
+            <ProgressCircle
+                percent={porcentajeComidas}
+                radius={35}
+                borderWidth={6}
+                color="#3399FF"
+                shadowColor="#999"
+                bgColor="#fff"
+                
+            >
+                <Text style={{ fontSize: 12 }}>{caloriasRestantes}</Text>
+            </ProgressCircle>
           </View>
-          <View style={[styles.entrenamiento12, styles.entrenamientoPosition]}>
+          <View style={styles.caloriasParent}>
+            <Text style={[styles.calorias2, styles.objetivoTypo]}>
+              {caloriasTotales} calorias
+            </Text>
+            <Text style={[styles.objetivo, styles.objetivoTypo]}>objetivo:</Text>
             <Image
-              style={styles.lineIcon}
+              style={[styles.mdiflagVariantIcon, styles.iconLayout]}
               contentFit="cover"
-              source={require("../assets/line.png")}
+              source={require("../assets/mdiflagvariant.png")}
             />
-            <View style={[styles.light, styles.lightPosition]}>
-              <View style={styles.lightShadowBox} />
-            </View>
-            <View style={styles.spSubheadingRegular}>
-              <Text style={styles.subheading}>Estiramientos 1</Text>
-            </View>
           </View>
         </View>
-      </View>
-      <Pressable style={[styles.accent, styles.accentLayout1]}>
+      </View>)}
+      <Pressable style={[styles.accent, styles.accentLayout1]} onPress={handleCambiarVista}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -155,7 +231,7 @@ const PantallaInicio1 = ({ visible, onClose}) => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.accent2, styles.accentLayout]} onPress={() => navigation.navigate("PantallaInicioEntrenamiento")}>
+      <Pressable style={[styles.accent2, styles.accentLayout]} onPress={handleIrA}>
         <View style={styles.lightPosition}>
           <LinearGradient
             style={[styles.bgAccent, styles.bgAccentPosition]}
@@ -165,8 +241,8 @@ const PantallaInicio1 = ({ visible, onClose}) => {
         </View>
         <View style={[styles.flatdefault, styles.flatdefaultPosition]}>
           <View style={[styles.spBody2Medium, styles.flatdefaultPosition]}>
-            <Text style={[styles.body21, styles.bodyTypo]}>
-              Ir a entrenamientos
+            <Text style={[styles.body21, togglecomida ? styles.bodyTypo2 : styles.bodyTypo]}>
+            {togglecomida ? "Ir a nutricion" : "Ir a entrenamientos"}
             </Text>
           </View>
         </View>
@@ -178,6 +254,53 @@ const PantallaInicio1 = ({ visible, onClose}) => {
 };
 
 const styles = StyleSheet.create({
+  iconLayout: {
+    height: 24,
+    width: 24,
+    overflow: "hidden",
+  },
+  mdiflagVariantIcon: {
+    top: 15,
+    left: 0,
+    position: "absolute",
+  },
+  objetivo: {
+    width: 84,
+    left: 27,
+  },
+  objetivoTypo: {
+    height: 17,
+    fontSize: FontSize.size_3xs,
+    top: 19,
+    fontFamily: FontFamily.robotoMedium,
+    fontWeight: "500",
+    textTransform: "uppercase",
+    color: Color.black,
+    alignItems: "center",
+    display: "flex",
+    textAlign: "left",
+    position: "absolute",
+  },
+  calorias2: {
+    left: 82,
+    width: 80,
+  },
+  caloriasParent: {
+    top: 53,
+    left: 55,
+    width: 159,
+    height: 44,
+    position: "absolute",
+    overflow: "hidden",
+  },
+  progresoDiarioIcon: {
+    top: 0,
+    left: 105,
+    height: 82,
+    width: 80,
+    position: "absolute",
+    overflow: "hidden",
+  },
   calendarPosition: {
     left: 13,
     position: "relative",
@@ -212,10 +335,10 @@ const styles = StyleSheet.create({
     color: Color.black,
   },
   entrenamientoPosition: {
-    height: 17,
-    left: -15,
-    right: 71,
-    position: "absolute",
+    height: 20,
+    left: 0,
+    right: 0,
+    width: 300,
   },
   lightPosition: {
     left: "0%",
@@ -264,6 +387,22 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     left: 3,
     top: 1,
+    color: Color.textColor,
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    position: "absolute",
+  },
+  bodyTypo2: {
+    height: 22,
+    width: 74,
+    display: "flex",
+    fontFamily: FontFamily.spBUTTON,
+    fontWeight: "500",
+    fontSize: 9,
+    textTransform: "uppercase",
+    left: 3,
+    top: 5,
     color: Color.textColor,
     justifyContent: "center",
     alignItems: "center",
@@ -374,7 +513,7 @@ const styles = StyleSheet.create({
   entrenamiento1: {
     left: 5,
     width: 141,
-    height: 26,
+    height: 22,
     top: 0,
     fontFamily: FontFamily.spCaptionRegular,
     fontSize: FontSize.spTitleMedium_size,
@@ -421,14 +560,14 @@ const styles = StyleSheet.create({
   spSubheadingRegular: {
     marginTop: -8,
     right: 0,
-    top: "50%",
+    top: 0,
     left: 16,
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
+
   },
   entrenamiento11: {
-    top: 0,
+    top: 5,
   },
   entrenamiento12: {
     top: 21,
@@ -437,7 +576,7 @@ const styles = StyleSheet.create({
     top: 37,
     left: 12,
     width: 258,
-    height: 113,
+    height: 115,
     position: "absolute",
     overflow: "hidden",
   },
