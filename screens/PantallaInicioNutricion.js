@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
 import PantallaAjusteObjetivos from "./PantallaAjusteObjetivos";
 import PantallaAadirComida from "./PantallaAadirComida";
+import PantallaEditarComidaDelDia from "./PantallaEditarComidaDelDia";
 import auth, { firebase } from '@react-native-firebase/auth';
 import { isEqual } from "lodash";
 import ProgressCircle from 'react-native-progress-circle'
@@ -21,6 +22,8 @@ const PantallaInicioNutricion = () => {
   const [isFirstRun, setIsFirstRun] = useState(true);
   const [caloriasRestantes, setCaloriasRestantes] = useState('');
   const[porcentajeProg, setPorcentajeProg] = useState(0);
+  const [comidaDiaEditar, setComidaDiaEditar] = useState('');
+
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -34,6 +37,8 @@ const PantallaInicioNutricion = () => {
       handleCerrarPantallaAjusteObjetivos();
     }if(isPantallaAadircomidaVisible){
       handleCerrarPantallaAadircomida();
+    }if(isPantallaEditarComidaDelDiaVisible){
+      handleCerrarPantallaEditarComidaDelDia();
     }
   };
 
@@ -53,6 +58,15 @@ const PantallaInicioNutricion = () => {
     setIsPantallaAadircomidaVisible(false);
   };
 
+  const [isPantallaEditarComidaDelDiaVisible, setisPantallaEditarComidaDelDiaVisible] = useState(false);
+  const handleAbrirPantallaEditarComidaDelDia = (item) =>{
+    setComidaDiaEditar(item);
+    setisPantallaEditarComidaDelDiaVisible(true);
+  }
+  const handleCerrarPantallaEditarComidaDelDia = () =>{
+    
+    setisPantallaEditarComidaDelDiaVisible(false);
+  }
   const handleAvanzarDia = () => {
     const fechaActual = new Date();
     const fechaSeleccionadaDate = new Date(fechaFormato);
@@ -96,7 +110,7 @@ const PantallaInicioNutricion = () => {
       <View style={[styles.frameItem, styles.frameLayout]} />
     );
   };
-
+  const ItemSeparator = () => <View style={{ height: 10 }} />;
   useEffect(() =>{
     const getFormattedDate = (date) => {
       const day = date.getDate();
@@ -189,22 +203,25 @@ const PantallaInicioNutricion = () => {
         <View style={[styles.frameChild, styles.frameChildPosition]} />
         <View style={[styles.frameItem, styles.frameLayout]} />
         <FlatList
-          data={listaComidas}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index}) => (
-            <Pressable>
-              <View style= {{marginBottom: 5,top:25,position:'relative'}}>
-                <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
-                  <Text style={[styles.subheading, styles.subheadingTypo]}>
-                    {" "}
-                    {item.nombre}
-                  </Text>
+            data={listaComidas}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item, index}) => (
+                <View style={{ marginTop: 3, marginBottom: 3 }}>  
+                    <View style={[styles.spSubheadingRegular, styles.subheadingPosition1]}>
+                        <Pressable 
+                          style={{ padding: 3 }} 
+                          onPress={()=> handleAbrirPantallaEditarComidaDelDia(item)}
+                        >
+                            <Text style={[styles.subheading, styles.subheadingTypo]}>
+                              {item.nombre}
+                            </Text>
+                        </Pressable>
+                    </View>
+                    {index !== listaComidas.length && <FlatListItemseparator />}
                 </View>
-                {index !== listaComidas.length && <FlatListItemseparator />}
-              </View>
-            </Pressable>
-          )}
-          contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
+            )}
+            ItemSeparatorComponent={ItemSeparator}
+            contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:25}}
         />
         
         
@@ -300,6 +317,7 @@ const PantallaInicioNutricion = () => {
       </Pressable>
       {isPantallaAjusteObjetivosVisible && <PantallaAjusteObjetivos onClose={handleCerrarPantallaAjusteObjetivos} />}
       {isPantallaAadircomidaVisible && <PantallaAadirComida onClose={handleCerrarPantallaAadircomida} />}
+      {isPantallaEditarComidaDelDiaVisible && <PantallaEditarComidaDelDia onClose={handleCerrarPantallaEditarComidaDelDia} comidaDelDia={comidaDiaEditar}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
@@ -331,8 +349,8 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   subheadingPosition1: {
-    height: 28,
-    left: 0,
+    height: 20,
+    left: 5,
 
   },
   subheadingTypo: {
@@ -447,7 +465,7 @@ const styles = StyleSheet.create({
   subheading: {
     width: 300,
     alignItems: "center",
-    height: 28,
+    height: 20,
     left: 0,
   },
   subheading1: {
@@ -469,8 +487,8 @@ const styles = StyleSheet.create({
   },
   spSubheadingRegular: {
     marginTop: 0,
-    right: 26,
-    top: "0%",
+    right: 30,
+    top: "10%",
   },
   arrowIcon: {
     borderRadius: Border.br_81xl,
