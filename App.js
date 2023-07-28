@@ -45,11 +45,12 @@ import PantallaCrearComida from "./screens/PantallaCrearComida";
 import PantallaCreacionDePlanes4 from "./screens/PantallaEditarPlanes";
 import PantallaEditarComidaDelDia from "./screens/PantallaEditarComidaDelDia";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, Text, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, Pressable, TouchableOpacity,LogBox } from "react-native";
 import { useState, useEffect } from "react";
 import auth from '@react-native-firebase/auth';
 
 const App = () => {
+  LogBox.ignoreLogs(['ViewPropTypes will be removed from React Native']);
   const [hideSplashScreen, setHideSplashScreen] = React.useState(true);
   const [fontsLoaded, error] = useFonts({
     Roboto_regular: require("./assets/fonts/Roboto_regular.ttf"),

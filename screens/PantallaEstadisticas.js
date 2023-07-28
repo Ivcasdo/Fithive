@@ -5,9 +5,9 @@ import { FontFamily, Color, FontSize } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import auth, { firebase } from '@react-native-firebase/auth';
 import { isEqual } from "lodash";
+import { LineChart } from 'react-native-gifted-charts';
 import Submenu from "./PantallaMenu";
 const PantallaEstadisticas = () => {
-  const navigation = useNavigation();
   const user = auth().currentUser;
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [datosCargados, setDatosCargados] = useState(false);
@@ -17,7 +17,9 @@ const PantallaEstadisticas = () => {
   const [showOptions2, setShowOptions2] = useState(false);
   const [listaEjercicios, setListaEjercicios] = useState([]);
   const [listaDatosSeleccionada, setlistaDatosSeleccionada] = useState([]);
-  const [muestraDatos, setMuestraDatos] = useState([]);
+  //datos a representar en el grafico
+  const [chartData, setCharData] = useState([]);
+  //variables a mostrar en las listas
   const elegirDatos = ['Ejercicios', 'Medidas'];
   const opcionesMedidas = ['Peso', 'cintura', 'indice de grasa'];
   
@@ -74,7 +76,28 @@ const PantallaEstadisticas = () => {
             }
             
           })
-          setMuestraDatos(listaDatos);
+          const datos = listaDatos.map(item => {
+            console.log('1',item);  // Verifica qué datos estás manejando
+            return {label: item.fecha, value: Number(item.valor)};
+          });
+          console.log('2',datos)
+          const grouped = datos.reduce((result, item) => {
+            if (!result[item.label]) {
+              // Si esta fecha no ha sido vista antes, la guardamos
+              result[item.label] = item;
+            } else if (Number(item.value) > Number(result[item.label].value)) {
+              // Si esta fecha ya existe y el nuevo valor de 'y' es mayor, actualizamos la entrada
+              result[item.label] = item;
+            }
+            return result;
+          }, {});
+          console.log('3',grouped);
+          
+          // Ahora convertimos el objeto agrupado de vuelta a un array
+          const filteredData = Object.values(grouped);
+          console.log('4',filteredData);
+          setCharData(filteredData);
+          
         }
       })
       
@@ -92,7 +115,7 @@ const PantallaEstadisticas = () => {
                   ejercicio.series.forEach((serie)=>{
                     const pesoSerie = serie.peso;
                     if(pesoSerie>maxPeso){
-                      maxPeso =pesoSerie;
+                      maxPeso=pesoSerie;
                     }
                   })
                   const muestra = {
@@ -104,7 +127,28 @@ const PantallaEstadisticas = () => {
               })
             })
           })
-          setMuestraDatos(listaDatos);
+          const datos = listaDatos.map(item => {
+            console.log('1',item);  // Verifica qué datos estás manejando
+            return {label: item.fecha, value: Number(item.peso)};
+          });
+          console.log('2',datos)
+          const grouped = datos.reduce((result, item) => {
+            if (!result[item.label]) {
+              // Si esta fecha no ha sido vista antes, la guardamos
+              result[item.label] = item;
+            } else if (Number(item.value) > Number(result[item.label].value)) {
+              // Si esta fecha ya existe y el nuevo valor de 'y' es mayor, actualizamos la entrada
+              result[item.label] = item;
+            }
+            return result;
+          }, {});
+          console.log('3',grouped);
+          
+          // Ahora convertimos el objeto agrupado de vuelta a un array
+          const filteredData = Object.values(grouped);
+          console.log('4',filteredData);
+          setCharData(filteredData);
+          
         }
       })
     }
@@ -158,44 +202,21 @@ const PantallaEstadisticas = () => {
       />
       </Pressable>
       <View style={styles.nbchartsLinechatsWrapper}>
-        <View style={[styles.nbchartsLinechats, styles.textPosition]}>
-          <Image
-            style={styles.horizontalLinesIcon}
-            contentFit="cover"
-            source={require("../assets/horizontal-lines.png")}
+      {
+        chartData.length > 0 ? (
+          <LineChart
+            data={chartData}
+            style={{ marginVertical: 10 }}
+            yAxisColor="#0BA5A4"
+            xAxisColor="#0BA5A4"
+            spacing={70}
+            initialSpacing={30}
+            
           />
-          <Image
-            style={styles.horizontalLinesIcon}
-            contentFit="cover"
-            source={require("../assets/vertical-lines.png")}
-          />
-          <View style={[styles.leftText, styles.textPosition]}>
-            <Text style={[styles.text, styles.textTypo2]}>0</Text>
-            <Text style={[styles.text1, styles.textTypo1]}>25</Text>
-            <Text style={[styles.text2, styles.textTypo1]}>50</Text>
-            <Text style={[styles.text3, styles.textTypo1]}>75</Text>
-            <Text style={[styles.text4, styles.textTypo2]}>100</Text>
-          </View>
-          <View style={styles.bottomText}>
-            <Text style={[styles.text5, styles.textTypo]}>01/01</Text>
-            <Text style={[styles.text6, styles.textTypo]}> 04/01</Text>
-            <Text style={[styles.text7, styles.textTypo]}> 06/01</Text>
-            <Text style={[styles.text8, styles.textTypo]}>10/01</Text>
-            <Text style={[styles.text9, styles.textTypo]}>13/01</Text>
-            <Text style={[styles.text10, styles.textTypo]}> 15/01</Text>
-            <Text style={[styles.text11, styles.textTypo]}>20/01</Text>
-          </View>
-          <Image
-            style={styles.lineArea}
-            contentFit="cover"
-            source={require("../assets/line--area.png")}
-          />
-          <Image
-            style={styles.pointsIcon}
-            contentFit="cover"
-            source={require("../assets/points.png")}
-          />
-        </View>
+        ) : (
+          <Text>No hay datos disponibles para mostrar.</Text>
+        )
+      }
       </View>
       <Pressable style={[styles.dropdown, styles.dropdownLayout, { zIndex: 100 }]}  onPress={handlePress}>
         <View style={[styles.stroke, styles.strokePosition]}>
