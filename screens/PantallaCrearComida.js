@@ -10,6 +10,7 @@ import auth, { firebase } from '@react-native-firebase/auth';
 import Submenu from "./PantallaMenu";
 import PantallaEditarIngredientes2 from "./PantallaEditarIngredientes2";
 import PantallaEditarIngredientes from "./PantallaEditarIngredientes";
+import moment from 'moment';
 const PantallaCrearComida = ({}) => {
   const [switchOnValue, setSwitchOnValue] = useState(false);
   const navigation = useNavigation();
@@ -21,6 +22,7 @@ const PantallaCrearComida = ({}) => {
   const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const [alimentoEditar, setAlimentoEditar] = useState('');
   const [datosCargados, setDatosCargados] = useState(false);
+  const [botonGuardar, setBotonGuardar] = useState('Añadir a la biblioteca')
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -85,6 +87,7 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
   };
 
   const handleGuardarComida = () =>{
+    
     const comida = {
       nombre: nombreComida,
       calorias: totalKcal,
@@ -107,7 +110,6 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
           fecha: formattedDate,
           comidas: [comida],
         }
-
         entradasRef.once('value', (snapshot) => {
           if(snapshot.exists()){
             let isDateFound = false;
@@ -152,7 +154,6 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
       });
       navigation.goBack();
     }else{
-      
       if(isEqual(comida,route.params.comidaEditar)){
         console.log('no cambia nada')
         navigation.goBack();
@@ -176,6 +177,43 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
             }
 
           })})
+        if(route.params.delDia){
+          const fecha = route.params.fecha; 
+          const fechaMoment = moment(fecha, 'DD MMMM YYYY'); 
+          const fechaFormateada = fechaMoment.format('DD/MM/YY');
+          const entradaRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+          entradaRef.once('value', (snapshot)=> {
+            snapshot.forEach((childSnapshot)=>{
+              const entrada = childSnapshot.val();
+              console.log(fechaFormateada);
+              if(isEqual(entrada.fecha,fechaFormateada)){
+                if(entrada.comidas){
+                  const comidas = entrada.comidas || [];
+                  const index = comidas.findIndex(comida => isEqual(comida, route.params.comidaEditar));
+                  
+                    // Si la comida está en la lista, la actualizamos
+                    if(index !== -1) {
+                         // Actualizando el valor de la comida
+                        if(nombreComida != ''){
+                          comidas[index].nombre = nombreComida;
+                        }
+                        if(totalKcal != ''){
+                          comidas[index].calorias = totalKcal
+                        }
+                        if(listaIngredientes != []){
+                          comidas[index].ingredientes = listaIngredientes;
+                        }
+                        // Actualiza la entrada en Firebase
+                        childSnapshot.ref.update({ comidas });
+                        console.log('actualizado');
+                        
+                    }
+                  
+                }
+              }
+            })
+          })
+        } 
       }
     }
     
@@ -188,9 +226,15 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
 
   useEffect(() => {
     if(route.params.editar && !datosCargados){
+      
       setListaIngredientes(route.params.comidaEditar.ingredientes);
       setNombreComida(route.params.comidaEditar.nombre);
       setDatosCargados(true);
+    }
+    if(route.params.editar){
+      setBotonGuardar('Guardar');
+    }else{
+      setBotonGuardar('Añadir a la biblioteca')
     }
     const totalCal = listaIngredientes.reduce((total, alimento) => {
       return total + parseInt(alimento.calorias);
@@ -274,8 +318,8 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
         </View>
         <View style={[styles.flatdefault1, styles.flatdefault1Position2]}>
           <View style={[styles.spBody2Medium, styles.flatdefault1Position2]}>
-            <Text style={[styles.body21, styles.bodyLayout]}>
-              Añadir a la biblioteca
+            <Text style={[styles.body21, styles.bodyLayout, route.params.editar ? {top:4, fontSize:12}: {}]}>
+              {botonGuardar}
             </Text>
           </View>
         </View>

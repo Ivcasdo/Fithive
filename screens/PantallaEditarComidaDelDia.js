@@ -3,12 +3,42 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
+import auth, { firebase } from '@react-native-firebase/auth';
+import { useNavigation } from "@react-navigation/native";
+import { isEqual } from "lodash";
+import moment from 'moment';
+const PantallaEditarComidaDelDia = ({onClose, comidaDelDia,fechaSeleccionada}) => {
+  const user = auth().currentUser;
+  const navigation = useNavigation();
+  const handleCerrarPantallaSuperpuesta = () => {
+      onClose();
+  };
+  const handleEditarComida= () =>{
+    onClose();
+    navigation.navigate('PantallaCrearComida', {comidaEditar: comidaDelDia, editar:true,delDia: true, fecha:fechaSeleccionada})
+  };
+  const handleBorrarComida= ()=>{
+    const fecha = fechaSeleccionada; 
+    const fechaMoment = moment(fecha, 'DD MMMM YYYY'); 
+    const fechaFormateada = fechaMoment.format('DD/MM/YY');
+    const entradasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
+    entradasRef.once('value', (snapshot)=>{
+      snapshot.forEach((childsnapshot)=>{
+        const entrada = childsnapshot.val();
+        if(isEqual(entrada.fecha, fechaFormateada)){
+          const comidas = entrada.comidas || [];
+          const index = comidas.findIndex(comida => isEqual(comida, comidaDelDia)); 
+          if(index !== -1) {
+            comidas.splice(index, 1);
 
-const PantallaEditarComidaDelDia = ({onClose, comidaDelDia}) => {
-    const handleCerrarPantallaSuperpuesta = () => {
-        onClose();
-      };
-
+            // Actualiza la entrada en Firebase
+            childsnapshot.ref.update({ comidas });
+          }
+        }
+      })
+    })
+    onClose();
+  }
   return (
     <View style={styles.pantallaEditarComidaDelDia}>
       <View style={[styles.lightHamburger, styles.spBody2MediumPosition]}>
@@ -23,7 +53,7 @@ const PantallaEditarComidaDelDia = ({onClose, comidaDelDia}) => {
             />
         </Pressable>
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]} onPress={handleBorrarComida}>
         <Image
           style={[styles.darkIcon, styles.darkIconPosition]}
           contentFit="cover"
@@ -35,7 +65,7 @@ const PantallaEditarComidaDelDia = ({onClose, comidaDelDia}) => {
           </View>
         </View>
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]}>
+      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={handleEditarComida}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary, styles.darkIconPosition]}

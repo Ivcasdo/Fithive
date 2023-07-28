@@ -23,7 +23,7 @@ const PantallaInicioNutricion = () => {
   const [caloriasRestantes, setCaloriasRestantes] = useState('');
   const[porcentajeProg, setPorcentajeProg] = useState(0);
   const [comidaDiaEditar, setComidaDiaEditar] = useState('');
-
+  
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
@@ -149,7 +149,7 @@ const PantallaInicioNutricion = () => {
     let entradaexiste = false;
     const comidasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/entradasCalendario`);
     const updateListaComidas = (formattedDate) => {
-    comidasRef.once('value', (snapshot) => {
+      comidasRef.on('value', (snapshot) => {
         const listaDeComidas = [];
         snapshot.forEach((childsnapshot) => {
           const entrada = childsnapshot.val();
@@ -162,23 +162,20 @@ const PantallaInicioNutricion = () => {
         caloriasrest = objetivoCalorias-caloriasTotal;
         if(entradaexiste){
           setCaloriasRestantes(caloriasrest);
+          const progresoCalorias = (((objetivoCalorias - caloriasRestantes) / objetivoCalorias) * 100).toFixed(2);
+          const progresoNumerico = parseFloat(progresoCalorias);
+          setPorcentajeProg(progresoNumerico);
         }else{
           setCaloriasRestantes(0);
+          setPorcentajeProg(0);
         }
         
         setListaComidas(listaDeComidas);
       });
     };
-    const progresoCalorias = (((objetivoCalorias - caloriasRestantes) / objetivoCalorias) * 100).toFixed(2);
-
-    const progresoNumerico = parseFloat(progresoCalorias);
-    console.log(progresoNumerico);
-    if(entradaexiste){
-      setPorcentajeProg(progresoNumerico);
-    }else{
-      setPorcentajeProg(0);
-    }
+  
     updateListaComidas(fechaFormateada);
+    
     const caloriasRef = firebase.app().database('https://tfgivan-b5e4b-default-rtdb.europe-west1.firebasedatabase.app').ref(`users/${user.uid}/caloriasDiarias`);
     const handleSnapshot = (snapshot) => {
       const caloriasData = snapshot.val();
@@ -187,6 +184,7 @@ const PantallaInicioNutricion = () => {
     caloriasRef.on('value', handleSnapshot);
     return () => {
       caloriasRef.off('value', handleSnapshot);
+      comidasRef.off('value');
     }
   },[caloriasRestantes,fechaSeleccionada])
   return (
@@ -317,7 +315,7 @@ const PantallaInicioNutricion = () => {
       </Pressable>
       {isPantallaAjusteObjetivosVisible && <PantallaAjusteObjetivos onClose={handleCerrarPantallaAjusteObjetivos} />}
       {isPantallaAadircomidaVisible && <PantallaAadirComida onClose={handleCerrarPantallaAadircomida} />}
-      {isPantallaEditarComidaDelDiaVisible && <PantallaEditarComidaDelDia onClose={handleCerrarPantallaEditarComidaDelDia} comidaDelDia={comidaDiaEditar}/>}
+      {isPantallaEditarComidaDelDiaVisible && <PantallaEditarComidaDelDia onClose={handleCerrarPantallaEditarComidaDelDia} comidaDelDia={comidaDiaEditar}fechaSeleccionada={fechaSeleccionada}/>}
       {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
     </View>
     </TouchableWithoutFeedback>
