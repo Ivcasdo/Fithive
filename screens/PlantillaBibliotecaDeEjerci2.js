@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback, FlatList } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback, FlatList, Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
@@ -84,7 +84,7 @@ const PlantillaBibliotecaDeEjerci2 = () => {
       <Image
         style={styles.plantillaBibliotecaDeEjerciChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
@@ -142,14 +142,30 @@ const PlantillaBibliotecaDeEjerci2 = () => {
       </Pressable>
       {isPantallaCreacionDeEjerciciosVisible && <PlantillaBibliotecaDeEjercios1 onClose={handleCerrarPantallaCreacionDeEjercicios} />}
       {isPantallaEditarEjerciciosVisible && <PlantillaBibliotecaDeEjercios2  onClose={handleCerrarPantallaEditarEjercicios} item={itempantalla} />}
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
- 
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   frameChildShadowBox: {
     height: 276,
     shadowOpacity: 1,

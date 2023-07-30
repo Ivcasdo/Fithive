@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,TouchableOpacity,ScrollView } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,TouchableOpacity,ScrollView, Modal } from "react-native";
 import { Image } from "expo-image";
 import { FontFamily, Color, FontSize } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -198,7 +198,7 @@ const PantallaEstadisticas = () => {
       <Image
         style={styles.pantallaEstadisticasChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={styles.nbchartsLinechatsWrapper}>
@@ -218,7 +218,7 @@ const PantallaEstadisticas = () => {
         )
       }
       </View>
-      <Pressable style={[styles.dropdown, styles.dropdownLayout, { zIndex: 100 }]}  onPress={handlePress}>
+      <Pressable style={[styles.dropdown, styles.dropdownLayout, { zIndex: 1 }]}  onPress={handlePress}>
         <View style={[styles.stroke, styles.strokePosition]}>
           <View style={[styles.bgPrimary, styles.strokePosition]} />
         </View>
@@ -288,7 +288,19 @@ const PantallaEstadisticas = () => {
         )}
       </Pressable>
       <Text style={[styles.estadisticas, styles.textTypo]}>Estadisticas</Text>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     
     </TouchableWithoutFeedback>
@@ -296,6 +308,12 @@ const PantallaEstadisticas = () => {
 };
 
 const styles = StyleSheet.create({
+  
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   filtroObjetivos:{
     backgroundColor: 'white',
     left:0,

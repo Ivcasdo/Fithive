@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList, Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
@@ -65,7 +65,7 @@ const PantallaInicioEntrenamiento = () => {
       <Image
         style={styles.pantallaInicioEntrenamientoChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <Text style={styles.planDeEntrenamiento}>{nombrePlan}</Text>
@@ -130,13 +130,30 @@ entrenamiento`}</Text>
         </View>
       </Pressable>
       
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   frameChildLayout: {
     height: 162,
     width: 276,

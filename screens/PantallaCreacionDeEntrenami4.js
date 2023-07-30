@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "expo-image";
-import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback, FlatList } from "react-native";
+import { StyleSheet, View, TextInput, Text, Pressable, TouchableWithoutFeedback, FlatList, Modal } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -289,7 +289,7 @@ const PantallaCreacionDeEntrenami4 = () => {
       <Image
         style={styles.pantallaCreacionDeEntrenamiChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.default, styles.defaultPosition]}>
@@ -400,13 +400,30 @@ ejercicio`}</Text>
       {isPantallaCrearEjercicioVisible && <PantallaCrearEjercicio onClose={handleCerrarPantallaCrearEjercicio} ejercicio={ejercicio} editbool={editbool} editar={editar}/>}
       {isPantallaCrearEjercicioBibliotecaVisible && <PantallaCrearEjercicioBiblioteca onClose={handleCerrarPantallaCrearEjercicioBiblioteca} />}
       {isPantallaEditarEjercicioVisible && <PantallaEditarEjercicios onabrirPantallaCrearEjercicio={handleAbrirPantallaCrearEjercicio} onClose={handleCerrarPantallaEditarEjercicio} item={editar}/>}
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   defaultPosition: {
     height: 56,
     right: 158,

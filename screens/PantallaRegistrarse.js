@@ -48,7 +48,7 @@ const PantallaRegistrarse = () => {
               ejercicios: {},
               entradasCalendario: {}
             };
-            console.log(newUser);
+            
             userRef.set(newUser);
             navigation.navigate('PantallaIniciarSesion');
           }

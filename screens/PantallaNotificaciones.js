@@ -11,7 +11,7 @@ const PantallaNotificaciones = () => {
       <Image
         style={styles.pantallaNotificacionesChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <Pressable style={styles.dropdown}>
         <View style={styles.stroke}>

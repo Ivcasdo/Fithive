@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList } from "react-native";
+import { Pressable, StyleSheet, Text, View, TouchableWithoutFeedback,FlatList, Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -59,6 +59,8 @@ const PantallaInicio1 = () => {
               if(entrada.entrenamientos){
                 
                 setEntrenamientos(entrada.entrenamientos);
+              }else{
+                setEntrenamientos([]);
               }
               if(entrada.comidas){
                 const caloriasTotal =entrada.comidas.reduce((total, comida) => total + comida.calorias, 0);
@@ -74,6 +76,7 @@ const PantallaInicio1 = () => {
             }
           })
           if(!entradaexiste){
+            setEntrenamientos([]);
             setPorcentajeComidas(0);
             setCaloriasRestantes('');
           }
@@ -125,7 +128,7 @@ const PantallaInicio1 = () => {
       <Image
         style={[styles.pantallaInicio1Child, styles.calendarPosition]}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <Text style={styles.calendario}>Calendario</Text>
@@ -247,13 +250,30 @@ const PantallaInicio1 = () => {
           </View>
         </View>
       </Pressable>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   iconLayout: {
     height: 24,
     width: 24,

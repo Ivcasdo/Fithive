@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList, Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -70,7 +70,7 @@ const PantallaMedidasCorporales = () => {
       <Image
         style={styles.pantallaMedidasCorporalesChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.frameParent, styles.parentLayout]}>
@@ -174,13 +174,30 @@ const PantallaMedidasCorporales = () => {
       </View>
       <Text style={styles.medidasCorporales}>Medidas corporales</Text>
       {isPantallaMedidasCorporales2Visible && <PantallaMedidasCorporales2 onClose={handleCerrarPantallaMedidasCorporales2} editarmedida={editarMedida} medidaEditar={medidaEditar}/>}
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   parentLayout: {
     height: 256,
     overflow: "hidden",

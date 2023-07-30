@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, TextInput, Text, TouchableWithoutFeedback,FlatList } from "react-native";
+import { Pressable, StyleSheet, View, TextInput, Text, TouchableWithoutFeedback,FlatList,Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
@@ -192,7 +192,7 @@ const PantallaCreacionDePlanes = ({}) => {
       <Image
         style={styles.pantallaCreacionDePlanesChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.default, styles.defaultLayout]}>
@@ -306,13 +306,30 @@ entrenamiento`}</Text>
         <PantallaAnadirEntrenamientos onClose={handleCerraranadirentrenamiento} editar={editarEntrene} />
       )}
       {isEditarEntrenamientoVisible && <PantallaEditarEntrenamiento onClose={handleCerrarEditarEntrenamiento} editar={editarEntrene} entrenamiento={EditEntrene} plan={plan}/>}
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   defaultLayout: {
     height: 56,
     position: "absolute",

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -12,20 +12,29 @@ import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 
 const PantallaCambiarFotoPerfil = () => {
+  const [imagen, setImagen] = useState(null);
+  const [textoImagen, setTextoImagen] = useState('Seleccionar archivo')
   const navigation = useNavigation();
+
+  const handleSeleccionarImagen = () =>{
+
+  };
+  const handleGuardarImagen = () =>{
+
+  };
   return (
     <View style={styles.pantallaCambiarFotoPerfil}>
       <Image
         style={styles.pantallaCambiarFotoPerfilChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <ImageBackground
         style={styles.pantallaCambiarFotoPerfilItem}
         resizeMode="cover"
         source={require("../assets/ellipse2.png")}
       />
-      <Pressable style={styles.default}>
+      <Pressable style={styles.default} onPress={handleSeleccionarImagen}>
         <View style={[styles.light, styles.lightPosition]}>
           <View style={[styles.bgLight, styles.bgLightPosition]} />
         </View>
@@ -47,7 +56,7 @@ const PantallaCambiarFotoPerfil = () => {
           source={require("../assets/-dark2.png")}
         />
       </Pressable>
-      <Pressable style={[styles.dark1, styles.darkPosition]} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
+      <Pressable style={[styles.dark1, styles.darkPosition]}onPress={handleGuardarImagen}>
         <View style={styles.dark2}>
           <LinearGradient
             style={[styles.bgPrimary, styles.bgLightPosition]}

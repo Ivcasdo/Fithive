@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList,TouchableOpacity} from "react-native";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableWithoutFeedback,FlatList,TouchableOpacity, Modal} from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Switch as RNPSwitch } from "react-native-paper";
@@ -250,7 +250,7 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
       <Image
         style={styles.pantallaCrearComidaChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
@@ -378,7 +378,19 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
       </Pressable>
       {isPantallaEditarIngredientes2Visible && <PantallaEditarIngredientes2 onClose={handleCerrarPantallaEditarIngredientes2} alimentoEditar={alimentoEditar} />}
       {isPantallaEditarIngredientesVisible && <PantallaEditarIngredientes onClose={handleCerrarPantallaEditarIngredientes} onAbrirEditarAlimento={handleAbrirPantallaEditarIngredientes2} alimentoEditar={alimentoEditar}/>}
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
 
     </View>
     </TouchableWithoutFeedback>
@@ -386,6 +398,11 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   bodyFlexBox: {
     justifyContent: "center",
     textAlign: "center",

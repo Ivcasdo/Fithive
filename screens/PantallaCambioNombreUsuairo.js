@@ -42,7 +42,7 @@ const PantallaCambioNombreUsuairo = () => {
           styles.permIdentityIconLayout,
         ]}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <Pressable style={styles.dark} onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image

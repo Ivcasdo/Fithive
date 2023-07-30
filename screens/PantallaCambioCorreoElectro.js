@@ -45,7 +45,7 @@ const PantallaCambioCorreoElectro = () => {
       <Image
         style={styles.pantallaCambioCorreoElectroChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <View style={[styles.default, styles.defaultPosition]}>
         <View style={[styles.stroke, styles.strokePosition]}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
+import { Pressable, StyleSheet, View, TextInput, Text, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
@@ -12,7 +12,18 @@ const PantallaCambioContrasea = () => {
   const [password, setPassword] = useState('');
   const [confirmarPass, setConfirmarPass] = useState('');
   const [nuevaPassword, setNuevaPassword] = useState('');
-
+  const [secureText, setSecureText] = useState(true);
+  const [secureText2, setSecureText2] = useState(true);
+  const [secureText3, setSecureText3] = useState(true);
+  const toggleSecureText = () => {
+    setSecureText(!secureText);
+  };
+  const toggleSecureText2 = () => {
+    setSecureText2(!secureText2);
+  };
+  const toggleSecureText3 = () => {
+    setSecureText3(!secureText3);
+  };
   const handleCambioPassword = (text) =>{
     setPassword(text);
   }
@@ -41,7 +52,7 @@ const PantallaCambioContrasea = () => {
       <Image
         style={styles.pantallaCambioContraseaChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <View style={styles.defaultParent}>
         <View style={[styles.default, styles.defaultPosition]}>
@@ -53,15 +64,18 @@ const PantallaCambioContrasea = () => {
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={nuevaPassword}
             onChangeText={handleCambioNuevaPassword}
+            secureTextEntry={secureText}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
           </View>
-          <Image
-            style={[styles.lockIcon, styles.strokePosition]}
-            contentFit="cover"
-            source={require("../assets/lock.png")}
-          />
+          <TouchableOpacity onPress={toggleSecureText}>
+            <Image
+              style={[styles.lockIcon, styles.strokePosition]}
+              contentFit="cover"
+              source={require("../assets/lock.png")}
+            />
+          </TouchableOpacity>
           <View style={styles.captionPosition}>
             <Text style={styles.caption1}>Nueva contraseña</Text>
           </View>
@@ -75,15 +89,18 @@ const PantallaCambioContrasea = () => {
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={password}
             onChangeText={handleCambioPassword}
+            secureTextEntry={secureText2}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
           </View>
-          <Image
-            style={[styles.lockIcon, styles.strokePosition]}
-            contentFit="cover"
-            source={require("../assets/lock.png")}
-          />
+          <TouchableOpacity onPress={toggleSecureText2}>
+            <Image
+              style={[styles.lockIcon, styles.strokePosition]}
+              contentFit="cover"
+              source={require("../assets/lock.png")}
+            />
+          </TouchableOpacity>
           <View style={styles.captionPosition}>
             <Text style={styles.caption1}>Confirmar antigua contraseña</Text>
           </View>
@@ -97,15 +114,18 @@ const PantallaCambioContrasea = () => {
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={confirmarPass}
             onChangeText={handleCambioConfirmarPassword}
+            secureTextEntry={secureText3}
           />
           <View style={[styles.caption, styles.captionPosition]}>
             <Text style={styles.caption1}>Default name</Text>
           </View>
-          <Image
-            style={[styles.lockIcon, styles.strokePosition]}
-            contentFit="cover"
-            source={require("../assets/lockopen.png")}
-          />
+          <TouchableOpacity onPress={toggleSecureText3}>
+            <Image
+              style={[styles.lockIcon, styles.strokePosition]}
+              contentFit="cover"
+              source={require("../assets/lockopen.png")}
+            />
+          </TouchableOpacity>
           <View style={styles.captionPosition}>
             <Text style={styles.caption1}>Confirmar nueva contraseña</Text>
           </View>
@@ -214,6 +234,7 @@ const styles = StyleSheet.create({
     display: "none",
   },
   lockIcon: {
+    top: 22,
     bottom: 1,
     height: 32,
     width: 32,

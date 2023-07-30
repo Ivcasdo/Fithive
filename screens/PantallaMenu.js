@@ -12,7 +12,7 @@ import { Image } from "expo-image";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import auth, { firebase } from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
+
 import { useState, useEffect } from "react";
 
 const PantallaMenu = ({ onClose }) => {
@@ -52,24 +52,17 @@ const PantallaMenu = ({ onClose }) => {
   };
   return (
     <View style={styles.pantallaMenu}>
-      <View style={[styles.shadow, styles.shadowPosition]}>
-        <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+      <View style={styles.shadow}>
+        <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
           <View style={[styles.bgLight, styles.lightPosition]} />
         </View>
       </View>
       <View style={[styles.header1, styles.blurPosition]}>
-        <View style={[styles.dark, styles.darkPosition]}>
-          <LinearGradient
-            style={[styles.bgPrimary, styles.darkPosition]}
-            locations={[0, 1]}
-            colors={["#1a73e9", "#6c92f4"]}
-          />
-        </View>
         <View style={[styles.blur, styles.blurPosition]}>
           <ImageBackground
-            style={[styles.dark, styles.darkPosition]}
+            style={styles.lgo21Icon}
             resizeMode="cover"
-            source={require("../assets/image.png")}
+            source={require("../assets/lgo21.png")}
           />
         </View>
         <Pressable style={[styles.spBody1Regular, styles.body2Layout]}>
@@ -83,22 +76,15 @@ const PantallaMenu = ({ onClose }) => {
           />
         </Pressable>
         <View style={[styles.spBody2Medium, styles.body2Layout]}>
-          <Text style={[styles.body2, styles.bodyTypo]}>{userName}</Text> 
-        </View>
-        <View style={[styles.avatar, styles.avatarPosition]}>
-          <Image
-            style={[styles.avatar40x40Icon, styles.blurPosition]}
-            contentFit="cover"
-            source={require("../assets/avatar-40x40.png")}
-          />
+          <Text style={[styles.body2, styles.bodyTypo]}>{userName}</Text>
         </View>
       </View>
       <View style={[styles.menuModule, styles.blurPosition]}>
-        <View style={[styles.dark, styles.darkPosition]}>
+        <View style={[styles.light, styles.blurPosition1]}>
           <View style={styles.lightPosition} />
         </View>
         <Pressable style={[styles.defaultIcon, styles.defaultIconPosition]} onPress={handleboton6}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -113,7 +99,7 @@ const PantallaMenu = ({ onClose }) => {
           </View>
         </Pressable>
         <Pressable style={[styles.defaultIcon1, styles.defaultIconPosition]} onPress={handleboton1}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -126,7 +112,7 @@ const PantallaMenu = ({ onClose }) => {
           </View>
         </Pressable>
         <Pressable style={[styles.defaultIcon2, styles.defaultIconPosition]} onPress={handleboton2}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -139,7 +125,7 @@ const PantallaMenu = ({ onClose }) => {
           </View>
         </Pressable>
         <Pressable style={[styles.defaultIcon3, styles.defaultIconPosition]} onPress={handleboton4}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -154,7 +140,7 @@ const PantallaMenu = ({ onClose }) => {
           </View>
         </Pressable>
         <Pressable style={[styles.defaultIcon4, styles.defaultIconPosition]} onPress={handleboton5}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -168,7 +154,7 @@ const PantallaMenu = ({ onClose }) => {
         </Pressable>
         
         <Pressable style={[styles.defaultIcon6, styles.defaultIconPosition]} onPress={handleboton3}>
-          <View style={[styles.colorsbgCard, styles.shadowPosition]}>
+          <View style={[styles.colorsbgCard, styles.menuModulePosition]}>
             <View style={styles.lightPosition} />
           </View>
           <Image
@@ -186,9 +172,9 @@ const PantallaMenu = ({ onClose }) => {
 };
 
 const styles = StyleSheet.create({
-  shadowPosition: {
-    left: "0%",
+  menuModulePosition: {
     right: "0%",
+    left: "0%",
     width: "100%",
   },
   lightPosition: {
@@ -203,19 +189,13 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     position: "absolute",
   },
-  darkPosition: {
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-  },
   body2Layout: {
     height: 20,
     right: 0,
   },
   bodyLayout: {
-    width: 289,
-    color: Color.lightColor,
+    width: 226,
+    color: Color.black,
   },
   bodyTypo: {
     fontFamily: FontFamily.spBUTTON,
@@ -230,9 +210,11 @@ const styles = StyleSheet.create({
     top: 0,
     position: "absolute",
   },
-  avatarPosition: {
-    left: 16,
-    position: "absolute",
+  blurPosition1: {
+    right: 0,
+    left: 0,
+    bottom: 0,
+    top: 0,
   },
   defaultIconPosition: {
     height: 48,
@@ -247,13 +229,12 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   bgLight: {
-    borderRadius: Border.br_base,
+    
   },
   colorsbgCard: {
     height: "100%",
     top: "0%",
     bottom: "0%",
-    right: "0%",
     left: "0%",
     position: "absolute",
   },
@@ -266,23 +247,21 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 16,
     shadowOpacity: 1,
-    bottom: 0,
     left: "0%",
+    bottom: 0,
     right: "0%",
     top: 0,
     position: "absolute",
+    width: "100%",
   },
-  bgPrimary: {
-    backgroundColor: Color.accentColor,
-    position: "absolute",
-  },
-  dark: {
+  lgo21Icon: {
+    top: 14,
+    width: 242,
+    height: 64,
+    left: 0,
     position: "absolute",
   },
   blur: {
-    borderStyle: "solid",
-    borderColor: "#000",
-    borderWidth: 1,
     left: 0,
     right: 0,
     bottom: 0,
@@ -295,8 +274,8 @@ const styles = StyleSheet.create({
     textAlign: "left",
     lineHeight: 18,
     fontSize: FontSize.spBUTTON_size,
-    width: 289,
-    color: Color.lightColor,
+    width: 226,
+    color: Color.black,
     height: 20,
     left: 0,
     top: 0,
@@ -310,42 +289,34 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   spBody1Regular: {
-    bottom: 16,
+    top: 107,
     left: 16,
+    height: 20,
     position: "absolute",
   },
   body2: {
-    width: 289,
-    color: Color.lightColor,
+    width: 226,
+    color: Color.black,
     fontFamily: FontFamily.spBUTTON,
     fontWeight: "500",
   },
   spBody2Medium: {
-    bottom: 36,
+    top: 87,
     left: 16,
+    height: 20,
     position: "absolute",
   },
-  avatar40x40Icon: {
-    borderRadius: Border.br_80xl,
-    maxWidth: "100%",
-    maxHeight: "100%",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: 0,
-  },
-  avatar: {
-    bottom: 72,
-    width: 64,
-    height: 64,
-  },
   header1: {
-    height: 191,
+    width: "100.1%",
+    right: "-0.1%",
+    height: 157,
     left: "0%",
-    right: "0%",
-    width: "100%",
     top: 0,
     overflow: "hidden",
+  },
+  light: {
+    left: 0,
+    position: "absolute",
   },
   accountIcon: {
     marginTop: -20,
@@ -356,7 +327,7 @@ const styles = StyleSheet.create({
   },
   body21: {
     color: Color.textColor,
-    width: 233,
+    width: 170,
   },
   spBody2Medium1: {
     marginTop: -10,
@@ -387,7 +358,7 @@ const styles = StyleSheet.create({
     top: 104,
   },
   menuModule: {
-    top: 191,
+    top: 129,
     bottom: 2,
     left: "0%",
     right: "0%",
@@ -398,6 +369,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 900,
     width: "70%",
+    
   },
 });
 

@@ -12,7 +12,7 @@ const PantallaPersonalizacion = () => {
       <Image
         style={styles.pantallaPersonalizacionChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <Pressable style={[styles.dropdown, styles.dropdownLayout]}>
         <View style={[styles.stroke, styles.strokePosition]}>

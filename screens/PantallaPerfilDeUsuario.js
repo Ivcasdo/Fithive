@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Pressable,
   View,
-  Text,TouchableWithoutFeedback
+  Text,TouchableWithoutFeedback, Modal
 } from "react-native";
 import { Image } from "expo-image";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
@@ -51,7 +51,7 @@ const PantallaPerfilDeUsuario = () => {
           styles.firstLevelDefaultParentPosition,
         ]}
         resizeMode="cover"
-        source={require("../assets/ellipse21.png")}
+        source={require("../assets/IconoApp.png")}
       />
       <Pressable style={[styles.ellipseParent, styles.darkFlexBox]} onPress={handleOpenSubmenu}>
         <Image
@@ -151,13 +151,30 @@ const PantallaPerfilDeUsuario = () => {
           />
         </Pressable>
       </View>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   firstLevelDefaultParentPosition: {
     left: 20,
     position: "absolute",

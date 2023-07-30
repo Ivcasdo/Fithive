@@ -1,9 +1,15 @@
 import * as React from "react";
-import { View, StyleSheet, TextInput } from "react-native";
+import { View, StyleSheet, TextInput, TouchableOpacity  } from "react-native";
 import { Image } from "expo-image";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
-
+import { useState } from "react";
 const PasswordForm = ({ value, onChangeText }) => {
+  const [secureText, setSecureText] = useState(true);
+
+  const toggleSecureText = () => {
+    setSecureText(!secureText);
+  };
+
   return (
     <View style={styles.default}>
       <View style={[styles.stroke, styles.strokePosition]} />
@@ -14,12 +20,15 @@ const PasswordForm = ({ value, onChangeText }) => {
         placeholderTextColor="rgba(0, 0, 0, 0.87)"
         value={value}
         onChangeText={onChangeText}
+        secureTextEntry={secureText}
       />
-      <Image
-        style={[styles.lockIcon, styles.strokePosition]}
-        contentFit="cover"
-        source={require("../assets/lock.png")}
-      />
+      <TouchableOpacity onPress={toggleSecureText}>
+        <Image
+          style={[styles.lockIcon, styles.strokePosition]}
+          contentFit="cover"
+          source={require("../assets/lock.png")}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -48,6 +57,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   lockIcon: {
+    top:22,
     bottom: 1,
     width: 32,
     height: 32,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList } from "react-native";
+import { Pressable, StyleSheet, View, Text, TouchableWithoutFeedback,FlatList, Modal } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -69,7 +69,7 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
       <Image
         style={styles.pantallaPlanesDeEntrenamienChild}
         contentFit="cover"
-        source={require("../assets/ellipse-1.png")}
+        source={require("../assets/IconoApp.png")}
       />
       </Pressable>
       <View style={[styles.rectangleParent, styles.frameChildShadowBox]}>
@@ -135,7 +135,19 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
           </View>
         </View>
       </Pressable>
-      {isSubmenuOpen && <Submenu onClose={handleCloseSubmenu} />}
+      <Modal
+        visible={isSubmenuOpen}
+        transparent={true}
+        onRequestClose={handleCloseSubmenu}
+      >
+        <TouchableWithoutFeedback onPress={handleCloseSubmenu}>
+          <View style={styles.modalContainer}>
+            <View style={styles.submenuContainer}>
+              <Submenu onClose={handleCloseSubmenu} />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
       {isEditarPlanesVisible && <PantallaEditarPlanes onClose={handleCerrarEditarPlanes} planEditar={planEditar}/>}
     </View>
     </TouchableWithoutFeedback>
@@ -143,6 +155,11 @@ const PantallaPlanesDeEntrenamien = ({ visible, onClose}) => {
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
+  },
+  
   frameChildShadowBox: {
     height: 276,
     width: 299,
