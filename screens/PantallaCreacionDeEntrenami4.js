@@ -300,6 +300,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           style={styles.spSubheadingRegular}
           placeholder="Input caption"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nomEntrenamiento}
           onChangeText={handleNombreChange}
@@ -316,6 +317,7 @@ const PantallaCreacionDeEntrenami4 = () => {
           style={styles.spSubheadingRegular}
           placeholder="Input caption"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={tipoEntrenamiento}
           onChangeText={handleTipoChange}

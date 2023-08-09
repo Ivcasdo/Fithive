@@ -135,7 +135,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
         <TextInput
           style={styles.spSubheadingRegular}
           placeholder=" 77 kg"
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={3}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value= {peso}
           onChangeText={handleChangePeso}
@@ -151,7 +152,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
         <TextInput
           style={styles.spSubheadingRegular}
           placeholder="22"
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={3}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value= {edad}
           onChangeText={handleChangeEdad}
@@ -167,7 +169,8 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
         <TextInput
           style={styles.spSubheadingRegular}
           placeholder=" 180 cm"
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={3}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value= {altura}
           onChangeText={handleChangeAltura}

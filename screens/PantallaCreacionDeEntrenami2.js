@@ -184,6 +184,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
           style={[styles.spSubheadingRegular1, styles.coverPosition]}
           placeholder="Ejercicio 2"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nombreEjercicio}
           onChangeText={handleNombreChange}
@@ -199,7 +200,8 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
         <TextInput
           style={[styles.spSubheadingRegular1, styles.coverPosition]}
           placeholder="3 "
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={2}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numSeries}
           onChangeText={handleNumSeriesChange}
@@ -218,6 +220,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
           style={[styles.spSubheadingRegular1, styles.coverPosition]}
           placeholder="Entrenamiento "
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={tipoEjercicio}
           onChangeText={handleTipoChange}
@@ -235,7 +238,8 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
         <TextInput
           style={[styles.spSubheadingRegular1, styles.coverPosition]}
           placeholder="2 "
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={2}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numReps}
           onChangeText={handleNumRepsChange}

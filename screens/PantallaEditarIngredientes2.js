@@ -79,7 +79,8 @@ const PantallaEditarIngredientes2 = ({ onClose,alimentoEditar }) => {
         <TextInput
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
           placeholder="152 kcal"
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={4}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={calAlimento}
           onChangeText={handleChangeCalAlimento}
@@ -98,6 +99,7 @@ const PantallaEditarIngredientes2 = ({ onClose,alimentoEditar }) => {
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
           placeholder="Ejemplo"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nomAlimento}
           onChangeText={handleChangeNomAlimento}

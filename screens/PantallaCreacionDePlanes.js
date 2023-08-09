@@ -203,6 +203,7 @@ const PantallaCreacionDePlanes = ({}) => {
           style={styles.spSubheadingRegular}
           placeholder="Input caption"
           keyboardType="default"
+          maxLength={20}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nombre}
           onChangeText={handleNombreChange}
@@ -219,6 +220,7 @@ const PantallaCreacionDePlanes = ({}) => {
           style={styles.spSubheadingRegular}
           placeholder="Input caption"
           keyboardType="default"
+          maxLength={20}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={tipo}
           onChangeText={handleTipoChange}
@@ -236,7 +238,8 @@ const PantallaCreacionDePlanes = ({}) => {
         <TextInput
           style={styles.spSubheadingRegular}
           placeholder="Input caption"
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={1}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numSemana}
           onChangeText={handleNumSemanaChange}

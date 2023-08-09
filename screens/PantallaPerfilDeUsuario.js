@@ -111,21 +111,7 @@ const PantallaPerfilDeUsuario = () => {
             </Text>
           </View>
         </Pressable>
-        <Pressable style={[styles.firstLevelDefault2, styles.firstPosition]} onPress={() => navigation.navigate("PantallaCambiarFotoPerfil")}>
-          <View style={[styles.light, styles.lightFlexBox]}>
-            <View style={[styles.bgLight1, styles.lightLayout]} />
-          </View>
-          <Image
-            style={[styles.chevronRightIcon, styles.chevronRightIconLayout]}
-            contentFit="cover"
-            source={require("../assets/chevronright.png")}
-          />
-          <View style={[styles.spSubheadingRegular, styles.lightFlexBox]}>
-            <Text style={[styles.subheading, styles.body2FlexBox]}>
-              Cambiar foto de perfil
-            </Text>
-          </View>
-        </Pressable>
+
         <Pressable style={[styles.firstLevelDefault3, styles.firstPosition]}onPress={() => navigation.navigate("PantallaCambioCorreoElectronico")}>
           <View style={[styles.light, styles.lightFlexBox]}>
             <View style={[styles.bgLight1, styles.lightLayout]} />

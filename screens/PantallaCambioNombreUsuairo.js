@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, View, Text, TextInput } from "react-native";
+import { Pressable, StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
@@ -11,7 +11,11 @@ const PantallaCambioNombreUsuairo = () => {
   const navigation = useNavigation();
   const [nombreUsuario, setNombreUsuario] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [secureText, setSecureText] = useState(true);
+
+  const toggleSecureText = () => {
+    setSecureText(!secureText);
+  };
   const handleCambioNombre = (text) =>{
     setNombreUsuario(text);
   }
@@ -73,6 +77,7 @@ const PantallaCambioNombreUsuairo = () => {
           style={[styles.spSubheadingRegular, styles.subheadingPosition]}
           placeholder="First name"
           keyboardType="default"
+          maxLength={10}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nombreUsuario}
           onChangeText={handleCambioNombre}
@@ -97,15 +102,18 @@ const PantallaCambioNombreUsuairo = () => {
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={password}
           onChangeText={handleCambioPassword}
+          secureTextEntry={secureText}
         />
         <View style={[styles.caption2, styles.captionPosition]}>
           <Text style={styles.captionLayout}>Default name</Text>
         </View>
-        <Image
-          style={[styles.permIdentityIcon, styles.permIdentityIconLayout]}
-          contentFit="cover"
-          source={require("../assets/lock.png")}
-        />
+        <TouchableOpacity onPress={toggleSecureText}>
+          <Image
+            style={[styles.permIdentityIcon, styles.permIdentityIconLayout]}
+            contentFit="cover"
+            source={require("../assets/lock.png")}
+          />
+        </TouchableOpacity>
         <View style={styles.captionPosition}>
           <Text style={styles.captionLayout}>Confirmar contraseña</Text>
         </View>
@@ -261,6 +269,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   permIdentityIcon: {
+    top:22,
     bottom: 1,
     height: 32,
     opacity: 0.4,

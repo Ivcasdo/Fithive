@@ -58,33 +58,38 @@ const App = () => {
     Inter_regular: require("./assets/fonts/Inter_regular.ttf"),
     Inter_bold: require("./assets/fonts/Inter_bold.ttf"),
   });
-  /*const [initializing, setInitializing] = useState(true);
+  const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const initialRoute = "PantallaIniciarSesion"; */
-  if (!fontsLoaded && !error) {
-    return null;
-  }
-
- /* function onAuthStateChanged(user) {
+  const [initialRoute, setInitialRoute] = useState("PantallaIniciarSesion");
+  function onAuthStateChanged(user) {
     setUser(user);
     if (initializing) setInitializing(false);
   }
-
+ 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
     return subscriber; // unsubscribe on unmount
   }, []);
-  if(user){
-    initialRoute = "PantallaInicio1";
+ 
+  useEffect(() => {
+    if (user) {
+      setInitialRoute("PantallaInicio1");
+    }
+  }, [user]);
+  if (!fontsLoaded && !error) {
+    return null;
   }
 
+ 
+ 
+
   if (initializing) return null;
- */
+ 
   return (
     <>
       <NavigationContainer>
         {hideSplashScreen ? (
-          <Stack.Navigator initialRouteName= "PantallaIniciarSesion" screenOptions={{ headerShown: false }}>
+          <Stack.Navigator initialRouteName= {initialRoute} screenOptions={{ headerShown: false }}>
              <Stack.Screen
               name="PantallaCrearComida"
               component={PantallaCrearComida}

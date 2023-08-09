@@ -121,7 +121,8 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
           <TextInput
             style={[styles.spSubheadingRegular, styles.coverPosition]}
             placeholder="70 kg"
-            keyboardType="default"
+            keyboardType="numeric"
+            maxLength={3}
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={peso}
             onChangeText={handleChangePeso}
@@ -137,7 +138,8 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
           <TextInput
             style={[styles.spSubheadingRegular, styles.coverPosition]}
             placeholder="170 cm"
-            keyboardType="default"
+            keyboardType="numeric"
+            maxLength={3}
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={altura}
             onChangeText={handleChangeAltura}
@@ -155,7 +157,8 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
           <TextInput
             style={[styles.spSubheadingRegular, styles.coverPosition]}
             placeholder="100 cm"
-            keyboardType="default"
+            keyboardType="numeric"
+            maxLength={3}
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={cintura}
             onChangeText={handleChangeCintura}

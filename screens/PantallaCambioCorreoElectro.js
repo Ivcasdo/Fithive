@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pressable, StyleSheet, View, TextInput, Text } from "react-native";
+import { Pressable, StyleSheet, View, TextInput, Text,TouchableOpacity} from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
@@ -12,6 +12,11 @@ const PantallaCambioCorreoElectro = () => {
   const [email, setEmail] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [secureText, setSecureText] = useState(true);
+
+  const toggleSecureText = () => {
+    setSecureText(!secureText);
+  };
   const handleCambioEmail = (text) =>{
     setEmail(text);
   }
@@ -93,7 +98,7 @@ const PantallaCambioCorreoElectro = () => {
           source={require("../assets/email.png")}
         />
       </View>
-      <Pressable style={[styles.dark, styles.darkPosition]}>
+      <Pressable style={[styles.dark, styles.darkPosition]}  onPress={() => navigation.navigate("PantallaPerfilDeUsuario")}>
         <Image
           style={[styles.darkIcon, styles.strokePosition]}
           contentFit="cover"
@@ -123,15 +128,18 @@ const PantallaCambioCorreoElectro = () => {
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={password}
           onChangeText={handleCambioPassword}
+          secureTextEntry={secureText}
         />
         <View style={[styles.caption4, styles.captionFlexBox]}>
           <Text style={styles.captionLayout}>Default name</Text>
         </View>
-        <Image
-          style={[styles.lockIcon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/lock.png")}
-        />
+        <TouchableOpacity onPress={toggleSecureText}>
+          <Image
+            style={[styles.lockIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/lock.png")}
+          />
+        </TouchableOpacity>
         <View style={[styles.caption6, styles.captionFlexBox]}>
           <Text style={styles.captionLayout}>Confirmar antigua contraseña</Text>
         </View>
@@ -176,6 +184,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.spCaptionRegular,
   },
   iconLayout: {
+    top:22,
     height: 32,
     right: 0,
     width: 32,

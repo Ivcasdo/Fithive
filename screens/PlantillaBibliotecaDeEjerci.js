@@ -103,6 +103,7 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
           style={styles.spSubheadingRegular}
           placeholder="Ejercicio de fuerza "
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={tipoEjercicio}
           onChangeText={handleTipoChange}
@@ -135,6 +136,7 @@ const PlantillaBibliotecaDeEjerci = ({ onClose }) => {
           style={styles.spSubheadingRegular}
           placeholder="Ejercicio 2"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={nombreEjercicio}
           onChangeText={handleNombreChange}

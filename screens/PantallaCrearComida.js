@@ -332,6 +332,7 @@ const [isPantallaEditarIngredientesVisible, setIsPantallaEditarIngredientesVisib
           style={[styles.spSubheadingRegular8, styles.subheadingTypo]}
           placeholder="Ejemplo"
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value= {nombreComida}
           onChangeText={handleChangeNombreComida}

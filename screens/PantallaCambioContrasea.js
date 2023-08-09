@@ -33,16 +33,38 @@ const PantallaCambioContrasea = () => {
   const handleCambioNuevaPassword = (text) =>{
     setNuevaPassword(text);
   }
+  const isValidPassword = (password) => {
+    // Comprobar si la contraseña tiene más de 8 caracteres
+    if (password.length <= 8) return false;
+  
+    // Comprobar si la contraseña tiene al menos un número
+    const hasNumber = /\d/.test(password);
+    if (!hasNumber) return false;
+  
+    // Comprobar si la contraseña tiene al menos una mayúscula
+    const hasUppercase = /[A-Z]/.test(password);
+    if (!hasUppercase) return false;
+  
+    return true;
+  };
   const handleCambiarContrasenia = async() =>{
     try {
       const email = user.email;
       const credential = auth.EmailAuthProvider.credential(email, password);
+      if(!isValidPassword(nuevaPassword)){
+        alert('La contraseña debe tener más de 8 caracteres, al menos un número y una mayúscula.');
+        return;
+      }
       if(isEqual(nuevaPassword,confirmarPass)){
         await user.reauthenticateWithCredential(credential);
+       
         await user.updatePassword(nuevaPassword);
+        console.log('Contraseña cambiada exitosamente');
+        navigation.navigate("PantallaPerfilDeUsuario")
+      }else {
+        alert('Las contraseñas no coinciden.');
       }
-      console.log('Contraseña cambiada exitosamente');
-      navigation.navigate("PantallaPerfilDeUsuario")
+      
     } catch (error) {
       alert('Error al cambiar la contraseña:', error.message);
     }

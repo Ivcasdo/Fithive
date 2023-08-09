@@ -146,7 +146,8 @@ const PantallaRealizarEntrenamient = () => {
                   <TextInput
                   style={[styles.spSubheadingRegular, styles.subheadingTypo]}
                   placeholder="Num reps"
-                  keyboardType="default"
+                  keyboardType="numeric"
+                  maxLength={3}
                   placeholderTextColor="rgba(0, 0, 0, 0.87)"
                   value={ejercicios[index].series[serieIndex].repeticiones}
                   onChangeText={(text) => handleInputChange(text, index, serieIndex, 'repeticiones')}
@@ -154,7 +155,8 @@ const PantallaRealizarEntrenamient = () => {
                 <TextInput
                   style={[styles.spSubheadingRegular1, styles.subheadingPosition1]}
                   placeholder="Peso"
-                  keyboardType="default"
+                  keyboardType="numeric"
+                  maxLength={3}
                   placeholderTextColor="rgba(0, 0, 0, 0.87)"
                   value={ejercicios[index].series[serieIndex].peso}
                   onChangeText={(text) => handleInputChange(text, index, serieIndex, 'peso')}

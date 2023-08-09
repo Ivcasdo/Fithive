@@ -136,6 +136,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
           placeholder={texto}
           keyboardType="default"
+          maxLength={25}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={seleccion}
           onChangeText={(text) => setSeleccion(text)}
@@ -165,7 +166,8 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
         <TextInput
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
           placeholder="3 "
-          keyboardType="default"
+          keyboardType="numeric"
+          maxLength={2}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numSeries}
           onChangeText={handleNumSeriesChange}
@@ -185,6 +187,7 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
           style={[styles.spSubheadingRegular, styles.spBody2MediumPosition]}
           placeholder=" 2"
           keyboardType="default"
+          maxLength={2}
           placeholderTextColor="rgba(0, 0, 0, 0.87)"
           value={numReps}
           onChangeText={handleNumRepsChange}
