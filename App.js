@@ -44,6 +44,7 @@ import PantallaPerfilDeUsuario from "./screens/PantallaPerfilDeUsuario";
 import PantallaCrearComida from "./screens/PantallaCrearComida";
 import PantallaCreacionDePlanes4 from "./screens/PantallaEditarPlanes";
 import PantallaEditarComidaDelDia from "./screens/PantallaEditarComidaDelDia";
+import PantallaVerEntrenamientos from "./screens/PantallaVerEntrenamiento";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View, Text, Pressable, TouchableOpacity,LogBox } from "react-native";
 import { useState, useEffect } from "react";
@@ -299,6 +300,11 @@ const App = () => {
               name="PantallaEditarComidaDelDia"
               component={PantallaEditarComidaDelDia}
               options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="PantallaVerEntrenamiento"
+              component={PantallaVerEntrenamientos}
+              options={{ header: false}}
             />
           </Stack.Navigator>
         ) : null}

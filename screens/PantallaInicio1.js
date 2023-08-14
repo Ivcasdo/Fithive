@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Color, FontFamily, FontSize, Border } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import Submenu from "./PantallaMenu";
+import PantallaVerEntrenamientos from "./PantallaVerEntrenamiento";
 import { useState,useEffect, useRef  } from "react";
 import CalendarPicker from 'react-native-calendar-picker';
 import auth, { firebase } from '@react-native-firebase/auth';
@@ -23,15 +24,26 @@ const PantallaInicio1 = () => {
   const [togglecomida, setToggleComida] = useState(false);
   const [porcentajeComidas, setPorcentajeComidas] = useState(0);
   const calendarRef = useRef(null);
+  const [isPantallaVerEntrenamientoVisible, setisPantallaVerEntrenamientoVisible] = useState(false);
+  const [verEntrenamiento, setVerEntrenamiento] = useState('');
   const handleOpenSubmenu = () => {
     setIsSubmenuOpen(true);
   };
   const handleCloseSubmenu = () => {
     setIsSubmenuOpen(false);
   };
+  const handleOpenPantallaVerEntrenamientoVisible = (item)=>{
+    setVerEntrenamiento(item);
+    setisPantallaVerEntrenamientoVisible(true);
+  }
+  const handleClosePantallaVerEntrenamientoVisible = ()=>{
+    setisPantallaVerEntrenamientoVisible(false);
+  }
   const handleScreenPress = () => {
     if (isSubmenuOpen) {
       handleCloseSubmenu();
+    }if(isPantallaVerEntrenamientoVisible){
+      handleClosePantallaVerEntrenamientoVisible()
     }
   };
   const handleCambiarVista = () =>{
@@ -178,11 +190,11 @@ const PantallaInicio1 = () => {
             data={entrenamientos}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index}) => (
-              <View style={[styles.entrenamiento11, styles.entrenamientoPosition]}>
+              <Pressable style={[styles.entrenamiento11, styles.entrenamientoPosition]} onPress={()=> handleOpenPantallaVerEntrenamientoVisible(item)}>
                 <View style={styles.spSubheadingRegular}>
                   <Text style={styles.subheading}>{item.nombre}</Text>
                 </View>
-              </View>
+              </Pressable>
             )}
             contentContainerStyle={{ position: 'absolute', zIndex: 30, bottom:0, top:1}}
           />
@@ -250,6 +262,9 @@ const PantallaInicio1 = () => {
           </View>
         </View>
       </Pressable>
+      {isPantallaVerEntrenamientoVisible && 
+        <PantallaVerEntrenamientos onClose={handleClosePantallaVerEntrenamientoVisible} entrenamiento={verEntrenamiento}/>
+    }
       <Modal
         visible={isSubmenuOpen}
         transparent={true}
@@ -263,12 +278,20 @@ const PantallaInicio1 = () => {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
+
     </View>
     </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
+  overlay: {
+    
+    bottom: 0,
+    
+    backgroundColor: 'white',
+    zIndex: 1000,
+},
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparente
