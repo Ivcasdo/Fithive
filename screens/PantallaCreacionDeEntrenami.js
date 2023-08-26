@@ -19,10 +19,14 @@ const PantallaCreacionDeEntrenami = ({ onClose, item }) => {
     onClose();
   };
   const handleNumSeriesChange = (text) => {
-    setNumSeries(text);
+      if (!text.match(/^[.,]/)) {
+        setNumSeries(text);
+    }
   };
   const handleNumRepsChange = (text) => {
-    setNumReps(text);
+      if (!text.match(/^[.,]/)) {
+        setNumReps(text);
+    }
   };
   useEffect(() => {
     // Obtener la lista de ejercicios del usuario desde la base de datos

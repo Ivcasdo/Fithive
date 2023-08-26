@@ -22,10 +22,14 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
     setTipoEjercicio(text);
   };
   const handleNumSeriesChange = (text) => {
-    setNumSeries(text);
+    if (!text.match(/^[.,]/)) {
+      setNumSeries(text);
+  }
   };
   const handleNumRepsChange = (text) => {
-    setNumReps(text);
+    if (!text.match(/^[.,]/)) {
+      setNumReps(text);
+  }
   };
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();
@@ -287,7 +291,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   switchonPosition: {
-    top: "50%",
+    top: "35%",
+    left: "120%",
     position: "absolute",
   },
   coverPosition: {

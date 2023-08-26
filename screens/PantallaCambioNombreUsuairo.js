@@ -17,7 +17,8 @@ const PantallaCambioNombreUsuairo = () => {
     setSecureText(!secureText);
   };
   const handleCambioNombre = (text) =>{
-    setNombreUsuario(text);
+    const filteredText = text.replace(/[.,]/g, '');
+    setNombreUsuario(filteredText);
   }
   const handleCambioPassword = (text) =>{
     setPassword(text);

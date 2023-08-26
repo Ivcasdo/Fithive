@@ -19,13 +19,18 @@ const PantallaAjusteObjetivos = ({ onClose }) => {
   const [showOptions2, setShowOptions2] = useState(false);
   const [showOptions3, setShowOptions3] = useState(false);
   const handleChangeEdad = (text) =>{
-    setEdad(text);
+    const filteredText = text.replace(/[.,]/g, '');
+    setEdad(filteredText);
   }
   const handleChangePeso = (text) =>{
-    setPeso(text);
+    if (!text.match(/^[.,]/)) {
+      setPeso(text);
+  }
+    
   }
   const handleChangeAltura = (text) =>{
-    setAltura(text);
+    const filteredText = text.replace(/[.,]/g, '');
+    setAltura(filteredText);
   }
   const handleCerrarPantallaSuperpuesta = () => {
     onClose();

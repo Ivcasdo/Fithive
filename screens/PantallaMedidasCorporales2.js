@@ -21,19 +21,33 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
     setShowOptions(!showOptions);
   };
   const handleChangePeso = (text) =>{
-    setPeso(text);
+    if (!text.match(/^[.,]/)) {
+        setPeso(text);
+    }
+    
   };
   const handleChangeAltura = (text) =>{
-    setAltura(text);
+    if (!text.match(/^[.,]/)) {
+      setAltura(text);
+  }
+    
   };
   const handleChangeCintura = (text) =>{
-    setCintura(text);
+    if (!text.match(/^[.,]/)) {
+      setCintura(text);
+  }
+    
   };
   const handleChangeCuello = (text) =>{
-    setCuello(text);
+    if (!text.match(/^[.,]/)) {
+      setCuello(text);
+  }
   };
   const handleChangecadera = (text) =>{
-    setCadera(text);
+    if (!text.match(/^[.,]/)) {
+      setCadera(text);
+  }
+    
   };
 
   const handleGuardarMedida= () =>{
@@ -56,13 +70,31 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
         }
       }
     }
-    const medida = {
-      peso: peso,
-      fecha: formattedDate,
-      cintura: cintura,
-      indiceGrasa: `${indiceGrasas}%`,
-    };
+    let medida = '';
+    if(genero==='Masculino'){
+        medida = {
+          peso: peso,
+          fecha: formattedDate,
+          cintura: cintura,
+          indiceGrasa: `${indiceGrasas}%`,
+          genero: genero,
+          altura: altura,
+          cuello: cuello
+        };
+    }else{
+        medida = {
+          peso: peso,
+          fecha: formattedDate,
+          cintura: cintura,
+          indiceGrasa: `${indiceGrasas}%`,
+          genero: genero,
+          altura: altura,
+          cuello: cuello,
+          cadera: cadera,
+        };
+    }
     if(editarmedida){
+      console.log(medidaEditar, medida)
       if(isEqual(medida,medidaEditar)){
         console.log('sin cambios');
         onClose();

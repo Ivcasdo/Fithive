@@ -52,7 +52,6 @@ const PantallaMedidasCorporales = () => {
         Object.keys(medidasData).forEach((key) => {
           medidasArray.push(medidasData[key]);
         });
-        console.log(medidasArray);
         setListaMedidas(medidasArray);
       }
     };

@@ -17,6 +17,9 @@ const PantallaRealizarEntrenamient = () => {
 
 
   const handleInputChange = (text, ejercicioIndex, serieIndex, property) => {
+    if (text.match(/^[.,]/)) {
+      return; // Si es así, simplemente regresamos y no hacemos nada.
+  }
     const updatedEjercicios = [...ejercicios];
     updatedEjercicios[ejercicioIndex].series[serieIndex] = {
       ...updatedEjercicios[ejercicioIndex].series[serieIndex],
@@ -280,7 +283,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textTransform: "uppercase",
     height: 24,
-    top: 0,
+    top: 3,
     left: 0,
     position: "absolute",
   },

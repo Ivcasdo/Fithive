@@ -730,7 +730,7 @@ const styles = StyleSheet.create({
     marginTop: -11,
     right: -33,
     width: 37,
-    top: "50%",
+    top: "35%",
   },
   spSubheadingRegular4: {
     height: "50%",

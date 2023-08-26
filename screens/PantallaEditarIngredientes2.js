@@ -14,7 +14,8 @@ const PantallaEditarIngredientes2 = ({ onClose,alimentoEditar }) => {
     setNomAlimento(text);
   };
   const handleChangeCalAlimento = (text) =>{
-    setCalAlimento(text);
+    const filteredText = text.replace(/[.,]/g, '');
+    setCalAlimento(filteredText);
   };
   const handleGuardarAlimento = () =>{
     const alimento = {

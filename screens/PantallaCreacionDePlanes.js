@@ -47,7 +47,8 @@ const PantallaCreacionDePlanes = ({}) => {
     setTipo(text);
   }
   const handleNumSemanaChange = (text) =>{
-    setNumSemana(text);
+    const filteredText = text.replace(/[.,]/g, '');
+    setNumSemana(filteredText);
   }
 
 

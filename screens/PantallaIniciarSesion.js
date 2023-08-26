@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 93,
     height: 16,
+    top:3,
   },
   spCapsXsMedium: {
     marginTop: -16,

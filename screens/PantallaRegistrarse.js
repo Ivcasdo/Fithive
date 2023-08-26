@@ -6,6 +6,7 @@ import {
   Text,
   Pressable,
   ImageBackground,
+  TouchableOpacity
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
@@ -13,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 import { useState } from "react";
 import auth, { firebase } from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
+
 
 const PantallaRegistrarse = () => {
   const navigation = useNavigation();
@@ -21,8 +22,14 @@ const PantallaRegistrarse = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userName, setUserName] = useState('');
-
-
+  const [secureText, setSecureText] = useState(true);
+  const [secureText1, setSecureText1] = useState(true);
+  const toggleSecureText = () => {
+    setSecureText(!secureText);
+  };
+  const toggleSecureText1 = () => {
+    setSecureText1(!secureText1);
+  };
   const handleSignUp = () => {
     if (email === '' || password === '' || confirmPassword === '' || userName === '') {
       alert('Por favor, completa todos los campos');
@@ -127,12 +134,15 @@ const PantallaRegistrarse = () => {
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={password}
             onChangeText={setPassword}
+            secureTextEntry={secureText}
           />
-          <Image
-            style={[styles.permIdentityIcon, styles.strokePosition]}
-            contentFit="cover"
-            source={require("../assets/lock.png")}
-          />
+          <TouchableOpacity onPress={toggleSecureText}>
+            <Image
+              style={[styles.permIdentityIcon, styles.strokePosition]}
+              contentFit="cover"
+              source={require("../assets/lock.png")}
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.focused}>
           <View style={[styles.stroke, styles.strokePosition]} />
@@ -143,12 +153,15 @@ const PantallaRegistrarse = () => {
             placeholderTextColor="rgba(0, 0, 0, 0.87)"
             value={confirmPassword}
             onChangeText={setConfirmPassword}
+            secureTextEntry={secureText1}
           />
-          <Image
-            style={[styles.permIdentityIcon, styles.strokePosition]}
-            contentFit="cover"
-            source={require("../assets/lockopen.png")}
-          />
+          <TouchableOpacity onPress={toggleSecureText1}>
+            <Image
+              style={[styles.permIdentityIcon, styles.strokePosition]}
+              contentFit="cover"
+              source={require("../assets/lockopen.png")}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     
@@ -217,6 +230,7 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: "center",
     position: "absolute",
+    
   },
   iconLayout: {
     height: 32,
@@ -300,9 +314,9 @@ const styles = StyleSheet.create({
     opacity: 0.54,
   },
   permIdentityIcon: {
-    bottom: 1,
     height: 32,
     width: 32,
+    top:20,
   },
   register2: {
     top: 192,
@@ -365,6 +379,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     color: Color.textColor,
     height: 16,
+    top:3,
   },
   spCapsXsMedium: {
     marginTop: -16,
