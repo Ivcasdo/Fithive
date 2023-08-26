@@ -157,8 +157,8 @@ const PantallaCreacionDeEntrenami = ({ onClose, ejercicio, editBool,editar }) =>
               colors={["#1a73e9", "#6c92f4"]}
             />
           </View>
-          <View style={[styles.flatdefault, styles.switchonPosition]}>
-            <View style={[styles.spBody2Medium, styles.switchonPosition]}>
+          <View style={[styles.flatdefault, styles.switchonPosition1]}>
+            <View style={[styles.spBody2Medium, styles.switchonPosition1]}>
               <Text style={[styles.body2, styles.body2Position]}>guardar</Text>
             </View>
           </View>
@@ -293,6 +293,11 @@ const styles = StyleSheet.create({
   switchonPosition: {
     top: "35%",
     left: "120%",
+    position: "absolute",
+  },
+  switchonPosition1: {
+    top: "50%",
+ 
     position: "absolute",
   },
   coverPosition: {
