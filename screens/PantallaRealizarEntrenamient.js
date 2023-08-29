@@ -72,7 +72,7 @@ const PantallaRealizarEntrenamient = () => {
             const nuevoArrayEntrenamientos = entrenamientosSemana.filter((item) => !isEqual(item, route.params.entrenamiento));
             
             const semanaActualRef = planRef.child(`${childsnapshot.key}/semanas/${plan.semanaActual - 1}`);
-            semanaActualRef.set(nuevoArrayEntrenamientos.length);
+            semanaActualRef.set(nuevoArrayEntrenamientos);
             
             if(nuevoArrayEntrenamientos.length === 0){
               planRef.child(childsnapshot.key).update({ semanaActual: plan.semanaActual+1 });

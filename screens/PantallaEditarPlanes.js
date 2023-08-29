@@ -62,9 +62,23 @@ const PantallaCreacionDePlanes4 = ({onClose, planEditar}) => {
             nuevoPlanRef.set(planActivado);
           });
         }else{
+          
           if(!isEqual(plan, planEditar) && plan.activado){
             planesRef.child(childSnapshot.key).update({
               activado: false
+            });
+          }else{
+            if(isEqual(plan, planEditar) && plan.activado){
+              planesRef.child(childSnapshot.key).update({
+                activado: false
+              });
+            }
+            planActivadoRef.once('value',(snapshot)=>{
+              if(snapshot.exists()){
+                snapshot.forEach((childSnapshot)=>{
+                  childSnapshot.ref.remove();
+                })
+              }
             });
           }
         }

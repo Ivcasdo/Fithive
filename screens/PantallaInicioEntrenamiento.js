@@ -48,6 +48,9 @@ const PantallaInicioEntrenamiento = () => {
         })
       }else{
         setNombrePlan('Elige un plan')
+        setEntrenamientosSemana('');
+        setPlanActivado('');
+        setNumSemana('');
       }
     }
     planActivadoRef.on('value', handleSnapshot);

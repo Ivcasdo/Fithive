@@ -65,11 +65,27 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
         indiceGrasas = Number(((495 / result) - 450).toFixed(1));
       }else{
         if(cadera != ''){
-          const result = 1.29579 - 0.35004 * Math.log10(cintura + cadera - cuello) + 0.22100 * Math.log10(altura);
-          indiceGrasas = Number(((495 / result) - 450).toFixed(1));
+          const cintura_en_pulgadas = cintura / 2.54;
+          const cadera_en_pulgadas = cadera / 2.54;
+          const cuello_en_pulgadas = cuello / 2.54;
+          const altura_en_pulgadas = altura / 2.54;
+          indiceGrasas = 163.205 * Math.log10(cintura_en_pulgadas + cadera_en_pulgadas - cuello_en_pulgadas) - 97.684 * Math.log10(altura_en_pulgadas)- 78.387;
+          indiceGrasas = indiceGrasas.toFixed(1);
+          console.log(indiceGrasas);
+          /* Calcula los términos logarítmicos
+          const logTerm1 = Math.log10(cintura + cadera - cuello);
+          const logTerm2 = Math.log10(altura);
+          
+          // Calcula el resultado final
+          const result = 1.29579 - 1.1011 * logTerm1  +(-1.0833 * logTerm2);
+          console.log('Final Result:', result);*/
+          //const result = 1.29579 - 0.35004 * Math.log10(cintura + cadera - cuello) + 0.22100 * Math.log10(altura);
+          //console.log(result,cintura,cadera,cuello,altura);
+          //indiceGrasas = Number(((495 / result) - 450).toFixed(1));
         }
       }
     }
+    
     let medida = '';
     if(genero==='Masculino'){
         medida = {
@@ -94,7 +110,6 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
         };
     }
     if(editarmedida){
-      console.log(medidaEditar, medida)
       if(isEqual(medida,medidaEditar)){
         console.log('sin cambios');
         onClose();
@@ -104,20 +119,42 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
           snapshot.forEach((childSnapshot) => {
             const medid = childSnapshot.val();
             if(isEqual(medid,medidaEditar)){
-              if(peso!=''){
-                medidasRef.child(childSnapshot.key).update({peso: peso});
-              }
-              if(cintura!=''){
-                medidasRef.child(childSnapshot.key).update({cintura: cintura});
-              }
-              if(cuello!=''){
-                medidasRef.child(childSnapshot.key).update({cuello: cuello});
-              }
-              if(cadera!=''){
-                medidasRef.child(childSnapshot.key).update({cadera: cadera});
-              }
-              if(indiceGrasas!=''){
-                medidasRef.child(childSnapshot.key).update({indiceGrasa: indiceGrasas});
+              if(genero==='Masculino'){
+                if(peso!=''){
+                  medidasRef.child(childSnapshot.key).update({peso: peso});
+                }
+                if(cintura!=''){
+                  medidasRef.child(childSnapshot.key).update({cintura: cintura});
+                }
+                if(cuello!=''){
+                  medidasRef.child(childSnapshot.key).update({cuello: cuello});
+                }
+                if(indiceGrasas!=''){
+                  medidasRef.child(childSnapshot.key).update({indiceGrasa: indiceGrasas});
+                }
+                if(genero!=''){
+                  medidasRef.child(childSnapshot.key).update({genero: genero});
+                }
+                medidasRef.child(childSnapshot.key).child('cadera').remove();
+              }else{
+                if(cadera!=''){
+                  medidasRef.child(childSnapshot.key).update({cadera: cadera});
+                }
+                if(peso!=''){
+                  medidasRef.child(childSnapshot.key).update({peso: peso});
+                }
+                if(cintura!=''){
+                  medidasRef.child(childSnapshot.key).update({cintura: cintura});
+                }
+                if(cuello!=''){
+                  medidasRef.child(childSnapshot.key).update({cuello: cuello});
+                }
+                if(indiceGrasas!=''){
+                  medidasRef.child(childSnapshot.key).update({indiceGrasa: indiceGrasas});
+                }
+                if(genero!=''){
+                  medidasRef.child(childSnapshot.key).update({genero: genero});
+                }
               }
             }
           })
@@ -170,6 +207,8 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
       setCintura(medidaEditar.cintura);
       setPeso(medidaEditar.peso);
       setCuello(medidaEditar.cuello);
+      setCadera(medidaEditar.cadera);
+      setGenero(medidaEditar.genero);
     }
   },[]);
   return (
@@ -356,13 +395,13 @@ const PantallaMedidasCorporales2 = ({ onClose, editarmedida,medidaEditar }) => {
 const styles = StyleSheet.create({
   filtroObjetivos:{
     backgroundColor: 'white',
+    borderColor: 'black',
     left:0,
     top:16,
     maxHeight:90,
     position: 'absolute',
-    zIndex: 90,
+    zIndex: 990,
     width: '100%',
-    flex:1
   },
   caption11: {
     lineHeight: 15,
@@ -418,6 +457,7 @@ const styles = StyleSheet.create({
     top: 140,
     left: 186,
     height: 16,
+    zIndex:80,
   },
   dropdown2Layout: {
     width: 112,
@@ -452,6 +492,7 @@ const styles = StyleSheet.create({
     top: 220,
     height: 40,
     position: "absolute",
+    zIndex:2,
   },
   bgOutlinePosition: {
     borderRadius: Border.br_7xs,
@@ -581,6 +622,7 @@ const styles = StyleSheet.create({
     top: 49,
   },
   cover: {
+    zIndex:40,
     top: 48,
     height: 105,
     position: "absolute",
